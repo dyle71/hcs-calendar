@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import type { Months } from "@/types/month";
+
 interface Props {
   date: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
-console.log("CalendarHeader: ", props.date);
+
+const m: Months = new Date(props.date).getMonth();
+console.log("foo: ", m);
 </script>
 
 <template>
@@ -13,6 +17,6 @@ console.log("CalendarHeader: ", props.date);
 
 <style scoped>
 .calendar-month-label {
-  @apply text-xl;
+  @apply py-2 px-2 text-xl;
 }
 </style>
