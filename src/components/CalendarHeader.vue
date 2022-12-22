@@ -1,5 +1,13 @@
 <script setup lang="ts"></script>
 
-<template>CalendarBanner</template>
+<template>
+  <div class="calendar-header">
+    CalendarHeader
+  </div>
+</template>
 
-<style scoped></style>
+<style scoped>
+.calendar-header {
+  @apply flex;
+}
+</style>

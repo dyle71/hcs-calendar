@@ -1,5 +1,13 @@
 <script setup lang="ts"></script>
 
-<template>CalendarFooter</template>
+<template>
+  <div class="calendar-footer">
+    CalendarFooter
+  </div>
+</template>
 
-<style scoped></style>
+<style scoped>
+.calendar-footer {
+  @apply flex;
+}
+</style>

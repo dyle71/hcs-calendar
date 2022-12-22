@@ -1,5 +1,13 @@
 <script setup lang="ts"></script>
 
-<template>CalendarSideBar</template>
+<template>
+  <div class="calendar-sidebar">
+    CalendarSideBar
+  </div>
+</template>
 
-<style scoped></style>
+<style scoped>
+.calendar-sidebar {
+  @apply flex;
+}
+</style>
