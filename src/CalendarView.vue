@@ -11,8 +11,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   initialDate: Date.now(),
 });
-
-console.log(props.initialDate);
 </script>
 
 <template>
