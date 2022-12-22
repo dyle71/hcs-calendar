@@ -1,9 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+interface Props {
+  date: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {});
+console.log("CalendarMain: ", props.date);
+</script>
 
 <template>
-  <div class="calendar-main">
-    CalendarMain
-  </div>
+  <div class="calendar-main">CalendarMain</div>
 </template>
 
 <style scoped>
