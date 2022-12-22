@@ -8,6 +8,7 @@
 
 <style scoped>
 .calendar-main {
-  @apply flex;
+  @apply flex min-w-max min-h-max max-h-full;
+  @apply mb-auto;
 }
 </style>

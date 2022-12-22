@@ -18,14 +18,15 @@ import CalendarSideBar from "@/components/CalendarSideBar.vue";
 
 <style scoped>
 .calendar-container {
-  @apply relative;
+  @apply relative flex flex-col max-h-full;
 }
 
 .calendar-container__header {
+  @apply flex-none;
 }
 
 .calendar-container__body {
-  @apply flex flex-row;
+  @apply flex-auto flex flex-row h-auto;
 }
 
 .calendar-container__body__sidebar {
@@ -35,5 +36,6 @@ import CalendarSideBar from "@/components/CalendarSideBar.vue";
 }
 
 .calendar-container__footer {
+  @apply flex-none;
 }
 </style>

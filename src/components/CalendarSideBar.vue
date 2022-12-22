@@ -8,6 +8,6 @@
 
 <style scoped>
 .calendar-sidebar {
-  @apply flex;
+  @apply flex min-w-max min-h-max;
 }
 </style>
