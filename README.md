@@ -59,6 +59,10 @@ Options:
   -v, --version           Display version number
 ```
 
+## Remarks
+
+The icons have been picked from [iconscout](https://iconscout.com/unicons).
+
 ## Notable guidelines
 
 - How (not) to write git commit messages: https://www.codelord.net/2015/03/16/bad-commit-messages-hall-of-shame/

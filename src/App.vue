@@ -3,7 +3,7 @@ import CalendarView from "@/CalendarView.vue";
 </script>
 
 <template>
-  <CalendarView class="calendar-app"/>
+  <CalendarView class="calendar-app" />
 </template>
 
 <style scoped>
