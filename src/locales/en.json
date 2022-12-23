@@ -1,4 +1,12 @@
 {
+  "header": {
+    "shift": {
+      "double-left": "6 months back",
+      "double-right": "6 months forward",
+      "left": "3 months back",
+      "right": "3 months forward"
+    }
+  },
   "month": {
     "long": {
       "0": "January",
