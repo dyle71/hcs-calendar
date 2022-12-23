@@ -5,3 +5,10 @@
     />
   </svg>
 </template>
+
+<style scoped>
+.icon {
+  width: inherit;
+  height: inherit;
+}
+</style>

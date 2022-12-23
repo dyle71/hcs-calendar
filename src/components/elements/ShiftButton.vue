@@ -10,70 +10,58 @@ import AngleUp from "@/components/icons/AngleUp.vue";
 
 interface Props {
   direction: string;
-  alt: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
 </script>
 
 <template>
-  <div v-if="props.direction === 'double-down'" class="calendar-shift-button">
-    <button class="calendar-shift-button calendar-shift-button__double-down">
-      <AngleDoubleDown :alt="props.alt" />
-    </button>
-  </div>
-  <div
+  <button
+    v-if="props.direction === 'double-down'"
+    class="calendar-shift-button calendar-shift-button__double-down"
+  >
+    <AngleDoubleDown />
+  </button>
+  <button
     v-else-if="props.direction === 'double-left'"
-    class="calendar-shift-button"
+    class="calendar-shift-button calendar-shift-button__double-left"
   >
-    <button class="calendar-shift-button calendar-shift-button__double-left">
-      <AngleDoubleLeft :alt="props.alt" />
-    </button>
-  </div>
-  <div
+    <AngleDoubleLeft />
+  </button>
+  <button
     v-else-if="props.direction === 'double-right'"
-    class="calendar-shift-button"
+    class="calendar-shift-button calendar-shift-button__double-right"
   >
-    <button class="calendar-shift-button calendar-shift-button__double-right">
-      <AngleDoubleRight :alt="props.alt" />
-    </button>
-  </div>
-  <div
+    <AngleDoubleRight />
+  </button>
+  <button
     v-else-if="props.direction === 'double-up'"
-    class="calendar-shift-button"
+    class="calendar-shift-button calendar-shift-button__double-up"
   >
-    <button class="calendar-shift-button calendar-shift-button__double-up">
-      <AngleDoubleUp :alt="props.alt" />
-    </button>
-  </div>
-  <div v-else-if="props.direction === 'down'" class="calendar-shift-button">
-    <button class="calendar-shift-button calendar-shift-button__down">
-      <AngleDown :alt="props.alt" />
-    </button>
-  </div>
-  <div v-else-if="props.direction === 'left'" class="calendar-shift-button">
-    <button class="calendar-shift-button calendar-shift-button__left">
-      <AngleLeft :alt="props.alt" />
-    </button>
-  </div>
-  <div v-else-if="props.direction === 'right'" class="calendar-shift-button">
-    <button class="calendar-shift-button calendar-shift-button__right">
-      <AngleRight :alt="props.alt" />
-    </button>
-  </div>
-  <div v-else-if="props.direction === 'up'" class="calendar-shift-button">
-    <button class="calendar-shift-button calendar-shift-button__up">
-      <AngleUp :alt="props.alt" />
-    </button>
-  </div>
+    <AngleDoubleUp />
+  </button>
+  <button
+    v-else-if="props.direction === 'down'"
+    class="calendar-shift-button calendar-shift-button__down"
+  >
+    <AngleDown />
+  </button>
+  <button
+    v-else-if="props.direction === 'left'"
+    class="calendar-shift-button calendar-shift-button__left"
+  >
+    <AngleLeft />
+  </button>
+  <button
+    v-else-if="props.direction === 'right'"
+    class="calendar-shift-button calendar-shift-button__right"
+  >
+    <AngleRight />
+  </button>
+  <button
+    v-else-if="props.direction === 'up'"
+    class="calendar-shift-button calendar-shift-button__up"
+  >
+    <AngleUp />
+  </button>
 </template>
-
-<style scoped>
-.calendar-shift-button {
-  @apply w-6 h-6;
-}
-
-.calendar-shift-button > svg {
-  fill: darkmagenta;
-}
-</style>
