@@ -11,7 +11,6 @@ import AngleUp from "@/components/icons/AngleUp.vue";
 interface Props {
   direction: string;
 }
-
 const props = withDefaults(defineProps<Props>(), {});
 </script>
 

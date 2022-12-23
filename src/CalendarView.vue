@@ -11,6 +11,22 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   initialDate: Date.now(),
 });
+
+function headerShiftDoubleLeft() {
+  console.log("headerShiftDoubleLeft");
+}
+
+function headerShiftDoubleRight() {
+  console.log("headerShiftDoubleLeft");
+}
+
+function headerShiftLeft() {
+  console.log("headerShiftLeft");
+}
+
+function headerShiftRight() {
+  console.log("headerShiftLeft");
+}
 </script>
 
 <template>
@@ -18,6 +34,10 @@ const props = withDefaults(defineProps<Props>(), {
     <CalendarHeader
       class="calendar-container__header"
       :date="props.initialDate"
+      v-on:onDoubleLeft="headerShiftDoubleLeft()"
+      v-on:onDoubleRight="headerShiftDoubleRight()"
+      v-on:onLeft="headerShiftLeft()"
+      v-on:onRight="headerShiftRight()"
     />
     <div class="calendar-container__body">
       <CalendarSideBar
