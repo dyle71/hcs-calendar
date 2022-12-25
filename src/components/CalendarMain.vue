@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { PropType } from "vue";
+import { Temporal } from "@js-temporal/polyfill";
+
 interface Props {
-  date: number;
+  date: PropType<Temporal.PlainDateTime>;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -13,7 +16,7 @@ console.log("CalendarMain: ", props.date);
 
 <style scoped>
 .calendar-main {
-  @apply flex min-w-max min-h-max max-h-full;
+  @apply grow flex min-w-max min-h-max max-h-full;
   @apply mb-auto;
 }
 </style>

@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { PropType } from "vue";
+import { Temporal } from "@js-temporal/polyfill";
+import MonthMiniView from "@/components/elements/MonthMiniView.vue";
+
 interface Props {
-  date: number;
+  date: PropType<Temporal.PlainDateTime>;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -8,11 +12,13 @@ console.log("CalendarSideBar: ", props.date);
 </script>
 
 <template>
-  <div class="calendar-sidebar">CalendarSideBar</div>
+  <div class="calendar-sidebar">
+    <MonthMiniView :date="props.date" />
+  </div>
 </template>
 
 <style scoped>
 .calendar-sidebar {
-  @apply flex min-w-max min-h-max;
+  @apply relative flex-none flex p-2;
 }
 </style>

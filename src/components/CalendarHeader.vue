@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { PropType } from "vue";
+import { Temporal } from "@js-temporal/polyfill";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ShiftButton from "@/components/elements/ShiftButton.vue";
 import ToolTip from "@/components/elements/ToolTip.vue";
 
 interface Props {
-  date: number;
+  date: PropType<Temporal.PlainDateTime>;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -60,7 +62,6 @@ const emit = defineEmits([
     <ToolTip for="calendar-header-double-right">
       {{ $t("header.shift.double-right") }}
     </ToolTip>
-
   </div>
 </template>
 

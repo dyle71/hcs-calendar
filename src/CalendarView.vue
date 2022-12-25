@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import { PropType } from "vue";
+import { Temporal } from "@js-temporal/polyfill";
 import CalendarHeader from "@/components/CalendarHeader.vue";
 import CalendarMain from "@/components/CalendarMain.vue";
 import CalendarFooter from "@/components/CalendarFooter.vue";
 import CalendarSideBar from "@/components/CalendarSideBar.vue";
 
 interface Props {
-  initialDate?: number;
+  initialDate?: PropType<Temporal.PlainDateTime>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  initialDate: Date.now(),
+  initialDate: Temporal.Now.plainDateTimeISO(),
 });
 
 function headerShiftDoubleLeft() {

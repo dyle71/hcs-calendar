@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { PropType } from "vue";
+import { Temporal } from "@js-temporal/polyfill";
+
 interface Props {
-  date: number;
+  date: PropType<Temporal.PlainDateTime>;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
 </script>
 
 <template>
-  {{
-    $t(`month.long.${new Date(props.date).getMonth()}`) +
-    " " +
-    new Date(props.date).getFullYear()
-  }}
+  <div>
+    {{ $t(`month.long.${props.date.month}`) + " " + date.year }}
+  </div>
 </template>
