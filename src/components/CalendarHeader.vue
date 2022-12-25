@@ -39,7 +39,7 @@ const emit = defineEmits([
       {{ $t("header.shift.left") }}
     </ToolTip>
 
-    <MonthLabel :date="props.date" />
+    <MonthLabel class="calendar-header__month-label" :date="props.date" />
 
     <ShiftButton
       id="calendar-header-right"
@@ -73,5 +73,9 @@ const emit = defineEmits([
   @apply relative my-auto mx-0.5 w-6 h-6 rounded-full fill-fuchsia-700;
   @apply hover:bg-gray-300;
   @apply disabled:fill-gray-500;
+}
+
+.calendar-header__month-label {
+  @apply text-lg;
 }
 </style>
