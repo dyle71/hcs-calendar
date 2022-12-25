@@ -64,3 +64,14 @@ const props = withDefaults(defineProps<Props>(), {});
     <AngleUp />
   </button>
 </template>
+
+<style scoped>
+.calendar-shift-button {
+  @apply max-w-fit;
+}
+
+.calendar-shift-button > svg {
+  width: inherit;
+  height: inherit;
+}
+</style>
