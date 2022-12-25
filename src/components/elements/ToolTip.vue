@@ -106,8 +106,12 @@ onMounted(() => {
 }
 
 @keyframes animate-tooltip {
-  from {opacity: 0.0;}
-  to {opacity: 0.95;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.95;
+  }
 }
 
 .tooltip__arrow,
