@@ -6,9 +6,7 @@ import MonthMiniView from "@/components/elements/MonthMiniView.vue";
 interface Props {
   date: PropType<Temporal.PlainDateTime>;
 }
-
 const props = withDefaults(defineProps<Props>(), {});
-console.log("CalendarSideBar: ", props.date);
 </script>
 
 <template>

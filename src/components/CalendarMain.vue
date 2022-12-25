@@ -5,7 +5,6 @@ import { Temporal } from "@js-temporal/polyfill";
 interface Props {
   date: PropType<Temporal.PlainDateTime>;
 }
-
 const props = withDefaults(defineProps<Props>(), {});
 console.log("CalendarMain: ", props.date);
 </script>

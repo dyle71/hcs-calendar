@@ -6,11 +6,14 @@ import ShiftButton from "@/components/elements/ShiftButton.vue";
 
 interface Props {
   date: PropType<Temporal.PlainDateTime>;
+  startDayOfWeek?: number
 }
+const props = withDefaults(defineProps<Props>(), {
+  startDayOfWeek: 1
+});
 
 let today: Temporal.PlainDateTime | null = null;
-let firstOfMonth: number | null = null;
-const props = withDefaults(defineProps<Props>(), {});
+
 
 onMounted(() => {
   today = Temporal.Now.plainDateTimeISO();
@@ -39,7 +42,9 @@ const emit = defineEmits(["onLeft", "onRight"]);
       </div>
     </div>
 
-    <div class="month-mini-view__body"></div>
+    <div class="month-mini-view__body">
+
+    </div>
   </div>
 </template>
 

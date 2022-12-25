@@ -8,7 +8,6 @@ import ToolTip from "@/components/elements/ToolTip.vue";
 interface Props {
   date: PropType<Temporal.PlainDateTime>;
 }
-
 const props = withDefaults(defineProps<Props>(), {});
 
 const emit = defineEmits([
