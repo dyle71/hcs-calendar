@@ -216,17 +216,17 @@ const emit = defineEmits(["onLeft", "onRight"]);
 }
 
 .month-mini-view__body__grid-element {
-  @apply text-center align-middle m-0 p-0 w-full h-full;
+  @apply text-center m-0 p-0 w-full h-full;
 }
 
 .month-mini-view__body__weeknumber {
-  @apply m-auto w-full h-full bg-gray-200 p-1;
+  @apply h-full bg-gray-200 pt-1.5;
 }
 
 .month-mini-view__body__day__inner {
   font-size: 85%;
   @apply rounded-full m-1 p-0.5 h-5 w-5;
-  @apply hover:bg-gray-200;
+  @apply hover:bg-gray-200 hover:cursor-pointer;
 }
 
 .month-mini-view__body__in-month {
