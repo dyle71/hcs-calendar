@@ -194,7 +194,7 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick"]);
 }
 
 .month-mini-view__header {
-  @apply flex flex-row text-sm gap-1;
+  @apply flex flex-row text-sm gap-1 mb-1;
 }
 
 .month-mini-view__header__month-label {
