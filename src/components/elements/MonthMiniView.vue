@@ -129,7 +129,7 @@ const monthMatrix: Ref<Array<DayInformation | null>> = ((
   return ref(matrix);
 })(monthSpecs);
 
-const emit = defineEmits(["onLeft", "onRight"]);
+const emit = defineEmits(["onLeft", "onRight", "onDayClick"]);
 </script>
 
 <template>
@@ -170,8 +170,9 @@ const emit = defineEmits(["onLeft", "onRight"]);
           v-else-if="element?.text"
           class="month-mini-view__body__day"
         >
-          <div
+          <button
             class="month-mini-view__body__day__inner"
+            @click.prevent="emit('onDayClick', element.date)"
             :class="{
               'month-mini-view__body__in-month': element?.inMonth,
               'month-mini-view__body__past': element?.past,
@@ -180,7 +181,7 @@ const emit = defineEmits(["onLeft", "onRight"]);
             }"
           >
             {{ element?.text }}
-          </div>
+          </button>
         </div>
       </div>
     </div>

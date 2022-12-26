@@ -28,6 +28,18 @@ function headerShiftLeft() {
 function headerShiftRight() {
   console.log("headerShiftLeft");
 }
+
+function selectDay(day: Temporal.PlainDate) {
+  console.log("selectDay", day);
+}
+
+function selectNextMonth() {
+  console.log("selectNextMonth");
+}
+
+function selectPreviousMonth() {
+  console.log("selectPreviousMonth");
+}
 </script>
 
 <template>
@@ -35,15 +47,18 @@ function headerShiftRight() {
     <CalendarHeader
       class="calendar-container__header"
       :datetime="props.initialDate"
-      v-on:onDoubleLeft="headerShiftDoubleLeft()"
-      v-on:onDoubleRight="headerShiftDoubleRight()"
-      v-on:onLeft="headerShiftLeft()"
-      v-on:onRight="headerShiftRight()"
+      @onDoubleLeft="headerShiftDoubleLeft()"
+      @onDoubleRight="headerShiftDoubleRight()"
+      @onLeft="headerShiftLeft()"
+      @onRight="headerShiftRight()"
     />
     <div class="calendar-container__body">
       <CalendarSideBar
         class="calendar-container__body__sidebar"
         :datetime="props.initialDate"
+        @onPreviousMonth="selectPreviousMonth"
+        @onNextMonth="selectNextMonth"
+        @onDayClick="selectDay($event)"
       />
       <CalendarMain
         class="calendar-container__body__main"
