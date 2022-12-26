@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { PropType } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 
 interface Props {
-  date: PropType<Temporal.PlainDateTime>;
+  datetime: Temporal.PlainDateTime;
 }
 const props = withDefaults(defineProps<Props>(), {});
-console.log("CalendarMain: ", props.date);
+console.log("CalendarMain: ", props.datetime);
 </script>
 
 <template>

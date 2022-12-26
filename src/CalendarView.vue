@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { PropType } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import CalendarHeader from "@/components/CalendarHeader.vue";
 import CalendarMain from "@/components/CalendarMain.vue";
@@ -7,7 +6,7 @@ import CalendarFooter from "@/components/CalendarFooter.vue";
 import CalendarSideBar from "@/components/CalendarSideBar.vue";
 
 interface Props {
-  initialDate?: PropType<Temporal.PlainDateTime>;
+  initialDate?: Temporal.PlainDateTime;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,7 +34,7 @@ function headerShiftRight() {
   <div class="calendar-container">
     <CalendarHeader
       class="calendar-container__header"
-      :date="props.initialDate"
+      :datetime="props.initialDate"
       v-on:onDoubleLeft="headerShiftDoubleLeft()"
       v-on:onDoubleRight="headerShiftDoubleRight()"
       v-on:onLeft="headerShiftLeft()"
@@ -44,16 +43,16 @@ function headerShiftRight() {
     <div class="calendar-container__body">
       <CalendarSideBar
         class="calendar-container__body__sidebar"
-        :date="props.initialDate"
+        :datetime="props.initialDate"
       />
       <CalendarMain
         class="calendar-container__body__main"
-        :date="props.initialDate"
+        :datetime="props.initialDate"
       />
     </div>
     <CalendarFooter
       class="calendar-container__footer"
-      :date="props.initialDate"
+      :datetime="props.initialDate"
     />
   </div>
 </template>

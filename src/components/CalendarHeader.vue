@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { PropType } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ShiftButton from "@/components/elements/ShiftButton.vue";
 import ToolTip from "@/components/elements/ToolTip.vue";
 
 interface Props {
-  date: PropType<Temporal.PlainDateTime>;
+  datetime: Temporal.PlainDateTime;
 }
 const props = withDefaults(defineProps<Props>(), {});
 
@@ -27,7 +26,7 @@ const emit = defineEmits([
       @click="emit('onDoubleLeft')"
     />
     <ToolTip for="calendar-header-double-left">
-      {{ $t("header.shift.double-left") }}
+      {{ $t("tooltip.header.shift.double-left") }}
     </ToolTip>
 
     <ShiftButton
@@ -37,10 +36,13 @@ const emit = defineEmits([
       @click="emit('onLeft')"
     />
     <ToolTip for="calendar-header-left">
-      {{ $t("header.shift.left") }}
+      {{ $t("tooltip.header.shift.left") }}
     </ToolTip>
 
-    <MonthLabel class="calendar-header__month-label" :date="props.date" />
+    <MonthLabel
+      class="calendar-header__month-label"
+      :date="Temporal.PlainDate.from(props.datetime)"
+    />
 
     <ShiftButton
       id="calendar-header-right"
@@ -49,7 +51,7 @@ const emit = defineEmits([
       @click="emit('onRight')"
     />
     <ToolTip for="calendar-header-right">
-      {{ $t("header.shift.right") }}
+      {{ $t("tooltip.header.shift.right") }}
     </ToolTip>
 
     <ShiftButton
@@ -59,7 +61,7 @@ const emit = defineEmits([
       @click="emit('onDoubleRight')"
     />
     <ToolTip for="calendar-header-double-right">
-      {{ $t("header.shift.double-right") }}
+      {{ $t("tooltip.header.shift.double-right") }}
     </ToolTip>
   </div>
 </template>

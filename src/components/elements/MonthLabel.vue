@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { PropType } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 
 interface Props {
-  date: PropType<Temporal.PlainDateTime>;
+  date: Temporal.PlainDate;
 }
 const props = withDefaults(defineProps<Props>(), {});
 </script>
