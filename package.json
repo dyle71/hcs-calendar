@@ -11,6 +11,7 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
+    "@intlify/unplugin-vue-i18n": "^0.8.1",
     "@js-temporal/polyfill": "^0.4.3",
     "@popperjs/core": "^2.11.6",
     "vue": "^3.2.45",
