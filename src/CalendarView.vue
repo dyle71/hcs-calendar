@@ -32,14 +32,6 @@ function headerShiftRight() {
 function selectDay(day: Temporal.PlainDate) {
   console.log("selectDay", day);
 }
-
-function selectNextMonth() {
-  console.log("selectNextMonth");
-}
-
-function selectPreviousMonth() {
-  console.log("selectPreviousMonth");
-}
 </script>
 
 <template>
@@ -56,8 +48,6 @@ function selectPreviousMonth() {
       <CalendarSideBar
         class="calendar-container__body__sidebar"
         :datetime="props.initialDate"
-        @onPreviousMonth="selectPreviousMonth"
-        @onNextMonth="selectNextMonth"
         @onDayClick="selectDay($event)"
       />
       <CalendarMain
