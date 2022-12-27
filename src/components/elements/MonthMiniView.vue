@@ -3,6 +3,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ShiftButton from "@/components/elements/ShiftButton.vue";
 import ArrowToBottom from "@/components/icons/ArrowToBottom.vue";
+import ToolTip from "@/components/elements/ToolTip.vue";
 
 interface Props {
   date: Temporal.PlainDate;
@@ -142,15 +143,26 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
           class="month-mini-view__header__button"
           direction="left"
           @click="emit('onLeft')"
-        />
+        >
+          <ToolTip>
+            {{ $t("tooltip.monthMap.header.month.previous") }}
+          </ToolTip>
+        </ShiftButton>
         <button @click.prevent="emit('onTodayClick')">
           <ArrowToBottom class="month-mini-view__header__button" />
+          <ToolTip>
+            {{ $t("tooltip.monthMap.header.month.today") }}
+          </ToolTip>
         </button>
         <ShiftButton
           class="month-mini-view__header__button"
           direction="right"
           @click="emit('onRight')"
-        />
+        >
+          <ToolTip>
+            {{ $t("tooltip.monthMap.header.month.next") }}
+          </ToolTip>
+        </ShiftButton>
       </div>
     </div>
 
@@ -171,6 +183,9 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
           class="month-mini-view__body__weeknumber"
         >
           {{ element?.text }}
+          <ToolTip>
+            {{ $t("tooltip.monthMap.weekOfYear") + element?.text }}
+          </ToolTip>
         </div>
         <div v-else-if="element?.text" class="month-mini-view__body__day">
           <button
@@ -191,6 +206,9 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
             }"
           >
             {{ element?.text }}
+            <ToolTip>
+              {{ element.date.toString() }}
+            </ToolTip>
           </button>
         </div>
       </div>

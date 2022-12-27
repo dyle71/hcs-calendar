@@ -66,7 +66,7 @@ onMounted(() => {
       {
         name: "offset",
         options: {
-          offset: [0, 8],
+          offset: [0, 12],
         },
       },
       {
@@ -94,8 +94,8 @@ onMounted(() => {
 
 <style scoped>
 .tooltip {
-  @apply hidden font-bold px-2 py-1 rounded-md text-xs text-white opacity-0 min-w-max;
-  background: rgba(49, 49, 49);
+  @apply hidden px-2 py-1 rounded-md text-xs text-white opacity-0 min-w-max;
+  background: rgba(50, 50, 50);
   z-index: 1000;
 }
 
@@ -105,7 +105,7 @@ onMounted(() => {
   animation-duration: 500ms;
   animation-iteration-count: 1;
   animation-timing-function: ease-in-out;
-  animation-delay: 250ms;
+  animation-delay: 500ms;
   animation-fill-mode: forwards;
 }
 
@@ -114,7 +114,7 @@ onMounted(() => {
     opacity: 0;
   }
   to {
-    opacity: 0.95;
+    opacity: 0.9;
   }
 }
 
@@ -145,10 +145,10 @@ onMounted(() => {
 }
 
 .tooltip[data-popper-placement^="left"] > .tooltip__arrow {
-  right: -4px;
+  right: -8px;
 }
 
 .tooltip[data-popper-placement^="right"] > .tooltip__arrow {
-  left: -4px;
+  left: -8px;
 }
 </style>

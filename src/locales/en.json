@@ -7,6 +7,16 @@
         "left": "3 months back",
         "right": "3 months forward"
       }
+    },
+    "monthMap": {
+      "header": {
+        "month": {
+          "previous": "Previous month",
+          "today": "Today",
+          "next": "Next month"
+        }
+      },
+      "weekOfYear": "Week: "
     }
   },
   "month": {
