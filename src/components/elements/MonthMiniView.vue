@@ -2,6 +2,7 @@
 import { Temporal } from "@js-temporal/polyfill";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ShiftButton from "@/components/elements/ShiftButton.vue";
+import ArrowToBottom from "@/components/icons/ArrowToBottom.vue";
 
 interface Props {
   date: Temporal.PlainDate;
@@ -127,7 +128,7 @@ function isInMonth(
   return lowerBound >= 0 && upperBound <= 0;
 }
 
-const emit = defineEmits(["onLeft", "onRight", "onDayClick"]);
+const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
 </script>
 
 <template>
@@ -142,6 +143,9 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick"]);
           direction="left"
           @click="emit('onLeft')"
         />
+        <button @click.prevent="emit('onTodayClick')">
+          <ArrowToBottom class="month-mini-view__header__button" />
+        </button>
         <ShiftButton
           class="month-mini-view__header__button"
           direction="right"

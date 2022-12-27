@@ -20,23 +20,29 @@ function switchToNextMonth() {
   nextMonth.value = currenMonth.value.add({ months: 1 });
 }
 
+function onCurrentMonthUpperClicked() {
+  currenMonth.value = Temporal.Now.plainDateISO();
+  nextMonth.value = currenMonth.value.add({ months: 1 });
+}
+
+function onCurrentMonthLowerClicked() {
+  nextMonth.value = Temporal.Now.plainDateISO();
+  currenMonth.value = nextMonth.value.subtract({ months: 1 });
+}
+
 function onPreviousMonthUpperClicked() {
-  console.log("onPreviousMonthUpperClicked");
   switchToPreviousMonth();
 }
 
 function onPreviousMonthLowerClicked() {
-  console.log("onPreviousMonthLowerClicked");
   switchToPreviousMonth();
 }
 
 function onNextMonthUpperClicked() {
-  console.log("onNextMonthUpperClicked");
   switchToNextMonth();
 }
 
 function onNextMonthLowerClicked() {
-  console.log("onNextMonthLowerClicked");
   switchToNextMonth();
 }
 
@@ -50,12 +56,14 @@ const emit = defineEmits(["onDayClick"]);
       @onLeft="onPreviousMonthUpperClicked()"
       @onRight="onNextMonthUpperClicked()"
       @onDayClick="emit('onDayClick', $event)"
+      @onTodayClick="onCurrentMonthUpperClicked()"
     />
     <MonthMiniView
       :date="nextMonth"
       @onLeft="onPreviousMonthLowerClicked()"
       @onRight="onNextMonthLowerClicked()"
       @onDayClick="emit('onDayClick', $event)"
+      @onTodayClick="onCurrentMonthLowerClicked()"
     />
   </div>
 </template>
