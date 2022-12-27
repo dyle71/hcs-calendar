@@ -153,7 +153,11 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick"]);
     </div>
 
     <div class="month-mini-view__body">
-      <div v-for="(element, index) in monthMatrix" :key="index" class="month-mini-view__body__grid-element">
+      <div
+        v-for="(element, index) in monthMatrix"
+        :key="index"
+        class="month-mini-view__body__grid-element"
+      >
         <div
           v-if="element?.header"
           class="month-mini-view__body__column-header"
@@ -166,10 +170,7 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick"]);
         >
           {{ element?.text }}
         </div>
-        <div
-          v-else-if="element?.text"
-          class="month-mini-view__body__day"
-        >
+        <div v-else-if="element?.text" class="month-mini-view__body__day">
           <button
             class="month-mini-view__body__day__inner"
             @click.prevent="emit('onDayClick', element.date)"
