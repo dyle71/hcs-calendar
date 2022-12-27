@@ -24,20 +24,22 @@ const emit = defineEmits([
       class="calendar-header__shift-button"
       direction="double-left"
       @click="emit('onDoubleLeft')"
-    />
-    <ToolTip for="calendar-header-double-left">
-      {{ $t("tooltip.header.shift.double-left") }}
-    </ToolTip>
+    >
+      <ToolTip>
+        {{ $t("tooltip.header.shift.double-left") }}
+      </ToolTip>
+    </ShiftButton>
 
     <ShiftButton
       id="calendar-header-left"
       class="calendar-header__shift-button"
       direction="left"
       @click="emit('onLeft')"
-    />
-    <ToolTip for="calendar-header-left">
-      {{ $t("tooltip.header.shift.left") }}
-    </ToolTip>
+    >
+      <ToolTip>
+        {{ $t("tooltip.header.shift.left") }}
+      </ToolTip>
+    </ShiftButton>
 
     <MonthLabel
       class="calendar-header__month-label"
@@ -49,20 +51,22 @@ const emit = defineEmits([
       class="calendar-header__shift-button"
       direction="right"
       @click="emit('onRight')"
-    />
-    <ToolTip for="calendar-header-right">
-      {{ $t("tooltip.header.shift.right") }}
-    </ToolTip>
+    >
+      <ToolTip>
+        {{ $t("tooltip.header.shift.right") }}
+      </ToolTip>
+    </ShiftButton>
 
     <ShiftButton
       id="calendar-header-double-right"
       class="calendar-header__shift-button"
       direction="double-right"
       @click="emit('onDoubleRight')"
-    />
-    <ToolTip for="calendar-header-double-right">
-      {{ $t("tooltip.header.shift.double-right") }}
-    </ToolTip>
+    >
+      <ToolTip>
+        {{ $t("tooltip.header.shift.double-right") }}
+      </ToolTip>
+    </ShiftButton>
   </div>
 </template>
 

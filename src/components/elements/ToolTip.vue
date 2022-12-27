@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import { createPopper, Instance } from "@popperjs/core";
 
 interface Props {
-  for: string;
+  for?: string;
 }
 const props = withDefaults(defineProps<Props>(), {});
 
@@ -45,7 +45,11 @@ function showToolTip() {
 }
 
 onMounted(() => {
-  popperTarget = document.getElementById(props.for);
+  if (props.for) {
+    popperTarget = document.getElementById(props.for);
+  } else {
+    popperTarget = tooltipElement.value?.parentNode as HTMLElement;
+  }
   if (!popperTarget) {
     console.warn(
       `Failed to produce a tooltip for ${props.for}, element not found.`
@@ -90,7 +94,7 @@ onMounted(() => {
 
 <style scoped>
 .tooltip {
-  @apply hidden font-bold px-2 py-1 rounded-md text-xs text-white opacity-0;
+  @apply hidden font-bold px-2 py-1 rounded-md text-xs text-white opacity-0 min-w-max;
   background: rgba(49, 49, 49);
   z-index: 1000;
 }

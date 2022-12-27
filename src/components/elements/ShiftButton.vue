@@ -20,48 +20,56 @@ const props = withDefaults(defineProps<Props>(), {});
     class="calendar-shift-button calendar-shift-button__double-down"
   >
     <AngleDoubleDown />
+    <slot />
   </button>
   <button
     v-else-if="props.direction === 'double-left'"
     class="calendar-shift-button calendar-shift-button__double-left"
   >
     <AngleDoubleLeft />
+    <slot />
   </button>
   <button
     v-else-if="props.direction === 'double-right'"
     class="calendar-shift-button calendar-shift-button__double-right"
   >
     <AngleDoubleRight />
+    <slot />
   </button>
   <button
     v-else-if="props.direction === 'double-up'"
     class="calendar-shift-button calendar-shift-button__double-up"
   >
     <AngleDoubleUp />
+    <slot />
   </button>
   <button
     v-else-if="props.direction === 'down'"
     class="calendar-shift-button calendar-shift-button__down"
   >
     <AngleDown />
+    <slot />
   </button>
   <button
     v-else-if="props.direction === 'left'"
     class="calendar-shift-button calendar-shift-button__left"
   >
     <AngleLeft />
+    <slot />
   </button>
   <button
     v-else-if="props.direction === 'right'"
     class="calendar-shift-button calendar-shift-button__right"
   >
     <AngleRight />
+    <slot />
   </button>
   <button
     v-else-if="props.direction === 'up'"
     class="calendar-shift-button calendar-shift-button__up"
   >
     <AngleUp />
+    <slot />
   </button>
 </template>
 
