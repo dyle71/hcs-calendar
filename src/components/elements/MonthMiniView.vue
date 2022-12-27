@@ -177,17 +177,17 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
             class="month-mini-view__body__day__inner"
             @click.prevent="emit('onDayClick', element.date)"
             :class="{
-              'month-mini-view__body__in-month': element?.inMonth,
-              'month-mini-view__body__past': element?.past,
-              'month-mini-view__body__today': element?.today,
-              'month-mini-view__body__future': element?.future,
-              'month-mini-view__body__monday': element?.date.dayOfWeek === 1,
-              'month-mini-view__body__tuesday': element?.date.dayOfWeek === 2,
-              'month-mini-view__body__wednesday': element?.date.dayOfWeek === 3,
-              'month-mini-view__body__thursday': element?.date.dayOfWeek === 4,
-              'month-mini-view__body__friday': element?.date.dayOfWeek === 5,
-              'month-mini-view__body__saturday': element?.date.dayOfWeek === 6,
-              'month-mini-view__body__sunday': element?.date.dayOfWeek === 7,
+              'in-month': element?.inMonth,
+              past: element?.past,
+              today: element?.today,
+              future: element?.future,
+              monday: element?.date.dayOfWeek === 1,
+              tuesday: element?.date.dayOfWeek === 2,
+              wednesday: element?.date.dayOfWeek === 3,
+              thursday: element?.date.dayOfWeek === 4,
+              friday: element?.date.dayOfWeek === 5,
+              saturday: element?.date.dayOfWeek === 6,
+              sunday: element?.date.dayOfWeek === 7,
             }"
           >
             {{ element?.text }}
@@ -240,11 +240,15 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
   @apply hover:bg-gray-200 hover:cursor-pointer;
 }
 
-.month-mini-view__body__in-month {
+.month-mini-view__body .in-month {
   @apply text-black font-medium;
 }
 
-.month-mini-view__body__today {
+.month-mini-view__body .today {
   @apply bg-fuchsia-400;
+}
+
+.month-mini-view__body .sunday {
+  @apply text-red-500;
 }
 </style>
