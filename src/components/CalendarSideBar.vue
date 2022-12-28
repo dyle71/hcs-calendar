@@ -70,6 +70,6 @@ const emit = defineEmits(["onDayClick"]);
 
 <style scoped>
 .calendar-sidebar {
-  @apply relative flex flex-col gap-2 p-2;
+  @apply relative flex flex-col gap-4 p-2;
 }
 </style>

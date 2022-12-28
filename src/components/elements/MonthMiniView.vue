@@ -221,7 +221,7 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
 
 <style scoped>
 .month-mini-view {
-  @apply relative select-none;
+  @apply relative select-none min-w-max;
 }
 
 .month-mini-view__header {
@@ -253,6 +253,9 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
 
 .month-mini-view__body__weeknumber {
   @apply h-full bg-gray-200 pt-1.5;
+}
+
+.month-mini-view__body__day {
 }
 
 .month-mini-view__body__day__inner {

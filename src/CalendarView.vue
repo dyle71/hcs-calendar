@@ -35,53 +35,41 @@ function selectDay(day: Temporal.PlainDate) {
 </script>
 
 <template>
-  <div class="calendar-container">
+  <div class="calendar-app">
     <CalendarHeader
-      class="calendar-container__header"
+      class="header"
       :datetime="props.initialDate"
       @onDoubleLeft="headerShiftDoubleLeft()"
       @onDoubleRight="headerShiftDoubleRight()"
       @onLeft="headerShiftLeft()"
       @onRight="headerShiftRight()"
     />
-    <div class="calendar-container__body">
+    <div class="body">
       <CalendarSideBar
-        class="calendar-container__body__sidebar"
         :datetime="props.initialDate"
         @onDayClick="selectDay($event)"
       />
-      <CalendarMain
-        class="calendar-container__body__main"
-        :datetime="props.initialDate"
-      />
+      <CalendarMain :datetime="props.initialDate" />
     </div>
-    <CalendarFooter
-      class="calendar-container__footer"
-      :datetime="props.initialDate"
-    />
+    <CalendarFooter class="footer" :datetime="props.initialDate" />
   </div>
 </template>
 
 <style scoped>
-.calendar-container {
-  @apply relative flex flex-col max-h-full;
+.calendar-app {
+  @apply relative flex flex-col;
 }
 
-.calendar-container__header {
+.calendar-app .header {
   @apply flex-none;
 }
 
-.calendar-container__body {
-  @apply flex-auto flex flex-row h-auto;
+.calendar-app .body {
+  @apply flex-auto flex flex-row;
+  height: 700px;
 }
 
-.calendar-container__body__sidebar {
-}
-
-.calendar-container__body__main {
-}
-
-.calendar-container__footer {
+.calendar-app .footer {
   @apply flex-none;
 }
 </style>

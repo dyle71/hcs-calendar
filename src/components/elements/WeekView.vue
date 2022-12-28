@@ -60,27 +60,42 @@ function getWeekDefinition(): WeekDefinition {
 
 <template>
   <div class="week-view">
-    <div class="week-view__day-header">
+    <div class="header">
       <DayColumnHeader
         v-for="(dayInformation, index) in getDays()"
         :key="index"
         :day="dayInformation.day"
       />
     </div>
-    <div class="week-view__matrix"></div>
+    <div class="matrix">
+      <div class="side">Side</div>
+      <div class="days">Days</div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .week-view {
   @apply relative flex flex-col select-none w-full;
+  height: inherit;
 }
 
-.week-view__day-header {
+.week-view .header {
   @apply flex flex-row;
 }
 
-.week-view__matrix {
-  @apply bg-amber-200;
+.week-view .matrix {
+  @apply flex flex-row w-full h-full overflow-y-scroll;
+  height: inherit;
+}
+
+.week-view .matrix .side {
+  @apply w-12;
+}
+
+.week-view .matrix .days {
+  @apply w-full;
+  @apply bg-amber-400;
+  height: 2000px;
 }
 </style>
