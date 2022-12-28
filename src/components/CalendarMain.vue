@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { Temporal } from "@js-temporal/polyfill";
+import WeekView from "@/components/elements/WeekView.vue";
 
 interface Props {
   datetime: Temporal.PlainDateTime;
 }
 const props = withDefaults(defineProps<Props>(), {});
-console.log("CalendarMain: ", props.datetime);
 </script>
 
 <template>
-  <div class="calendar-main">CalendarMain</div>
+  <WeekView class="calendar-main" :datetime="props.datetime" />
 </template>
 
 <style scoped>
