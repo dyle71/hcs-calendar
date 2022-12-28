@@ -48,7 +48,7 @@ function getDayInformation(
 function getMonthMatrix(): Array<DayInformation | null> {
   const monthSpecs = getMonthSpecs();
 
-  const matrix = Array<DayInformation | null>(8 * 6);
+  const matrix = Array<DayInformation | null>(8 * 7);
   matrix[0] = null;
   for (let i = 0; i < 7; i++) {
     matrix[1 + i] = {
@@ -187,23 +187,26 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
             {{ $t("tooltip.monthMap.weekOfYear") + element?.text }}
           </ToolTip>
         </div>
-        <div v-else-if="element?.text" class="month-mini-view__body__day">
+        <div
+          v-else-if="element?.text"
+          class="month-mini-view__body__day"
+          :class="{
+            'in-month': element?.inMonth,
+            past: element?.past,
+            today: element?.today,
+            future: element?.future,
+            monday: element?.date.dayOfWeek === 1,
+            tuesday: element?.date.dayOfWeek === 2,
+            wednesday: element?.date.dayOfWeek === 3,
+            thursday: element?.date.dayOfWeek === 4,
+            friday: element?.date.dayOfWeek === 5,
+            saturday: element?.date.dayOfWeek === 6,
+            sunday: element?.date.dayOfWeek === 7,
+          }"
+        >
           <button
             class="month-mini-view__body__day__inner"
             @click.prevent="emit('onDayClick', element.date)"
-            :class="{
-              'in-month': element?.inMonth,
-              past: element?.past,
-              today: element?.today,
-              future: element?.future,
-              monday: element?.date.dayOfWeek === 1,
-              tuesday: element?.date.dayOfWeek === 2,
-              wednesday: element?.date.dayOfWeek === 3,
-              thursday: element?.date.dayOfWeek === 4,
-              friday: element?.date.dayOfWeek === 5,
-              saturday: element?.date.dayOfWeek === 6,
-              sunday: element?.date.dayOfWeek === 7,
-            }"
           >
             {{ element?.text }}
             <ToolTip>
@@ -262,8 +265,12 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
   @apply text-black font-medium;
 }
 
-.month-mini-view__body .today {
+.month-mini-view__body .today .month-mini-view__body__day__inner {
   @apply bg-fuchsia-400;
+}
+
+.month-mini-view__body .in-month {
+  @apply bg-slate-300;
 }
 
 .month-mini-view__body .sunday {
