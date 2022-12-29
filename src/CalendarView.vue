@@ -32,12 +32,32 @@ function headerShiftRight() {
   currentDate.value = currentDate.value.add({ months: 3 });
 }
 
+function weekShiftDoubleLeft() {
+  currentDate.value = currentDate.value.subtract({ weeks: 4 });
+}
+
+function weekShiftDoubleRight() {
+  currentDate.value = currentDate.value.add({ weeks: 4 });
+}
+
+function weekShiftLeft() {
+  currentDate.value = currentDate.value.subtract({ weeks: 1 });
+}
+
+function weekShiftRight() {
+  currentDate.value = currentDate.value.add({ weeks: 1 });
+}
+
 function selectDay(day: Temporal.PlainDate) {
   currentDate.value = Temporal.PlainDateTime.from({
     day: day.day,
     month: day.month,
     year: day.year,
   });
+}
+
+function selectToday() {
+  currentDate.value = Temporal.Now.plainDateTimeISO();
 }
 </script>
 
@@ -50,6 +70,7 @@ function selectDay(day: Temporal.PlainDate) {
       @onDoubleRight="headerShiftDoubleRight()"
       @onLeft="headerShiftLeft()"
       @onRight="headerShiftRight()"
+      @onTodayClick="selectToday()"
     />
     <div class="height-wrapper">
       <div class="body">
@@ -57,7 +78,14 @@ function selectDay(day: Temporal.PlainDate) {
           :datetime="currentDate"
           @onDayClick="selectDay($event)"
         />
-        <CalendarMain :datetime="currentDate" />
+        <CalendarMain
+          :datetime="currentDate"
+          @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
+          @onWeekLabelDoubleRight="weekShiftDoubleRight()"
+          @onWeekLabelLeft="weekShiftLeft()"
+          @onWeekLabelRight="weekShiftRight()"
+          @onWeekLabelTodayClick="selectToday()"
+        />
       </div>
     </div>
     <CalendarFooter class="footer" :datetime="currentDate" />

@@ -4,6 +4,7 @@
       "shift": {
         "double-left": "6 months back",
         "double-right": "6 months forward",
+        "today": "Today",
         "left": "3 months back",
         "right": "3 months forward"
       }
@@ -17,6 +18,14 @@
         }
       },
       "weekOfYear": "Week: "
+    },
+    "week-label": {
+      "shift": {
+        "double-left": "4 weeks back",
+        "double-right": "4 weeks forward",
+        "left": "previous week",
+        "right": "next week"
+      }
     }
   },
   "month": {
@@ -34,6 +43,9 @@
       "11": "November",
       "12": "December"
     }
+  },
+  "week": {
+    "long": "Week"
   },
   "weekday": {
     "one": {

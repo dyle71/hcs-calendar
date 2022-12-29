@@ -61,7 +61,7 @@ onMounted(() => {
     return;
   }
   popperInstance = createPopper(popperTarget, tooltipElement.value, {
-    placement: "auto",
+    placement: "bottom",
     modifiers: [
       {
         name: "offset",

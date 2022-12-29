@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Temporal } from "@js-temporal/polyfill";
-import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ShiftButton from "@/components/elements/ShiftButton.vue";
 import ToolTip from "@/components/elements/ToolTip.vue";
 import ArrowToBottom from "@/components/icons/ArrowToBottom.vue";
@@ -20,11 +19,9 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <div class="calendar-header">
-    <MonthLabel
-      class="month-label"
-      :date="Temporal.PlainDate.from(props.datetime)"
-    />
+  <div class="week-label">
+    <div class="text">{{ $t(`week.long`) }}</div>
+    <div class="number">{{ props.datetime.weekOfYear }}</div>
 
     <ShiftButton
       class="shift-button"
@@ -32,20 +29,20 @@ const emit = defineEmits([
       @click="emit('onDoubleLeft')"
     >
       <ToolTip>
-        {{ $t("tooltip.header.shift.double-left") }}
+        {{ $t("tooltip.week-label.shift.double-left") }}
       </ToolTip>
     </ShiftButton>
 
     <ShiftButton class="shift-button" direction="left" @click="emit('onLeft')">
       <ToolTip>
-        {{ $t("tooltip.header.shift.left") }}
+        {{ $t("tooltip.week-label.shift.left") }}
       </ToolTip>
     </ShiftButton>
 
     <button @click.prevent="emit('onTodayClick')">
       <ArrowToBottom class="today-button" />
       <ToolTip>
-        {{ $t("tooltip.header.shift.today") }}
+        {{ $t("tooltip.monthMap.header.month.today") }}
       </ToolTip>
     </button>
 
@@ -55,7 +52,7 @@ const emit = defineEmits([
       @click="emit('onRight')"
     >
       <ToolTip>
-        {{ $t("tooltip.header.shift.right") }}
+        {{ $t("tooltip.week-label.shift.right") }}
       </ToolTip>
     </ShiftButton>
 
@@ -65,28 +62,32 @@ const emit = defineEmits([
       @click="emit('onDoubleRight')"
     >
       <ToolTip>
-        {{ $t("tooltip.header.shift.double-right") }}
+        {{ $t("tooltip.week-label.shift.double-right") }}
       </ToolTip>
     </ShiftButton>
   </div>
 </template>
 
 <style scoped>
-.calendar-header {
-  @apply relative flex mx-auto;
+.week-label {
+  @apply flex flex-row gap-0 text-sm;
 }
 
-.calendar-header .shift-button {
+.week-label .text {
+  @apply my-auto mr-2;
+}
+
+.week-label .number {
+  @apply bg-gray-600 text-gray-50 rounded py-0.5 px-2 my-auto mr-2;
+}
+
+.week-label .shift-button {
   @apply relative my-auto mx-0.5 w-6 h-6 rounded-full fill-fuchsia-700;
   @apply hover:bg-gray-300;
   @apply disabled:fill-gray-500;
 }
 
-.calendar-header .month-label {
-  @apply text-lg mr-2;
-}
-
-.calendar-header .today-button {
+.week-label .today-button {
   @apply relative my-auto mx-0.5 p-0.5 w-6 h-6 rounded-full fill-fuchsia-700;
   @apply hover:bg-gray-300;
   @apply disabled:fill-gray-500;

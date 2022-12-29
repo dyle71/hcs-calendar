@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Temporal } from "@js-temporal/polyfill";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
+import WeekLabel from "@/components/elements/WeekLabel.vue";
 
 const MAX_DAYS_VISIBLE = 28;
 
@@ -147,10 +148,27 @@ function isDayLight(time: Temporal.PlainTime) {
     Temporal.PlainTime.compare(time, props.dayLightEnd) <= 0
   );
 }
+
+const emit = defineEmits([
+  "onWeekLabelDoubleLeft",
+  "onWeekLabelDoubleRight",
+  "onWeekLabelLeft",
+  "onWeekLabelRight",
+  "onWeekLabelTodayClick",
+]);
 </script>
 
 <template>
   <div class="week-view">
+    <WeekLabel
+      class="week-number"
+      :datetime="props.datetime"
+      @onDoubleLeft="emit('onWeekLabelDoubleLeft')"
+      @onDoubleRight="emit('onWeekLabelDoubleRight')"
+      @onLeft="emit('onWeekLabelLeft')"
+      @onRight="emit('onWeekLabelRight')"
+      @onTodayClick="emit('onWeekLabelTodayClick')"
+    />
     <div class="header">
       <div class="side"></div>
       <DayColumnHeader
