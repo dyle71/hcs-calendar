@@ -44,12 +44,14 @@ function selectDay(day: Temporal.PlainDate) {
       @onLeft="headerShiftLeft()"
       @onRight="headerShiftRight()"
     />
-    <div class="body">
-      <CalendarSideBar
-        :datetime="props.initialDate"
-        @onDayClick="selectDay($event)"
-      />
-      <CalendarMain :datetime="props.initialDate" />
+    <div class="height-wrapper">
+      <div class="body">
+        <CalendarSideBar
+          :datetime="props.initialDate"
+          @onDayClick="selectDay($event)"
+        />
+        <CalendarMain :datetime="props.initialDate" />
+      </div>
     </div>
     <CalendarFooter class="footer" :datetime="props.initialDate" />
   </div>
@@ -57,16 +59,20 @@ function selectDay(day: Temporal.PlainDate) {
 
 <style scoped>
 .calendar-app {
-  @apply relative flex flex-col;
+  @apply flex flex-col h-screen;
 }
 
 .calendar-app .header {
   @apply flex-none;
 }
 
-.calendar-app .body {
-  @apply flex-auto flex flex-row;
-  height: 700px;
+.calendar-app .height-wrapper {
+  @apply grow h-0;
+}
+
+.calendar-app .height-wrapper .body {
+  @apply relative flex-none flex flex-row;
+  height: 100%;
 }
 
 .calendar-app .footer {

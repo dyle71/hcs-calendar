@@ -5,9 +5,3 @@ import CalendarView from "@/CalendarView.vue";
 <template>
   <CalendarView class="calendar-app" />
 </template>
-
-<style scoped>
-.calendar-app {
-  @apply h-screen;
-}
-</style>

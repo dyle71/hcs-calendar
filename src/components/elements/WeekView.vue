@@ -86,7 +86,6 @@ function getWeekDefinition(): WeekDefinition {
 
 .week-view .matrix {
   @apply flex flex-row w-full h-full overflow-y-scroll;
-  height: inherit;
 }
 
 .week-view .matrix .side {
