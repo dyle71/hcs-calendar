@@ -269,7 +269,7 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
 }
 
 .month-mini-view__body .today .month-mini-view__body__day__inner {
-  @apply bg-fuchsia-400;
+  @apply bg-fuchsia-400 hover:bg-fuchsia-500;
 }
 
 .month-mini-view__body .in-month {

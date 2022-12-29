@@ -42,6 +42,6 @@ const today = Temporal.Now.plainDateISO();
 }
 
 .day-column-header .dayofmonth-header.today {
-  @apply bg-fuchsia-400;
+  @apply bg-fuchsia-400 hover:bg-fuchsia-500;
 }
 </style>
