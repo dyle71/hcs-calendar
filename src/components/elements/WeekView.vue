@@ -77,7 +77,6 @@ function getWeekDefinition(): WeekDefinition {
 <style scoped>
 .week-view {
   @apply relative flex flex-col select-none w-full;
-  height: inherit;
 }
 
 .week-view .header {

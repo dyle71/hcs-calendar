@@ -9,12 +9,5 @@ const props = withDefaults(defineProps<Props>(), {});
 </script>
 
 <template>
-  <WeekView class="calendar-week-view" :datetime="props.datetime" />
+  <WeekView :datetime="props.datetime" />
 </template>
-
-<style scoped>
-.calendar-week-view {
-  @apply grow mb-auto w-full;
-  height: inherit;
-}
-</style>
