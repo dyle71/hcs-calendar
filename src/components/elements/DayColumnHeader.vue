@@ -7,16 +7,32 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {});
 
 const today = Temporal.Now.plainDateISO();
+
+function getWeekDayClass(day: Temporal.PlainDate) {
+  return [
+    "?",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ][day.dayOfWeek];
+}
 </script>
 
 <template>
   <div class="day-column-header">
-    <div class="weekday-header">
+    <div class="weekday-header" :class="[getWeekDayClass(props.day)]">
       {{ $t("weekday.short." + props.day.dayOfWeek) }}
     </div>
     <div
       class="dayofmonth-header"
-      :class="{ today: Temporal.PlainDate.compare(props.day, today) === 0 }"
+      :class="[
+        Temporal.PlainDate.compare(props.day, today) === 0 ? 'today' : '',
+        getWeekDayClass(props.day),
+      ]"
     >
       {{ props.day.day }}
     </div>
@@ -32,6 +48,10 @@ const today = Temporal.Now.plainDateISO();
   @apply text-gray-500 text-xs uppercase text-center select-none py-2;
 }
 
+.day-column-header .weekday-header.sunday {
+  @apply text-red-500;
+}
+
 .day-column-header:last-child {
   @apply border-r-0;
 }
@@ -39,6 +59,10 @@ const today = Temporal.Now.plainDateISO();
 .day-column-header .dayofmonth-header {
   @apply m-auto text-xl p-2 text-center align-middle rounded-full w-12 h-12;
   @apply hover:bg-gray-200;
+}
+
+.day-column-header .dayofmonth-header.sunday {
+  @apply text-red-500;
 }
 
 .day-column-header .dayofmonth-header.today {

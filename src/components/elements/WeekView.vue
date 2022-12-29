@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   weekStart: 1,
   days: 7,
   dayLightStart: Temporal.PlainTime.from({ hour: 6 }),
-  dayLightEnd: Temporal.PlainTime.from({ hour: 20 }),
+  dayLightEnd: Temporal.PlainTime.from({ hour: 19 }),
 });
 
 interface DayInformation {
@@ -36,6 +36,14 @@ interface HourInformation {
 interface WeekDefinition {
   firstDay: Temporal.PlainDate;
   lastDay: Temporal.PlainDate;
+}
+
+function get24Hours(): Array<Temporal.PlainTime> {
+  const hours = Array<Temporal.PlainTime>(24);
+  for (let i = 0; i < 24; i++) {
+    hours[i] = Temporal.PlainTime.from({ hour: i });
+  }
+  return hours;
 }
 
 function getDays(): Array<DayInformation> {
@@ -170,7 +178,11 @@ function isDayLight(time: Temporal.PlainTime) {
       </div>
     </div>
     <div class="matrix">
-      <div class="side">Side</div>
+      <div class="side">
+        <div v-for="(hour, index) in get24Hours()" :key="index" class="hour">
+          {{ hour.toString({ smallestUnit: "minute" }) }}
+        </div>
+      </div>
       <div class="days">
         <div
           v-for="(hourInformation, index) in getHours()"
@@ -183,9 +195,7 @@ function isDayLight(time: Temporal.PlainTime) {
             hourInformation.daylight ? 'daylight' : 'night',
             hourInformation.rowNumber === props.days - 1 ? 'lastRow' : '',
           ]"
-        >
-          {{ hourInformation.dayClass }} {{ hourInformation.hourClass }}
-        </div>
+        ></div>
       </div>
     </div>
   </div>
@@ -217,15 +227,23 @@ function isDayLight(time: Temporal.PlainTime) {
 }
 
 .week-view .matrix .side {
-  @apply flex-none w-16;
+  @apply flex-none w-16 grid grid-flow-col grid-rows-[repeat(24,_3rem)];
+}
+
+.week-view .matrix .side .hour {
+  @apply text-xs text-gray-500 border-b border-r text-right p-0.5;
 }
 
 .week-view .matrix .days {
-  @apply grow grid grid-flow-col grid-rows-[repeat(24,_3rem)];
+  @apply relative grow grid grid-flow-col grid-rows-[repeat(24,_3rem)];
 }
 
 .week-view .matrix .days .day.cell {
   @apply border-r border-b;
+}
+
+.week-view .matrix .days .day.cell.night {
+  @apply bg-gray-100;
 }
 
 .week-view .matrix .days .day.cell.lastRow {
