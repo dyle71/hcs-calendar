@@ -11,3 +11,20 @@
 #app {
   @apply relative min-w-full min-h-screen m-0 inset-0;
 }
+
+::-webkit-scrollbar {
+  width: 0.75rem;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-fuchsia-400 rounded-full hover:bg-fuchsia-500;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+}
+
+html {
+  scrollbar-width: auto;
+  scrollbar-color: #e879f9 #e5e7eb;
+}
