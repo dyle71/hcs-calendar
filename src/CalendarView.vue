@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import CalendarHeader from "@/components/CalendarHeader.vue";
 import CalendarMain from "@/components/CalendarMain.vue";
@@ -13,24 +14,30 @@ const props = withDefaults(defineProps<Props>(), {
   initialDate: Temporal.Now.plainDateTimeISO(),
 });
 
+const currentDate = ref(Temporal.PlainDateTime.from(props.initialDate));
+
 function headerShiftDoubleLeft() {
-  console.log("headerShiftDoubleLeft");
+  currentDate.value = currentDate.value.subtract({ months: 6 });
 }
 
 function headerShiftDoubleRight() {
-  console.log("headerShiftDoubleLeft");
+  currentDate.value = currentDate.value.add({ months: 6 });
 }
 
 function headerShiftLeft() {
-  console.log("headerShiftLeft");
+  currentDate.value = currentDate.value.subtract({ months: 3 });
 }
 
 function headerShiftRight() {
-  console.log("headerShiftLeft");
+  currentDate.value = currentDate.value.add({ months: 3 });
 }
 
 function selectDay(day: Temporal.PlainDate) {
-  console.log("selectDay", day);
+  currentDate.value = Temporal.PlainDateTime.from({
+    day: day.day,
+    month: day.month,
+    year: day.year,
+  });
 }
 </script>
 
@@ -38,7 +45,7 @@ function selectDay(day: Temporal.PlainDate) {
   <div class="calendar-app">
     <CalendarHeader
       class="header"
-      :datetime="props.initialDate"
+      :datetime="currentDate"
       @onDoubleLeft="headerShiftDoubleLeft()"
       @onDoubleRight="headerShiftDoubleRight()"
       @onLeft="headerShiftLeft()"
@@ -47,13 +54,13 @@ function selectDay(day: Temporal.PlainDate) {
     <div class="height-wrapper">
       <div class="body">
         <CalendarSideBar
-          :datetime="props.initialDate"
+          :datetime="currentDate"
           @onDayClick="selectDay($event)"
         />
-        <CalendarMain :datetime="props.initialDate" />
+        <CalendarMain :datetime="currentDate" />
       </div>
     </div>
-    <CalendarFooter class="footer" :datetime="props.initialDate" />
+    <CalendarFooter class="footer" :datetime="currentDate" />
   </div>
 </template>
 

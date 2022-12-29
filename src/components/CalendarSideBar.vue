@@ -7,6 +7,7 @@ interface Props {
   datetime: Temporal.PlainDateTime;
 }
 const props = withDefaults(defineProps<Props>(), {});
+
 const currenMonth = ref(Temporal.PlainDate.from(props.datetime));
 const nextMonth = ref(currenMonth.value.add({ months: 1 }));
 
