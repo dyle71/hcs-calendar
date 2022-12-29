@@ -13,11 +13,16 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0.75rem;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
   @apply bg-fuchsia-400 rounded-full hover:bg-fuchsia-500;
+}
+
+::-webkit-scrollbar-track-piece {
+  @apply my-0.5;
 }
 
 ::-webkit-scrollbar-track {
