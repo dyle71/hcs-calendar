@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ShiftButton from "@/components/elements/ShiftButton.vue";
@@ -30,6 +31,39 @@ interface DayInformation {
   text?: string;
 }
 
+const firstDayOfGrid = computed<Temporal.PlainDate>(() => {
+  let firstDayOfGrid = firstDayOfMonth.value;
+  while (firstDayOfGrid.dayOfWeek != props.startDayOfWeek) {
+    firstDayOfGrid = firstDayOfGrid.subtract({ days: 1 });
+  }
+  return firstDayOfGrid;
+});
+
+const firstDayOfMonth = computed<Temporal.PlainDate>(() => {
+  return Temporal.PlainDate.from({
+    day: 1,
+    month: props.date.month,
+    year: props.date.year,
+  });
+});
+
+const lastDayOfMonth = computed<Temporal.PlainDate>(() => {
+  const nextMonth = firstDayOfMonth.value.add({ days: 31 });
+  return Temporal.PlainDate.from({
+    day: 1,
+    month: nextMonth.month,
+    year: nextMonth.year,
+  }).subtract({ days: 1 });
+});
+
+const monthSpecs = computed<MonthSpecification>(() => {
+  return {
+    firstDayOfGrid: firstDayOfGrid.value,
+    firstDayOfMonth: firstDayOfMonth.value,
+    lastDayOfMonth: lastDayOfMonth.value,
+  };
+});
+
 function getDayInformation(
   date: Temporal.PlainDate,
   monthSpecs: MonthSpecification
@@ -45,9 +79,7 @@ function getDayInformation(
   };
 }
 
-function getMonthMatrix(): Array<DayInformation | null> {
-  const monthSpecs = getMonthSpecs();
-
+const monthMatrix = computed<Array<DayInformation | null>>(() => {
   const matrix = Array<DayInformation | null>(8 * 7);
   matrix[0] = null;
   for (let i = 0; i < 7; i++) {
@@ -58,9 +90,9 @@ function getMonthMatrix(): Array<DayInformation | null> {
   }
 
   let i = 8;
-  let matrixDate = monthSpecs.firstDayOfGrid;
+  let matrixDate = monthSpecs.value.firstDayOfGrid;
   for (let row = 0; row < (matrix.length - 8) / 8; row++) {
-    const element = getDayInformation(matrixDate, monthSpecs);
+    const element = getDayInformation(matrixDate, monthSpecs.value);
     element.header = false;
     element.weekNumber = true;
     element.text = matrixDate.weekOfYear.toString();
@@ -68,7 +100,7 @@ function getMonthMatrix(): Array<DayInformation | null> {
     i++;
 
     for (let col = 0; col < 7; col++) {
-      const element = getDayInformation(matrixDate, monthSpecs);
+      const element = getDayInformation(matrixDate, monthSpecs.value);
       element.header = false;
       element.weekNumber = false;
       element.text = matrixDate.day.toString();
@@ -79,54 +111,13 @@ function getMonthMatrix(): Array<DayInformation | null> {
   }
 
   return matrix;
-}
-
-function getMonthSpecs(): MonthSpecification {
-  if (
-    props.startDayOfWeek < 1 ||
-    props.startDayOfWeek > props.date.daysInWeek
-  ) {
-    throw new Error(
-      `Invalid startDayOfWeek value: ${props.startDayOfWeek}. Choose a number between 1 and 7.`
-    );
-  }
-
-  let firstDayOfMonth = Temporal.PlainDate.from({
-    day: 1,
-    month: props.date.month,
-    year: props.date.year,
-  });
-  // last day of month seems a bit awkward, but we try to cope
-  // with various overlaps of months and years.
-  let lastDayOfMonth = firstDayOfMonth.add({ days: 31 });
-  lastDayOfMonth = Temporal.PlainDate.from({
-    day: 1,
-    month: lastDayOfMonth.month,
-    year: lastDayOfMonth.year,
-  }).subtract({ days: 1 });
-
-  let firstDayOfGrid = firstDayOfMonth;
-  while (firstDayOfGrid.dayOfWeek != props.startDayOfWeek) {
-    firstDayOfGrid = firstDayOfGrid.subtract({ days: 1 });
-  }
-
-  return { firstDayOfGrid, firstDayOfMonth, lastDayOfMonth };
-}
+});
 
 function isInMonth(
   date: Temporal.PlainDate,
   monthSpecs: MonthSpecification
 ): boolean {
-  const lowerBound = Temporal.PlainDate.compare(
-    date,
-    monthSpecs.firstDayOfMonth
-  );
-  const upperBound = Temporal.PlainDate.compare(
-    date,
-    monthSpecs.lastDayOfMonth
-  );
-
-  return lowerBound >= 0 && upperBound <= 0;
+  return date.month === monthSpecs.firstDayOfMonth.month;
 }
 
 const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
@@ -168,7 +159,7 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
 
     <div class="month-mini-view__body">
       <div
-        v-for="(element, index) in getMonthMatrix()"
+        v-for="(element, index) in monthMatrix"
         :key="index"
         class="month-mini-view__body__grid-element"
       >
