@@ -23,6 +23,7 @@
       "shift": {
         "double-left": "4 weeks back",
         "double-right": "4 weeks forward",
+        "today": "Today",
         "left": "previous week",
         "right": "next week"
       }
