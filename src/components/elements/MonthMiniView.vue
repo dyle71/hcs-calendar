@@ -28,6 +28,7 @@ interface DayInformation {
   today?: boolean;
   future?: boolean;
   weekNumber?: boolean;
+  weekDayClass?: string;
   text?: string;
 }
 
@@ -79,6 +80,22 @@ function getDayInformation(
   };
 }
 
+function getWeekDayClass(weekDay: number): string {
+  if (!weekDay || weekDay < 0) {
+    throw new Error("weekDay in getWeekDayClass must be a positive value.");
+  }
+  return [
+    "?",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ][((weekDay - 1) % 7) + 1];
+}
+
 const monthMatrix = computed<Array<DayInformation | null>>(() => {
   const matrix = Array<DayInformation | null>(8 * 7);
   matrix[0] = null;
@@ -86,6 +103,7 @@ const monthMatrix = computed<Array<DayInformation | null>>(() => {
     matrix[1 + i] = {
       header: true,
       text: `weekday.one.${((props.startDayOfWeek - 1 + i) % 7) + 1}`,
+      weekDayClass: getWeekDayClass(props.startDayOfWeek + i),
     };
   }
 
@@ -103,6 +121,7 @@ const monthMatrix = computed<Array<DayInformation | null>>(() => {
       const element = getDayInformation(matrixDate, monthSpecs.value);
       element.header = false;
       element.weekNumber = false;
+      element.weekDayClass = getWeekDayClass(matrixDate.dayOfWeek);
       element.text = matrixDate.day.toString();
       matrix[i] = element;
       i++;
@@ -159,7 +178,11 @@ const emit = defineEmits([
         :key="index"
         class="grid-element"
       >
-        <div v-if="element?.header" class="column-header">
+        <div
+          v-if="element?.header"
+          class="column-header"
+          :class="[element?.weekDayClass]"
+        >
           {{ $t(element?.text) }}
         </div>
         <div v-else-if="element?.weekNumber" class="weeknumber">
@@ -171,19 +194,13 @@ const emit = defineEmits([
         <div
           v-else-if="element?.text"
           class="day"
-          :class="{
-            'in-month': element?.inMonth,
-            past: element?.past,
-            today: element?.today,
-            future: element?.future,
-            monday: element?.date.dayOfWeek === 1,
-            tuesday: element?.date.dayOfWeek === 2,
-            wednesday: element?.date.dayOfWeek === 3,
-            thursday: element?.date.dayOfWeek === 4,
-            friday: element?.date.dayOfWeek === 5,
-            saturday: element?.date.dayOfWeek === 6,
-            sunday: element?.date.dayOfWeek === 7,
-          }"
+          :class="[
+            element?.inMonth ? 'in-month' : '',
+            element?.past ? 'past' : '',
+            element?.today ? 'today' : '',
+            element?.future ? 'future' : '',
+            element?.weekDayClass,
+          ]"
         >
           <button
             class="inner"
@@ -211,6 +228,10 @@ const emit = defineEmits([
 
 .month-mini-view .header .nav {
   @apply my-auto ml-auto mr-0 h-6 w-[18];
+}
+
+.month-mini-view .body .sunday {
+  @apply text-red-500;
 }
 
 .month-mini-view .header .month-label {

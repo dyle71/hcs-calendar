@@ -106,7 +106,10 @@ function getHours(): Array<HourInformation> {
   return hours;
 }
 
-function getWeekDayClass(day: Temporal.PlainDate) {
+function getWeekDayClass(day: Temporal.PlainDate): string {
+  if (!day) {
+    throw new Error("No day given for getWeekDayClass.");
+  }
   return [
     "?",
     "monday",
