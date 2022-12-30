@@ -7,6 +7,7 @@ const MAX_DAYS_VISIBLE = 28;
 
 interface Props {
   datetime: Temporal.PlainDateTime;
+  navHints?: boolean;
   firstDay?: "float" | "firstDayOfWeek";
   weekStart?: number;
   days?: number;
@@ -15,6 +16,7 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   firstDay: "firstDayOfWeek",
+  navHints: false,
   weekStart: 1,
   days: 7,
   dayLightStart: Temporal.PlainTime.from({ hour: 6 }),
@@ -166,6 +168,7 @@ const emit = defineEmits([
     <WeekLabel
       class="week-number"
       :datetime="props.datetime"
+      :navHints="props.navHints"
       @onDoubleLeftClick="emit('onWeekLabelDoubleLeft')"
       @onDoubleRightClick="emit('onWeekLabelDoubleRight')"
       @onLeftClick="emit('onWeekLabelLeft')"

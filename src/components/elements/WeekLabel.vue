@@ -4,8 +4,11 @@ import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue
 
 interface Props {
   datetime: Temporal.PlainDateTime;
+  navHints?: boolean;
 }
-const props = withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {
+  navHints: false,
+});
 
 const emit = defineEmits([
   "onDoubleLeftClick",
@@ -24,12 +27,12 @@ const emit = defineEmits([
     <CalendarNavButtonRow
       class="nav"
       :double="true"
-      :hint="true"
+      :hint="props.navHints"
       :hints="{
-        left: '-6',
-        right: '-3',
-        doubleLeft: '+3',
-        doubleRight: '+6',
+        doubleLeft: '-4',
+        left: '-1',
+        right: '+1',
+        doubleRight: '+4',
       }"
       :tooltips="{
         left: $t('tooltip.week-label.shift.left'),

@@ -2,11 +2,15 @@
 import { ref } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import MonthMiniView from "@/components/elements/MonthMiniView.vue";
+import OptionsPanel from "@/components/OptionsPanel.vue";
 
 interface Props {
   datetime: Temporal.PlainDateTime;
+  navHints?: boolean;
 }
-const props = withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {
+  navHints: false,
+});
 
 const currenMonth = ref(Temporal.PlainDate.from(props.datetime));
 const nextMonth = ref(currenMonth.value.add({ months: 1 }));
@@ -47,13 +51,18 @@ function onNextMonthLowerClicked() {
   switchToNextMonth();
 }
 
-const emit = defineEmits(["onDayClick"]);
+const emit = defineEmits([
+  "onDayClick",
+  "enableCalendarNavHints",
+  "disableCalendarNavHints",
+]);
 </script>
 
 <template>
   <div class="calendar-sidebar">
     <MonthMiniView
       :date="currenMonth"
+      :nav-hints="props.navHints"
       @onLeftClick="onPreviousMonthUpperClicked()"
       @onRightClick="onNextMonthUpperClicked()"
       @onDayClick="emit('onDayClick', $event)"
@@ -61,16 +70,22 @@ const emit = defineEmits(["onDayClick"]);
     />
     <MonthMiniView
       :date="nextMonth"
+      :nav-hints="props.navHints"
       @onLeftClick="onPreviousMonthLowerClicked()"
       @onRightClick="onNextMonthLowerClicked()"
       @onDayClick="emit('onDayClick', $event)"
       @onTodayClick="onCurrentMonthLowerClicked()"
+    />
+    <OptionsPanel
+      @enableCalendarNavHints="emit('enableCalendarNavHints')"
+      @disableCalendarNavHints="emit('disableCalendarNavHints')"
     />
   </div>
 </template>
 
 <style scoped>
 .calendar-sidebar {
-  @apply relative flex flex-col gap-4 p-2;
+  @apply relative flex-none flex flex-col gap-4 p-2;
+  @apply overflow-y-scroll;
 }
 </style>

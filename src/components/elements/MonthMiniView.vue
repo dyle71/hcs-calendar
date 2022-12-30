@@ -8,10 +8,12 @@ import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue
 
 interface Props {
   date: Temporal.PlainDate;
+  navHints?: boolean;
   startDayOfWeek?: number;
 }
 const props = withDefaults(defineProps<Props>(), {
   startDayOfWeek: 1,
+  navHints: false,
 });
 
 interface MonthSpecification {
@@ -156,7 +158,7 @@ const emit = defineEmits([
 
       <CalendarNavButtonRow
         class="nav"
-        :hint="true"
+        :hint="props.navHints"
         :hints="{
           left: '-1',
           right: '+1',
