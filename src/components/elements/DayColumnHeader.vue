@@ -24,9 +24,6 @@ function getWeekDayClass(day: Temporal.PlainDate) {
 
 <template>
   <div class="day-column-header">
-    <div class="weekday-header" :class="[getWeekDayClass(props.day)]">
-      {{ $t("weekday.short." + props.day.dayOfWeek) }}
-    </div>
     <div
       class="dayofmonth-header"
       :class="[
@@ -36,20 +33,20 @@ function getWeekDayClass(day: Temporal.PlainDate) {
     >
       {{ props.day.day }}
     </div>
+    <div class="date">
+      <div class="weekday" :class="[getWeekDayClass(props.day)]">
+        {{ $t("weekday.short." + props.day.dayOfWeek) }}
+      </div>
+      <div class="month" :class="[getWeekDayClass(props.day)]">
+        {{ $t(`month.long.${props.day.month}`) }}
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .day-column-header {
-  @apply p-2 border-b border-r w-full;
-}
-
-.day-column-header .weekday-header {
-  @apply text-gray-500 text-xs uppercase text-center select-none py-2;
-}
-
-.day-column-header .weekday-header.sunday {
-  @apply text-red-500;
+  @apply flex flex-row border-b border-r w-full p-2 gap-2;
 }
 
 .day-column-header:last-child {
@@ -57,7 +54,7 @@ function getWeekDayClass(day: Temporal.PlainDate) {
 }
 
 .day-column-header .dayofmonth-header {
-  @apply m-auto text-xl p-2 text-center align-middle rounded-full w-12 h-12;
+  @apply text-xl p-2 text-center align-middle rounded-full w-12 h-12;
   @apply hover:bg-gray-200;
 }
 
@@ -67,5 +64,25 @@ function getWeekDayClass(day: Temporal.PlainDate) {
 
 .day-column-header .dayofmonth-header.today {
   @apply bg-fuchsia-400 hover:bg-fuchsia-500;
+}
+
+.day-column-header .date {
+  @apply grow flex flex-col justify-center;
+}
+
+.day-column-header .weekday {
+  @apply text-gray-500 text-xs uppercase text-left select-none;
+}
+
+.day-column-header .weekday.sunday {
+  @apply text-red-500;
+}
+
+.day-column-header .month {
+  @apply text-gray-500 text-xs text-left select-none;
+}
+
+.day-column-header .month.sunday {
+  @apply text-red-500;
 }
 </style>
