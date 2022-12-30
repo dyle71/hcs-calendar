@@ -54,15 +54,15 @@ const emit = defineEmits(["onDayClick"]);
   <div class="calendar-sidebar">
     <MonthMiniView
       :date="currenMonth"
-      @onLeft="onPreviousMonthUpperClicked()"
-      @onRight="onNextMonthUpperClicked()"
+      @onLeftClick="onPreviousMonthUpperClicked()"
+      @onRightClick="onNextMonthUpperClicked()"
       @onDayClick="emit('onDayClick', $event)"
       @onTodayClick="onCurrentMonthUpperClicked()"
     />
     <MonthMiniView
       :date="nextMonth"
-      @onLeft="onPreviousMonthLowerClicked()"
-      @onRight="onNextMonthLowerClicked()"
+      @onLeftClick="onPreviousMonthLowerClicked()"
+      @onRightClick="onNextMonthLowerClicked()"
       @onDayClick="emit('onDayClick', $event)"
       @onTodayClick="onCurrentMonthLowerClicked()"
     />

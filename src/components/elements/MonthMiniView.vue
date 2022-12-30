@@ -2,9 +2,9 @@
 import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
-import ShiftButton from "@/components/elements/ShiftButton.vue";
-import ArrowToBottom from "@/components/icons/ArrowToBottom.vue";
 import ToolTip from "@/components/elements/ToolTip.vue";
+
+import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 
 interface Props {
   date: Temporal.PlainDate;
@@ -120,59 +120,49 @@ function isInMonth(
   return date.month === monthSpecs.firstDayOfMonth.month;
 }
 
-const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
+const emit = defineEmits([
+  "onLeftClick",
+  "onRightClick",
+  "onDayClick",
+  "onTodayClick",
+]);
 </script>
 
 <template>
   <div class="month-mini-view">
-    <div class="month-mini-view__header">
-      <div class="month-mini-view__header__month-label">
+    <div class="header">
+      <div class="month-label">
         <MonthLabel :date="props.date" />
       </div>
-      <div class="month-mini-view__header__button-row">
-        <ShiftButton
-          class="month-mini-view__header__button"
-          direction="left"
-          @click="emit('onLeft')"
-        >
-          <ToolTip>
-            {{ $t("tooltip.monthMap.header.month.previous") }}
-          </ToolTip>
-        </ShiftButton>
-        <button @click.prevent="emit('onTodayClick')">
-          <ArrowToBottom class="month-mini-view__header__button" />
-          <ToolTip>
-            {{ $t("tooltip.monthMap.header.month.today") }}
-          </ToolTip>
-        </button>
-        <ShiftButton
-          class="month-mini-view__header__button"
-          direction="right"
-          @click="emit('onRight')"
-        >
-          <ToolTip>
-            {{ $t("tooltip.monthMap.header.month.next") }}
-          </ToolTip>
-        </ShiftButton>
-      </div>
+
+      <CalendarNavButtonRow
+        class="nav"
+        :hint="true"
+        :hints="{
+          left: '-1',
+          right: '+1',
+        }"
+        :tooltips="{
+          left: $t('tooltip.monthMap.header.month.previous'),
+          right: $t('tooltip.monthMap.header.month.next'),
+          today: $t('tooltip.monthMap.header.month.today'),
+        }"
+        @onLeftClick="emit('onLeftClick')"
+        @onTodayClick="emit('onTodayClick')"
+        @onRightClick="emit('onRightClick')"
+      />
     </div>
 
-    <div class="month-mini-view__body">
+    <div class="body">
       <div
         v-for="(element, index) in monthMatrix"
         :key="index"
-        class="month-mini-view__body__grid-element"
+        class="grid-element"
       >
-        <div
-          v-if="element?.header"
-          class="month-mini-view__body__column-header"
-        >
+        <div v-if="element?.header" class="column-header">
           {{ $t(element?.text) }}
         </div>
-        <div
-          v-else-if="element?.weekNumber"
-          class="month-mini-view__body__weeknumber"
-        >
+        <div v-else-if="element?.weekNumber" class="weeknumber">
           {{ element?.text }}
           <ToolTip>
             {{ $t("tooltip.monthMap.weekOfYear") + element?.text }}
@@ -180,7 +170,7 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
         </div>
         <div
           v-else-if="element?.text"
-          class="month-mini-view__body__day"
+          class="day"
           :class="{
             'in-month': element?.inMonth,
             past: element?.past,
@@ -196,7 +186,7 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
           }"
         >
           <button
-            class="month-mini-view__body__day__inner"
+            class="inner"
             @click.prevent="emit('onDayClick', element.date)"
           >
             {{ element?.text }}
@@ -215,59 +205,52 @@ const emit = defineEmits(["onLeft", "onRight", "onDayClick", "onTodayClick"]);
   @apply relative select-none min-w-max;
 }
 
-.month-mini-view__header {
-  @apply flex flex-row text-sm gap-1 mb-1;
+.month-mini-view .header {
+  @apply flex flex-row text-sm mb-1 justify-between;
 }
 
-.month-mini-view__header__month-label {
-  @apply mr-auto;
+.month-mini-view .header .nav {
+  @apply my-auto ml-auto mr-0 h-6 w-[18];
 }
 
-.month-mini-view__header__button {
-  @apply w-4 h-4;
-  @apply relative my-auto rounded-full fill-fuchsia-700;
-  @apply hover:bg-gray-300;
-  @apply disabled:fill-gray-500;
+.month-mini-view .header .month-label {
+  @apply ml-0 mr-auto;
 }
 
-.month-mini-view__header__button-row {
-  @apply flex flex-row;
-}
-
-.month-mini-view__body {
+.month-mini-view .body {
   @apply grid grid-cols-8 text-xs text-gray-500;
 }
 
-.month-mini-view__body__grid-element {
+.month-mini-view .body .grid-element {
   @apply text-center m-0 p-0 w-full h-full;
 }
 
-.month-mini-view__body__weeknumber {
+.month-mini-view .body .weeknumber {
   @apply h-full bg-gray-200 pt-1.5;
 }
 
-.month-mini-view__body__day {
+.month-mini-view .body .day {
 }
 
-.month-mini-view__body__day__inner {
+.month-mini-view .body .day .inner {
   font-size: 85%;
   @apply rounded-full m-1 p-0.5 h-5 w-5;
   @apply hover:bg-gray-200 hover:cursor-pointer;
 }
 
-.month-mini-view__body .in-month {
+.month-mini-view .body .in-month {
   @apply text-black font-medium;
 }
 
-.month-mini-view__body .today .month-mini-view__body__day__inner {
+.month-mini-view .body .today .inner {
   @apply bg-fuchsia-400 hover:bg-fuchsia-500;
 }
 
-.month-mini-view__body .in-month {
+.month-mini-view .body .in-month {
   @apply bg-slate-300;
 }
 
-.month-mini-view__body .sunday {
+.month-mini-view .body .sunday {
   @apply text-red-500;
 }
 </style>

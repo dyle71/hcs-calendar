@@ -163,10 +163,10 @@ const emit = defineEmits([
     <WeekLabel
       class="week-number"
       :datetime="props.datetime"
-      @onDoubleLeft="emit('onWeekLabelDoubleLeft')"
-      @onDoubleRight="emit('onWeekLabelDoubleRight')"
-      @onLeft="emit('onWeekLabelLeft')"
-      @onRight="emit('onWeekLabelRight')"
+      @onDoubleLeftClick="emit('onWeekLabelDoubleLeft')"
+      @onDoubleRightClick="emit('onWeekLabelDoubleRight')"
+      @onLeftClick="emit('onWeekLabelLeft')"
+      @onRightClick="emit('onWeekLabelRight')"
       @onTodayClick="emit('onWeekLabelTodayClick')"
     />
     <div class="header">

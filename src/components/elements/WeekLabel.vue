@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Temporal } from "@js-temporal/polyfill";
-import ShiftButton from "@/components/elements/ShiftButton.vue";
-import ToolTip from "@/components/elements/ToolTip.vue";
-import ArrowToBottom from "@/components/icons/ArrowToBottom.vue";
+import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 
 interface Props {
   datetime: Temporal.PlainDateTime;
@@ -10,10 +8,10 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {});
 
 const emit = defineEmits([
-  "onDoubleLeft",
-  "onDoubleRight",
-  "onLeft",
-  "onRight",
+  "onDoubleLeftClick",
+  "onDoubleRightClick",
+  "onLeftClick",
+  "onRightClick",
   "onTodayClick",
 ]);
 </script>
@@ -23,48 +21,29 @@ const emit = defineEmits([
     <div class="text">{{ $t(`week.long`) }}</div>
     <div class="number">{{ props.datetime.weekOfYear }}</div>
 
-    <ShiftButton
-      class="shift-button"
-      direction="double-left"
-      @click="emit('onDoubleLeft')"
-    >
-      <ToolTip>
-        {{ $t("tooltip.week-label.shift.double-left") }}
-      </ToolTip>
-    </ShiftButton>
-
-    <ShiftButton class="shift-button" direction="left" @click="emit('onLeft')">
-      <ToolTip>
-        {{ $t("tooltip.week-label.shift.left") }}
-      </ToolTip>
-    </ShiftButton>
-
-    <button @click.prevent="emit('onTodayClick')">
-      <ArrowToBottom class="today-button" />
-      <ToolTip>
-        {{ $t("tooltip.monthMap.header.month.today") }}
-      </ToolTip>
-    </button>
-
-    <ShiftButton
-      class="shift-button"
-      direction="right"
-      @click="emit('onRight')"
-    >
-      <ToolTip>
-        {{ $t("tooltip.week-label.shift.right") }}
-      </ToolTip>
-    </ShiftButton>
-
-    <ShiftButton
-      class="shift-button"
-      direction="double-right"
-      @click="emit('onDoubleRight')"
-    >
-      <ToolTip>
-        {{ $t("tooltip.week-label.shift.double-right") }}
-      </ToolTip>
-    </ShiftButton>
+    <CalendarNavButtonRow
+      class="nav"
+      :double="true"
+      :hint="true"
+      :hints="{
+        left: '-6',
+        right: '-3',
+        doubleLeft: '+3',
+        doubleRight: '+6',
+      }"
+      :tooltips="{
+        left: $t('tooltip.week-label.shift.left'),
+        right: $t('tooltip.week-label.shift.right'),
+        today: $t('tooltip.week-label.shift.today'),
+        doubleLeft: $t('tooltip.week-label.shift.double-left'),
+        doubleRight: $t('tooltip.week-label.shift.double-right'),
+      }"
+      @onDoubleLeftClick="emit('onDoubleLeftClick')"
+      @onLeftClick="emit('onLeftClick')"
+      @onTodayClick="emit('onTodayClick')"
+      @onRightClick="emit('onRightClick')"
+      @onDoubleRightClick="emit('onDoubleRightClick')"
+    />
   </div>
 </template>
 
@@ -78,18 +57,10 @@ const emit = defineEmits([
 }
 
 .week-label .number {
-  @apply bg-gray-600 text-gray-50 rounded py-0.5 px-2 my-auto mr-2;
+  @apply bg-gray-600 text-gray-50 rounded py-0.5 px-2 my-auto mr-2 w-10 text-center;
 }
 
-.week-label .shift-button {
-  @apply relative my-auto mx-0.5 w-6 h-6 rounded-full fill-fuchsia-700;
-  @apply hover:bg-gray-300;
-  @apply disabled:fill-gray-500;
-}
-
-.week-label .today-button {
-  @apply relative my-auto mx-0.5 p-0.5 w-6 h-6 rounded-full fill-fuchsia-700;
-  @apply hover:bg-gray-300;
-  @apply disabled:fill-gray-500;
+.week-label .nav {
+  @apply my-auto h-6 w-[30];
 }
 </style>
