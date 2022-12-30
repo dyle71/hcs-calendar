@@ -4,12 +4,12 @@ import WeekView from "@/components/elements/WeekView.vue";
 
 interface Props {
   datetime: Temporal.PlainDateTime;
-  days?: number;
+  firstDate: Temporal.PlainDate;
+  lastDate: Temporal.PlainDate;
   navHints?: boolean;
   startOfDayOfWeekView?: "float" | "firstDayOfWeek";
 }
 const props = withDefaults(defineProps<Props>(), {
-  days: 7,
   navHints: false,
   startOfDayOfWeekView: "firstDayOfWeek",
 });
@@ -26,7 +26,8 @@ const emit = defineEmits([
 <template>
   <WeekView
     :datetime="props.datetime"
-    :days="props.days"
+    :firstDate="props.firstDate"
+    :lastDate="props.lastDate"
     :navHints="props.navHints"
     :first-day="props.startOfDayOfWeekView"
     @onWeekLabelDoubleLeft="emit('onWeekLabelDoubleLeft')"

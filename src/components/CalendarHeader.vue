@@ -32,10 +32,10 @@ const emit = defineEmits([
       :double="true"
       :hint="props.navHints"
       :hints="{
-        doubleLeft: '-6',
-        left: '-3',
-        right: '-3',
-        doubleRight: '+6',
+        doubleLeft: '-3',
+        left: '-1',
+        right: '-1',
+        doubleRight: '+3',
       }"
       :tooltips="{
         left: $t('tooltip.header.shift.left'),

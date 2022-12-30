@@ -1,31 +1,24 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
 import WeekLabel from "@/components/elements/WeekLabel.vue";
 
-const MAX_DAYS_VISIBLE = 28;
-
 interface Props {
   datetime: Temporal.PlainDateTime;
+  firstDate: Temporal.PlainDate;
+  lastDate: Temporal.PlainDate;
   navHints?: boolean;
-  firstDay?: "float" | "firstDayOfWeek";
-  weekStart?: number;
-  days?: number;
   dayLightStart?: Temporal.PlainTime;
   dayLightEnd?: Temporal.PlainTime;
 }
 const props = withDefaults(defineProps<Props>(), {
-  firstDay: "firstDayOfWeek",
   navHints: false,
   weekStart: 1,
   days: 7,
   dayLightStart: Temporal.PlainTime.from({ hour: 6 }),
   dayLightEnd: Temporal.PlainTime.from({ hour: 19 }),
 });
-
-interface DayInformation {
-  day: Temporal.PlainDate;
-}
 
 interface HourInformation {
   datetime: Temporal.PlainDateTime;
@@ -36,53 +29,35 @@ interface HourInformation {
   rowNumber: number;
 }
 
-interface WeekDefinition {
-  firstDay: Temporal.PlainDate;
-  lastDay: Temporal.PlainDate;
-}
-
-function get24Hours(): Array<Temporal.PlainTime> {
-  const hours = Array<Temporal.PlainTime>(24);
-  for (let i = 0; i < 24; i++) {
-    hours[i] = Temporal.PlainTime.from({ hour: i });
-  }
-  return hours;
-}
-
-function getDays(): Array<DayInformation> {
-  if (!props.days) {
-    throw new Error("Property 'days' is undefined.");
-  }
-  if (props.days <= 0 || props.days > MAX_DAYS_VISIBLE) {
+const days = computed(() => {
+  const duration = props.firstDate.until(props.lastDate);
+  if (duration.days <= 0) {
     throw new Error(
-      `Invalid number of days for weekview: ${props.days}. Choose between 1 and ${MAX_DAYS_VISIBLE}.`
+      `Calculated invalid number of days: ${duration.days} for WeekView.`
     );
   }
 
-  const days = Array<DayInformation>(props.days);
-  const weekDefinition = getWeekDefinition();
+  const days = Array<Temporal.PlainDate>(duration.days);
+  let currentDate = props.firstDate;
   for (let i = 0; i < days.length; i++) {
-    days[i] = { day: weekDefinition.firstDay.add({ days: i }) };
+    days[i] = currentDate;
+    currentDate = currentDate.add({ days: 1 });
   }
   return days;
-}
+});
 
-function getHours(): Array<HourInformation> {
-  if (!props.days) {
-    throw new Error("Property 'days' is undefined.");
-  }
-  if (props.days <= 0 || props.days > MAX_DAYS_VISIBLE) {
+const hours = computed(() => {
+  const duration = props.firstDate.until(props.lastDate);
+  if (duration.days <= 0) {
     throw new Error(
-      `Invalid number of days for weekview: ${props.days}. Choose between 1 and ${MAX_DAYS_VISIBLE}.`
+      `Calculated invalid number of days: ${duration.days} for WeekView.`
     );
   }
 
-  const hours = Array<HourInformation>(props.days * 24);
-  const weekDefinition = getWeekDefinition();
-
+  const hours = Array<HourInformation>(duration.days * 24);
   for (
-    let i = 0, d = 0, currentDay = weekDefinition.firstDay;
-    d < props.days;
+    let i = 0, d = 0, currentDay = props.firstDate;
+    d < duration.days;
     d++, currentDay = currentDay.add({ days: 1 })
   ) {
     for (let h = 0; h < 24; h++, i++) {
@@ -106,6 +81,14 @@ function getHours(): Array<HourInformation> {
   }
 
   return hours;
+});
+
+function get24Hours(): Array<Temporal.PlainTime> {
+  const hours = Array<Temporal.PlainTime>(24);
+  for (let i = 0; i < 24; i++) {
+    hours[i] = Temporal.PlainTime.from({ hour: i });
+  }
+  return hours;
 }
 
 function getWeekDayClass(day: Temporal.PlainDate): string {
@@ -122,26 +105,6 @@ function getWeekDayClass(day: Temporal.PlainDate): string {
     "saturday",
     "sunday",
   ][day.dayOfWeek];
-}
-
-function getWeekDefinition(): WeekDefinition {
-  let firstDay = Temporal.PlainDate.from(props.datetime);
-  if (props.firstDay === "firstDayOfWeek") {
-    while (firstDay.dayOfWeek !== props.weekStart) {
-      firstDay = firstDay.subtract({ days: 1 });
-    }
-  } else if (props.firstDay === "float") {
-    if (!props.days) {
-      throw new Error("Property 'days' is undefined.");
-    }
-    if (props.days > 2) {
-      firstDay = firstDay.subtract({ days: Math.floor(props.days / 4) });
-    }
-  } else {
-    throw new Error(`unknown firstDay property value: ${props.firstDay}.`);
-  }
-
-  return { firstDay, lastDay: firstDay.add({ days: props.days }) };
 }
 
 function isDayLight(time: Temporal.PlainTime) {
@@ -178,11 +141,11 @@ const emit = defineEmits([
     <div class="header">
       <div class="side"></div>
       <DayColumnHeader
-        v-for="(dayInformation, index) in getDays()"
+        v-for="(day, index) in days"
         :key="index"
-        :day="dayInformation.day"
+        :day="day"
         class="day row cell"
-        :class="[index === props.days - 1 ? 'lastRow' : '']"
+        :class="[index === days.length - 1 ? 'lastRow' : '']"
       />
       <div class="fake-scrollbar">
         <!--
@@ -209,7 +172,7 @@ const emit = defineEmits([
       </div>
       <div class="days">
         <div
-          v-for="(hourInformation, index) in getHours()"
+          v-for="(hourInformation, index) in hours"
           :key="index"
           class="day cell"
           :class="[
