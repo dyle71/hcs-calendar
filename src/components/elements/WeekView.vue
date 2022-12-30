@@ -135,7 +135,7 @@ function getWeekDefinition(): WeekDefinition {
       throw new Error("Property 'days' is undefined.");
     }
     if (props.days > 2) {
-      firstDay = firstDay.subtract({ days: props.days / 3 });
+      firstDay = firstDay.subtract({ days: Math.floor(props.days / 4) });
     }
   } else {
     throw new Error(`unknown firstDay property value: ${props.firstDay}.`);

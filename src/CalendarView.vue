@@ -17,6 +17,17 @@ const props = withDefaults(defineProps<Props>(), {
 const currentDate = ref(Temporal.PlainDateTime.from(props.initialDate));
 const showNavHints = ref(false);
 const weekViewDays = ref(7);
+const startOfWeekView = ref("firstDayOfWeek");
+
+function changeStartOfWeekView(start: any) {
+  if ("" + start === "firstDayOfWeek") {
+    startOfWeekView.value = "firstDayOfWeek";
+  } else if ("" + start === "float") {
+    startOfWeekView.value = "float";
+  } else {
+    console.warn(`Unknown value for startOfWeekView: ${start}`);
+  }
+}
 
 function changeWeekViewDays(days: any) {
   weekViewDays.value = typeof days === "number" ? days : parseFloat("" + days);
@@ -88,11 +99,13 @@ function selectToday() {
           @disableCalendarNavHints="showNavHints = false"
           @enableCalendarNavHints="showNavHints = true"
           @changeWeekViewDays="changeWeekViewDays($event)"
+          @changeStartOfWeekView="changeStartOfWeekView($event)"
         />
         <CalendarMain
           :datetime="currentDate"
           :navHints="showNavHints"
           :days="weekViewDays"
+          :startOfDayOfWeekView="startOfWeekView"
           @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
           @onWeekLabelDoubleRight="weekShiftDoubleRight()"
           @onWeekLabelLeft="weekShiftLeft()"

@@ -3,6 +3,7 @@ import { ref } from "vue";
 import SwitchBox from "@/components/elements/SwitchBox.vue";
 
 const weekViewDays = ref(7);
+const startOfWeekView = ref("firstDayOfWeek");
 
 function switchCalendarNavHints(enable: boolean) {
   if (enable) {
@@ -16,6 +17,7 @@ const emit = defineEmits([
   "enableCalendarNavHints",
   "disableCalendarNavHints",
   "changeWeekViewDays",
+  "changeStartOfWeekView",
 ]);
 </script>
 
@@ -46,6 +48,17 @@ const emit = defineEmits([
           @change="emit('changeWeekViewDays', weekViewDays)"
         />
         <span class="range-value">{{ weekViewDays }}</span>
+      </label>
+      <label for="week-view-start-of-week" class="option">
+        Start of week view:
+        <select
+          id="week-view-start-of-week"
+          v-model="startOfWeekView"
+          @blur="emit('changeStartOfWeekView', startOfWeekView)"
+        >
+          <option value="firstDayOfWeek">First day of week</option>
+          <option value="float">Floating</option>
+        </select>
       </label>
     </section>
   </div>
