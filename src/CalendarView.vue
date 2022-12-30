@@ -66,10 +66,10 @@ function selectToday() {
     <CalendarHeader
       class="header"
       :datetime="currentDate"
-      @onDoubleLeft="headerShiftDoubleLeft()"
-      @onDoubleRight="headerShiftDoubleRight()"
-      @onLeft="headerShiftLeft()"
-      @onRight="headerShiftRight()"
+      @onDoubleLeftClick="headerShiftDoubleLeft()"
+      @onDoubleRightClick="headerShiftDoubleRight()"
+      @onLeftClick="headerShiftLeft()"
+      @onRightClick="headerShiftRight()"
       @onTodayClick="selectToday()"
     />
     <div class="height-wrapper">
