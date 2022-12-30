@@ -16,6 +16,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const currentDate = ref(Temporal.PlainDateTime.from(props.initialDate));
 const showNavHints = ref(false);
+const weekViewDays = ref(7);
+
+function changeWeekViewDays(days: any) {
+  weekViewDays.value = typeof days === "number" ? days : parseFloat("" + days);
+}
 
 function headerShiftDoubleLeft() {
   currentDate.value = currentDate.value.subtract({ months: 6 });
@@ -67,7 +72,7 @@ function selectToday() {
     <CalendarHeader
       class="header"
       :datetime="currentDate"
-      :nav-hints="showNavHints"
+      :navHints="showNavHints"
       @onDoubleLeftClick="headerShiftDoubleLeft()"
       @onDoubleRightClick="headerShiftDoubleRight()"
       @onLeftClick="headerShiftLeft()"
@@ -78,14 +83,16 @@ function selectToday() {
       <div class="body">
         <CalendarSideBar
           :datetime="currentDate"
-          :nav-hints="showNavHints"
+          :navHints="showNavHints"
           @onDayClick="selectDay($event)"
           @disableCalendarNavHints="showNavHints = false"
           @enableCalendarNavHints="showNavHints = true"
+          @changeWeekViewDays="changeWeekViewDays($event)"
         />
         <CalendarMain
           :datetime="currentDate"
           :navHints="showNavHints"
+          :days="weekViewDays"
           @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
           @onWeekLabelDoubleRight="weekShiftDoubleRight()"
           @onWeekLabelLeft="weekShiftLeft()"

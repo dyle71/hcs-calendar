@@ -55,6 +55,7 @@ const emit = defineEmits([
   "onDayClick",
   "enableCalendarNavHints",
   "disableCalendarNavHints",
+  "changeWeekViewDays",
 ]);
 </script>
 
@@ -79,6 +80,7 @@ const emit = defineEmits([
     <OptionsPanel
       @enableCalendarNavHints="emit('enableCalendarNavHints')"
       @disableCalendarNavHints="emit('disableCalendarNavHints')"
+      @changeWeekViewDays="emit('changeWeekViewDays', $event)"
     />
   </div>
 </template>
