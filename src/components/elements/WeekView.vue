@@ -190,7 +190,7 @@ const emit = defineEmits([
 
 <style scoped>
 .week-view {
-  @apply relative flex flex-col select-none w-full;
+  @apply relative flex flex-col select-none overflow-scroll max-w-full max-h-full;
 }
 
 .week-view .header {

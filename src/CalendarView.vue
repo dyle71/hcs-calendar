@@ -138,17 +138,19 @@ calculateWeekViewInterval();
           @changeWeekViewDays="changeWeekViewDays($event)"
           @changeStartOfWeekView="changeStartOfWeekView($event)"
         />
-        <CalendarMain
-          :datetime="currentDate"
-          :firstDate="firstDayInWeekView"
-          :lastDate="lastDayInWeekView"
-          :navHints="showNavHints"
-          @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
-          @onWeekLabelDoubleRight="weekShiftDoubleRight()"
-          @onWeekLabelLeft="weekShiftLeft()"
-          @onWeekLabelRight="weekShiftRight()"
-          @onWeekLabelTodayClick="selectToday()"
-        />
+        <div class="width-wrapper">
+          <CalendarMain
+            :datetime="currentDate"
+            :firstDate="firstDayInWeekView"
+            :lastDate="lastDayInWeekView"
+            :navHints="showNavHints"
+            @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
+            @onWeekLabelDoubleRight="weekShiftDoubleRight()"
+            @onWeekLabelLeft="weekShiftLeft()"
+            @onWeekLabelRight="weekShiftRight()"
+            @onWeekLabelTodayClick="selectToday()"
+          />
+        </div>
       </div>
     </div>
     <CalendarFooter class="footer" :datetime="currentDate" />
@@ -169,7 +171,11 @@ calculateWeekViewInterval();
 }
 
 .calendar-app .height-wrapper .body {
-  @apply relative flex-none flex flex-row h-full;
+  @apply flex-none flex flex-row h-full w-full;
+}
+
+.calendar-app .height-wrapper .body .width-wrapper {
+  @apply grow max-w-full overflow-scroll;
 }
 
 .calendar-app .footer {

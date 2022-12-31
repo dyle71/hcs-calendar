@@ -25,6 +25,7 @@ const emit = defineEmits([
 
 <template>
   <WeekView
+    class="week-view"
     :datetime="props.datetime"
     :firstDate="props.firstDate"
     :lastDate="props.lastDate"
