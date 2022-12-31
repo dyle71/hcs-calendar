@@ -175,7 +175,7 @@ calculateWeekViewInterval();
 }
 
 .calendar-app .height-wrapper .body .width-wrapper {
-  @apply grow max-w-full overflow-scroll;
+  @apply grow max-w-full overflow-x-scroll;
 }
 
 .calendar-app .footer {
