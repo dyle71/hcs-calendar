@@ -66,7 +66,7 @@ const emit = defineEmits([
 
 <style scoped>
 .options-panel {
-  @apply flex-none flex flex-col gap-2;
+  @apply flex-none flex flex-col gap-4;
 }
 
 .options-panel section {
@@ -78,7 +78,7 @@ const emit = defineEmits([
 }
 
 .options-panel section h2 {
-  @apply text-lg;
+  @apply text-lg my-2;
 }
 
 .options-panel .option {
@@ -86,7 +86,7 @@ const emit = defineEmits([
 }
 
 .options-panel label {
-  @apply flex flex-row align-baseline gap-1;
+  @apply flex flex-row align-baseline gap-1 mb-2;
 }
 
 .options-panel label .range-input {
