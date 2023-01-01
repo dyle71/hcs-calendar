@@ -231,7 +231,7 @@ calculateWeekViewInterval();
 }
 
 .calendar-app .height-wrapper .body {
-  @apply flex-none flex flex-row h-full w-full;
+  @apply flex-none flex flex-row h-full w-full gap-2;
 }
 
 .calendar-app .height-wrapper .body .width-wrapper {
