@@ -138,17 +138,23 @@ const emit = defineEmits([
       @onRightClick="emit('onWeekLabelRight')"
       @onTodayClick="emit('onWeekLabelTodayClick')"
     />
-    <div class="header">
-      <div class="side"></div>
-      <DayColumnHeader
-        v-for="(day, index) in days"
-        :key="index"
-        :day="day"
-        class="day row cell"
-        :class="[index === days.length - 1 ? 'lastRow' : '']"
-      />
-      <div class="fake-scrollbar">
-        <!--
+    <div class="content">
+      <div class="header">
+        <div class="side"></div>
+        <div
+          class="days"
+          :style="`grid-template-columns: repeat(${days.length}, 1fr);`"
+        >
+          <DayColumnHeader
+            v-for="(day, index) in days"
+            :key="index"
+            :day="day"
+            class="day row cell"
+            :class="[index === days.length - 1 ? 'lastRow' : '']"
+          />
+        </div>
+        <div class="fake-scrollbar">
+          <!--
           This is a hack to align the behavior on WebKit and Mozilla browsers.
           Sadly, there is no common standard how scrollbars are treated.
           WebKit is quite sophisticated but the client area of a component is
@@ -161,28 +167,31 @@ const emit = defineEmits([
           the defined scrollbar at WebKit.
 
           This is a hack.
-        -->
+        --></div>
       </div>
-    </div>
-    <div class="matrix">
-      <div class="side">
-        <div v-for="(hour, index) in get24Hours()" :key="index" class="hour">
-          {{ hour.toString({ smallestUnit: "minute" }) }}
+      <div class="matrix">
+        <div class="side">
+          <div v-for="(hour, index) in get24Hours()" :key="index" class="hour">
+            {{ hour.toString({ smallestUnit: "minute" }) }}
+          </div>
         </div>
-      </div>
-      <div class="days">
         <div
-          v-for="(hourInformation, index) in hours"
-          :key="index"
-          class="day cell"
-          :class="[
-            hourInformation.dayClass,
-            hourInformation.hourClass,
-            hourInformation.weekdayClass,
-            hourInformation.daylight ? 'daylight' : 'night',
-            hourInformation.rowNumber === props.days - 1 ? 'lastRow' : '',
-          ]"
-        ></div>
+          class="days"
+          :style="`grid-template-columns: repeat(${days.length}, 1fr);`"
+        >
+          <div
+            v-for="(hourInformation, index) in hours"
+            :key="index"
+            class="day cell"
+            :class="[
+              hourInformation.dayClass,
+              hourInformation.hourClass,
+              hourInformation.weekdayClass,
+              hourInformation.daylight ? 'daylight' : 'night',
+              hourInformation.rowNumber === props.days - 1 ? 'lastRow' : '',
+            ]"
+          ></div>
+        </div>
       </div>
     </div>
   </div>
@@ -193,47 +202,55 @@ const emit = defineEmits([
   @apply relative flex flex-col select-none overflow-scroll max-w-full max-h-full;
 }
 
-.week-view .header {
+.week-view .content {
+  @apply max-w-fit min-w-fit;
+}
+
+.week-view .content .header {
   @apply flex flex-row min-w-max;
 }
 
-.week-view .header .day.cell.lastRow {
+.week-view .content .header .days {
+  @apply flex-none grid;
+}
+
+.week-view .content .header .days .day.cell.lastRow {
   @apply border-r-0;
 }
 
-.week-view .header .side {
+.week-view .content .header .side {
   @apply flex-none w-16 border-b;
 }
 
-.week-view .header .fake-scrollbar {
+.week-view .content .header .fake-scrollbar {
   @apply flex-none overflow-y-scroll opacity-0;
 }
 
-.week-view .matrix {
+.week-view .content .matrix {
   @apply flex flex-row w-full h-full overflow-y-scroll;
 }
 
-.week-view .matrix .side {
+.week-view .content .matrix .side {
   @apply flex-none w-16 grid grid-flow-col grid-rows-[repeat(24,_3rem)];
 }
 
-.week-view .matrix .side .hour {
+.week-view .content .matrix .side .hour {
   @apply text-xs text-gray-500 border-b border-r text-right p-0.5;
 }
 
-.week-view .matrix .days {
+.week-view .content .matrix .days {
   @apply relative grow grid grid-flow-col grid-rows-[repeat(24,_3rem)];
 }
 
-.week-view .matrix .days .day.cell {
+.week-view .content .matrix .days .day.cell {
   @apply border-r border-b;
 }
 
-.week-view .matrix .days .day.cell.night {
+.week-view .content .matrix .days .day.cell.night {
   @apply bg-gray-100;
 }
 
-.week-view .matrix .days .day.cell.lastRow {
+.week-view .content .matrix .days .day.cell.lastRow {
   @apply border-r-0;
 }
 </style>
