@@ -17,8 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   weekStart: 1,
   days: 7,
-  dayLightStart: Temporal.PlainTime.from({ hour: 6 }),
-  dayLightEnd: Temporal.PlainTime.from({ hour: 19 }),
+  dayLightStart: () => Temporal.PlainTime.from({ hour: 6 }),
+  dayLightEnd: () => Temporal.PlainTime.from({ hour: 19 }),
 });
 
 interface HourInformation {

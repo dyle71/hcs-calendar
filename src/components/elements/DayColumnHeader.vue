@@ -1,43 +1,30 @@
 <script setup lang="ts">
 import { Temporal } from "@js-temporal/polyfill";
+import { getTenseByDate, getWeekDayString } from "@/calendar";
 
 interface Props {
   day: Temporal.PlainDate;
 }
 const props = withDefaults(defineProps<Props>(), {});
-
-const today = Temporal.Now.plainDateISO();
-
-function getWeekDayClass(day: Temporal.PlainDate) {
-  return [
-    "?",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ][day.dayOfWeek];
-}
+const today: Temporal.PlainDate = Temporal.Now.plainDateISO();
 </script>
 
 <template>
-  <div class="day-column-header">
+  <div class="day-column-header" :class="[getTenseByDate(props.day)]">
     <div
       class="dayofmonth-header"
       :class="[
         Temporal.PlainDate.compare(props.day, today) === 0 ? 'today' : '',
-        getWeekDayClass(props.day),
+        getWeekDayString(props.day),
       ]"
     >
       {{ props.day.day }}
     </div>
     <div class="date">
-      <div class="weekday" :class="[getWeekDayClass(props.day)]">
+      <div class="weekday" :class="[getWeekDayString(props.day)]">
         {{ $t("weekday.short." + props.day.dayOfWeek) }}
       </div>
-      <div class="month" :class="[getWeekDayClass(props.day)]">
+      <div class="month" :class="[getWeekDayString(props.day)]">
         {{ $t(`month.long.${props.day.month}`) }}
       </div>
     </div>

@@ -14,8 +14,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   startOfDayOfWeekView: "firstDayOfWeek",
-  dayLightStart: Temporal.PlainTime.from({ hour: 6 }),
-  dayLightEnd: Temporal.PlainTime.from({ hour: 19 }),
+  dayLightStart: () => Temporal.PlainTime.from({ hour: 6 }),
+  dayLightEnd: () => Temporal.PlainTime.from({ hour: 19 }),
 });
 
 const emit = defineEmits([

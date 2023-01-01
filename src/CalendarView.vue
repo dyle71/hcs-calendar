@@ -11,7 +11,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  initialDate: Temporal.Now.plainDateTimeISO(),
+  initialDate: () => Temporal.Now.plainDateTimeISO(),
 });
 
 const currentDate = ref<Temporal.PlainDateTime>(
