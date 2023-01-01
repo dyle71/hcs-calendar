@@ -223,11 +223,11 @@ const emit = defineEmits([
 }
 
 .week-view .content {
-  @apply max-w-fit min-w-fit;
+  @apply grow min-w-fit;
 }
 
 .week-view .content .header {
-  @apply flex flex-row min-w-max;
+  @apply flex flex-row;
 }
 
 .week-view .content .header .side .nav {
@@ -235,7 +235,10 @@ const emit = defineEmits([
 }
 
 .week-view .content .header .days {
-  @apply flex-none grid;
+  @apply grow grid min-w-max;
+}
+
+.week-view .content .header .days .day {
 }
 
 .week-view .content .header .days .day.cell.lastRow {
