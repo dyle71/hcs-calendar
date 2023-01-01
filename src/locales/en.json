@@ -27,6 +27,14 @@
         "left": "previous week",
         "right": "next week"
       }
+    },
+    "week-view": {
+      "days": {
+        "nav": {
+          "left": "previous",
+          "right": "next"
+        }
+      }
     }
   },
   "month": {

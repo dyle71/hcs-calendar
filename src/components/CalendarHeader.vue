@@ -34,7 +34,7 @@ const emit = defineEmits([
       :hints="{
         doubleLeft: '-3',
         left: '-1',
-        right: '-1',
+        right: '+1',
         doubleRight: '+3',
       }"
       :tooltips="{

@@ -20,6 +20,8 @@ const emit = defineEmits([
   "onWeekLabelLeft",
   "onWeekLabelRight",
   "onWeekLabelTodayClick",
+  "onWeekDayLeftClick",
+  "onWeekDayRightClick",
 ]);
 </script>
 
@@ -36,5 +38,7 @@ const emit = defineEmits([
     @onWeekLabelLeft="emit('onWeekLabelLeft')"
     @onWeekLabelRight="emit('onWeekLabelRight')"
     @onWeekLabelTodayClick="emit('onWeekLabelTodayClick')"
+    @onDayLeftClick="emit('onWeekDayLeftClick')"
+    @onDayRightClick="emit('onWeekDayRightClick')"
   />
 </template>

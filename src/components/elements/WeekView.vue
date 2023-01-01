@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
+import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
 import WeekLabel from "@/components/elements/WeekLabel.vue";
 
@@ -123,6 +124,8 @@ const emit = defineEmits([
   "onWeekLabelLeft",
   "onWeekLabelRight",
   "onWeekLabelTodayClick",
+  "onDayLeftClick",
+  "onDayRightClick",
 ]);
 </script>
 
@@ -140,7 +143,24 @@ const emit = defineEmits([
     />
     <div class="content">
       <div class="header">
-        <div class="side"></div>
+        <div class="side">
+          <CalendarNavButtonRow
+            class="nav"
+            :today="false"
+            :double="false"
+            :hint="props.navHints"
+            :hints="{
+              left: '-1',
+              right: '+1',
+            }"
+            :tooltips="{
+              left: $t('tooltip.week-view.days.nav.left'),
+              right: $t('tooltip.week-view.days.nav.right'),
+            }"
+            @onLeftClick="emit('onDayLeftClick')"
+            @onRightClick="emit('onDayRightClick')"
+          />
+        </div>
         <div
           class="days"
           :style="`grid-template-columns: repeat(${days.length}, 1fr);`"
@@ -208,6 +228,10 @@ const emit = defineEmits([
 
 .week-view .content .header {
   @apply flex flex-row min-w-max;
+}
+
+.week-view .content .header .side .nav {
+  @apply my-auto min-h-full;
 }
 
 .week-view .content .header .days {

@@ -78,6 +78,28 @@ function headerShiftRight() {
   calculateWeekViewInterval();
 }
 
+function weekDayLeft() {
+  if (startOfWeekView.value === "firstDayOfWeek") {
+    currentDate.value = currentDate.value.subtract({ weeks: 1 });
+  } else if (startOfWeekView.value === "float") {
+    currentDate.value = currentDate.value.subtract({ days: 1 });
+  } else {
+    console.warn(`Unknown startOfWeekView.value: ${startOfWeekView.value}`);
+  }
+  calculateWeekViewInterval();
+}
+
+function weekDayRight() {
+  if (startOfWeekView.value === "firstDayOfWeek") {
+    currentDate.value = currentDate.value.add({ weeks: 1 });
+  } else if (startOfWeekView.value === "float") {
+    currentDate.value = currentDate.value.add({ days: 1 });
+  } else {
+    console.warn(`Unknown startOfWeekView.value: ${startOfWeekView.value}`);
+  }
+  calculateWeekViewInterval();
+}
+
 function weekShiftDoubleLeft() {
   currentDate.value = currentDate.value.subtract({ weeks: 4 });
   calculateWeekViewInterval();
@@ -149,6 +171,8 @@ calculateWeekViewInterval();
             @onWeekLabelLeft="weekShiftLeft()"
             @onWeekLabelRight="weekShiftRight()"
             @onWeekLabelTodayClick="selectToday()"
+            @onWeekDayLeftClick="weekDayLeft()"
+            @onWeekDayRightClick="weekDayRight()"
           />
         </div>
       </div>
