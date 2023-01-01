@@ -57,6 +57,7 @@ const emit = defineEmits([
   "disableCalendarNavHints",
   "changeWeekViewDays",
   "changeStartOfWeekView",
+  "changeFirstDayOfWeek",
 ]);
 </script>
 
@@ -83,6 +84,7 @@ const emit = defineEmits([
       @disableCalendarNavHints="emit('disableCalendarNavHints')"
       @changeWeekViewDays="emit('changeWeekViewDays', $event)"
       @changeStartOfWeekView="emit('changeStartOfWeekView', $event)"
+      @changeFirstDayOfWeek="emit('changeFirstDayOfWeek', $event)"
     />
   </div>
 </template>

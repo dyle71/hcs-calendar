@@ -40,6 +40,21 @@ function calculateWeekViewInterval() {
   });
 }
 
+function changeFirstDayOfWeek(start: any) {
+  let value = 0;
+  if (typeof start === "string") {
+    value = parseInt(start);
+  } else if (typeof start === "number") {
+    value = Math.round(start);
+  }
+  if (value === 0) {
+    console.warn("Invalid value for changeFirstDayOfWeek");
+    return;
+  }
+  weekStartWeekDay.value = ((value - 1) % 7) + 1;
+  calculateWeekViewInterval();
+}
+
 function changeStartOfWeekView(start: any) {
   if ("" + start === "firstDayOfWeek") {
     startOfWeekView.value = "firstDayOfWeek";
@@ -159,6 +174,7 @@ calculateWeekViewInterval();
           @enableCalendarNavHints="showNavHints = true"
           @changeWeekViewDays="changeWeekViewDays($event)"
           @changeStartOfWeekView="changeStartOfWeekView($event)"
+          @changeFirstDayOfWeek="changeFirstDayOfWeek($event)"
         />
         <div class="width-wrapper">
           <CalendarMain
