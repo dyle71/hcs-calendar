@@ -57,6 +57,7 @@ const emit = defineEmits([
           id="week-view-start-of-week"
           v-model="startOfWeekView"
           @blur="emit('changeStartOfWeekView', startOfWeekView)"
+          @change="emit('changeStartOfWeekView', startOfWeekView)"
         >
           <option value="firstDayOfWeek">First day of week</option>
           <option value="float">Floating</option>
@@ -68,6 +69,7 @@ const emit = defineEmits([
           id="week-view-first-day-of-week"
           v-model="firstDayOfWeek"
           @blur="emit('changeFirstDayOfWeek', firstDayOfWeek)"
+          @change="emit('changeFirstDayOfWeek', firstDayOfWeek)"
         >
           <option value="1">Monday</option>
           <option value="2">Tuesday</option>
@@ -84,7 +86,7 @@ const emit = defineEmits([
 
 <style scoped>
 .options-panel {
-  @apply flex-none flex flex-col gap-4;
+  @apply flex-none flex flex-col gap-4 min-w-full max-w-full;
 }
 
 .options-panel section {
@@ -104,7 +106,11 @@ const emit = defineEmits([
 }
 
 .options-panel label {
-  @apply flex flex-row align-baseline gap-1 mb-2;
+  @apply flex flex-row align-baseline gap-1 mb-2 min-w-full;
+}
+
+.options-panel label select {
+  @apply flex-initial grow;
 }
 
 .options-panel label .range-input {
