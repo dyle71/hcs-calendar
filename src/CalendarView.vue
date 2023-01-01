@@ -23,6 +23,12 @@ const weekStartWeekDay = ref(1);
 const startOfWeekView = ref("firstDayOfWeek");
 const firstDayInWeekView = ref<Temporal.PlainDate | null>(null);
 const lastDayInWeekView = ref<Temporal.PlainDate | null>(null);
+const dayLightStart = ref<Temporal.PlainTime>(
+  Temporal.PlainTime.from({ hour: 6 })
+);
+const dayLightEnd = ref<Temporal.PlainTime>(
+  Temporal.PlainTime.from({ hour: 19 })
+);
 
 function calculateWeekViewInterval() {
   let firstDay = currentDate.value;
@@ -38,6 +44,16 @@ function calculateWeekViewInterval() {
   lastDayInWeekView.value = firstDayInWeekView.value.add({
     days: weekViewDays.value,
   });
+}
+
+function changeDayLightEnd(time: Temporal.PlainTime) {
+  dayLightEnd.value = time;
+  calculateWeekViewInterval();
+}
+
+function changeDayLightStart(time: Temporal.PlainTime) {
+  dayLightStart.value = time;
+  calculateWeekViewInterval();
 }
 
 function changeFirstDayOfWeek(start: any) {
@@ -175,6 +191,8 @@ calculateWeekViewInterval();
           @changeWeekViewDays="changeWeekViewDays($event)"
           @changeStartOfWeekView="changeStartOfWeekView($event)"
           @changeFirstDayOfWeek="changeFirstDayOfWeek($event)"
+          @changeDayLightEnd="changeDayLightEnd($event)"
+          @changeDayLightStart="changeDayLightStart($event)"
         />
         <div class="width-wrapper">
           <CalendarMain
@@ -182,6 +200,8 @@ calculateWeekViewInterval();
             :firstDate="firstDayInWeekView"
             :lastDate="lastDayInWeekView"
             :navHints="showNavHints"
+            :day-light-start="dayLightStart"
+            :day-light-end="dayLightEnd"
             @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
             @onWeekLabelDoubleRight="weekShiftDoubleRight()"
             @onWeekLabelLeft="weekShiftLeft()"

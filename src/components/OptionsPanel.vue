@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { Temporal } from "@js-temporal/polyfill";
 import SwitchBox from "@/components/elements/SwitchBox.vue";
 
 const weekViewDays = ref(7);
 const startOfWeekView = ref("firstDayOfWeek");
 const firstDayOfWeek = ref(1);
+const dayLightStart = ref(6);
+const dayLightEnd = ref(19);
 
 function switchCalendarNavHints(enable: boolean) {
   if (enable) {
@@ -14,12 +17,28 @@ function switchCalendarNavHints(enable: boolean) {
   }
 }
 
+function emitDayLightEndChange() {
+  emit(
+    "changeDayLightEnd",
+    Temporal.PlainTime.from({ hour: dayLightEnd.value - 1 })
+  );
+}
+
+function emitDayLightStartChange() {
+  emit(
+    "changeDayLightStart",
+    Temporal.PlainTime.from({ hour: dayLightStart.value })
+  );
+}
+
 const emit = defineEmits([
   "enableCalendarNavHints",
   "disableCalendarNavHints",
   "changeWeekViewDays",
   "changeStartOfWeekView",
   "changeFirstDayOfWeek",
+  "changeDayLightStart",
+  "changeDayLightEnd",
 ]);
 </script>
 
@@ -79,6 +98,32 @@ const emit = defineEmits([
           <option value="6">Saturday</option>
           <option value="7">Sunday</option>
         </select>
+      </label>
+      <label for="daylight-start" class="option">
+        Daylight starts at:
+        <input
+          type="range"
+          class="range-input"
+          id="daylight-start"
+          v-model="dayLightStart"
+          min="0"
+          max="23"
+          @change="emitDayLightStartChange()"
+        />
+        <span class="range-value">{{ dayLightStart }}</span>
+      </label>
+      <label for="daylight-ends" class="option">
+        Daylight ends at:
+        <input
+          type="range"
+          class="range-input"
+          id="daylight-ends"
+          v-model="dayLightEnd"
+          min="1"
+          max="24"
+          @change="emitDayLightEndChange()"
+        />
+        <span class="range-value">{{ dayLightEnd }}</span>
       </label>
     </section>
   </div>

@@ -58,6 +58,8 @@ const emit = defineEmits([
   "changeWeekViewDays",
   "changeStartOfWeekView",
   "changeFirstDayOfWeek",
+  "changeDayLightStart",
+  "changeDayLightEnd",
 ]);
 </script>
 
@@ -85,6 +87,8 @@ const emit = defineEmits([
       @changeWeekViewDays="emit('changeWeekViewDays', $event)"
       @changeStartOfWeekView="emit('changeStartOfWeekView', $event)"
       @changeFirstDayOfWeek="emit('changeFirstDayOfWeek', $event)"
+      @changeDayLightEnd="emit('changeDayLightEnd', $event)"
+      @changeDayLightStart="emit('changeDayLightStart', $event)"
     />
   </div>
 </template>

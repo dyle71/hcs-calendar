@@ -8,10 +8,14 @@ interface Props {
   lastDate: Temporal.PlainDate;
   navHints?: boolean;
   startOfDayOfWeekView?: "float" | "firstDayOfWeek";
+  dayLightStart?: Temporal.PlainTime;
+  dayLightEnd?: Temporal.PlainTime;
 }
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   startOfDayOfWeekView: "firstDayOfWeek",
+  dayLightStart: Temporal.PlainTime.from({ hour: 6 }),
+  dayLightEnd: Temporal.PlainTime.from({ hour: 19 }),
 });
 
 const emit = defineEmits([
@@ -33,6 +37,8 @@ const emit = defineEmits([
     :lastDate="props.lastDate"
     :navHints="props.navHints"
     :first-day="props.startOfDayOfWeekView"
+    :day-light-end="props.dayLightEnd"
+    :day-light-start="props.dayLightStart"
     @onWeekLabelDoubleLeft="emit('onWeekLabelDoubleLeft')"
     @onWeekLabelDoubleRight="emit('onWeekLabelDoubleRight')"
     @onWeekLabelLeft="emit('onWeekLabelLeft')"
