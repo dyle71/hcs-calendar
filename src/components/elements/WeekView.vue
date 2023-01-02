@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
+import {
+  getTenseByDate,
+  getTenseByDateTime,
+  getWeekDayString,
+} from "@/calendar";
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
 import WeekLabel from "@/components/elements/WeekLabel.vue";
@@ -72,7 +77,7 @@ const hours = computed(() => {
         }),
         daylight: isDayLight(time),
         dayClass: `${currentDay.toString()}`,
-        weekdayClass: getWeekDayClass(currentDay),
+        weekdayClass: getWeekDayString(currentDay),
         hourClass: `${time
           .toString({ smallestUnit: "minute" })
           .replace(":", "")}`,
@@ -90,22 +95,6 @@ function get24Hours(): Array<Temporal.PlainTime> {
     hours[i] = Temporal.PlainTime.from({ hour: i });
   }
   return hours;
-}
-
-function getWeekDayClass(day: Temporal.PlainDate): string {
-  if (!day) {
-    throw new Error("No day given for getWeekDayClass.");
-  }
-  return [
-    "?",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ][day.dayOfWeek];
 }
 
 function isDayLight(time: Temporal.PlainTime) {
@@ -170,7 +159,10 @@ const emit = defineEmits([
             :key="index"
             :day="day"
             class="day row cell"
-            :class="[index === days.length - 1 ? 'lastRow' : '']"
+            :class="[
+              index === days.length - 1 ? 'lastRow' : '',
+              getTenseByDate(day),
+            ]"
           />
         </div>
         <div class="fake-scrollbar">
@@ -209,6 +201,7 @@ const emit = defineEmits([
               hourInformation.weekdayClass,
               hourInformation.daylight ? 'daylight' : 'night',
               hourInformation.rowNumber === props.days - 1 ? 'lastRow' : '',
+              getTenseByDateTime(hourInformation.datetime),
             ]"
           ></div>
         </div>
