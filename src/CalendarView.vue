@@ -29,6 +29,7 @@ const dayLightStart = ref<Temporal.PlainTime>(
 const dayLightEnd = ref<Temporal.PlainTime>(
   Temporal.PlainTime.from({ hour: 19 })
 );
+const highlightDaysInMonthView = ref(true);
 
 function calculateWeekViewInterval() {
   let firstDay = currentDate.value;
@@ -186,6 +187,9 @@ calculateWeekViewInterval();
           :datetime="currentDate"
           :navHints="showNavHints"
           :start-day-of-week="weekStartWeekDay"
+          :highlight-days="highlightDaysInMonthView"
+          :first-highlighted-date="firstDayInWeekView"
+          :last-highlighted-date="lastDayInWeekView"
           @onDayClick="selectDay($event)"
           @disableCalendarNavHints="showNavHints = false"
           @enableCalendarNavHints="showNavHints = true"

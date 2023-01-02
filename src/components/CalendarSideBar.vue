@@ -8,10 +8,14 @@ interface Props {
   datetime: Temporal.PlainDateTime;
   navHints?: boolean;
   startDayOfWeek?: number;
+  highlightDays?: boolean;
+  firstHighlightedDate?: Temporal.PlainDate | null;
+  lastHighlightedDate?: Temporal.PlainDate | null;
 }
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   startDayOfWeek: 1,
+  highlightDays: true,
 });
 
 const currenMonth = ref(Temporal.PlainDate.from(props.datetime));
@@ -71,6 +75,9 @@ const emit = defineEmits([
       :date="currenMonth"
       :nav-hints="props.navHints"
       :start-day-of-week="props.startDayOfWeek"
+      :highlight-days="props.highlightDays"
+      :first-highlighted-date="props.firstHighlightedDate"
+      :last-highlighted-date="props.lastHighlightedDate"
       @onLeftClick="onPreviousMonthUpperClicked()"
       @onRightClick="onNextMonthUpperClicked()"
       @onDayClick="emit('onDayClick', $event)"
@@ -80,6 +87,9 @@ const emit = defineEmits([
       :date="nextMonth"
       :nav-hints="props.navHints"
       :start-day-of-week="props.startDayOfWeek"
+      :highlight-days="props.highlightDays"
+      :first-highlighted-date="props.firstHighlightedDate"
+      :last-highlighted-date="props.lastHighlightedDate"
       @onLeftClick="onPreviousMonthLowerClicked()"
       @onRightClick="onNextMonthLowerClicked()"
       @onDayClick="emit('onDayClick', $event)"

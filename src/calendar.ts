@@ -30,3 +30,13 @@ export function getTenseByDateTime(date: Temporal.PlainDateTime): string {
 export function getWeekDayString(date: Temporal.PlainDate): string {
   return WeekDay[date.dayOfWeek];
 }
+
+export function isDateBetweenInclusive(
+  date: Temporal.PlainDate,
+  left: Temporal.PlainDate,
+  right: Temporal.PlainDate
+) {
+  const biggerThanLeft = Temporal.PlainDate.compare(left, date) <= 0;
+  const lessThanRight = Temporal.PlainDate.compare(date, right) < 0;
+  return biggerThanLeft && lessThanRight;
+}

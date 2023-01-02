@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
+import { isDateBetweenInclusive } from "@/calendar";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ToolTip from "@/components/elements/ToolTip.vue";
 
@@ -10,10 +11,16 @@ interface Props {
   date: Temporal.PlainDate;
   navHints?: boolean;
   startDayOfWeek?: number;
+  highlightDays?: boolean;
+  firstHighlightedDate?: Temporal.PlainDate | null;
+  lastHighlightedDate?: Temporal.PlainDate | null;
 }
 const props = withDefaults(defineProps<Props>(), {
   startDayOfWeek: 1,
   navHints: false,
+  highlightDays: true,
+  firstHighlightedDate: null,
+  lastHighlightedDate: null,
 });
 
 interface MonthSpecification {
@@ -26,6 +33,7 @@ interface DayInformation {
   date?: Temporal.PlainDate;
   header?: boolean;
   inMonth?: boolean;
+  highlighted?: boolean;
   past?: boolean;
   today?: boolean;
   future?: boolean;
@@ -73,9 +81,20 @@ function getDayInformation(
 ): DayInformation {
   const today = Temporal.Now.plainDateISO();
   const compareToToday = Temporal.PlainDate.compare(date, today);
+  const highlighted =
+    props.highlightDays &&
+    props.firstHighlightedDate != null &&
+    props.lastHighlightedDate != null
+      ? isDateBetweenInclusive(
+          date,
+          props.firstHighlightedDate,
+          props.lastHighlightedDate
+        )
+      : false;
   return {
     date: date,
     inMonth: isInMonth(date, monthSpecs),
+    highlighted,
     past: compareToToday === -1,
     today: compareToToday === 0,
     future: compareToToday === 1,
@@ -198,6 +217,7 @@ const emit = defineEmits([
           class="day"
           :class="[
             element?.inMonth ? 'in-month' : '',
+            element?.highlighted ? 'highlight' : '',
             element?.past ? 'past' : '',
             element?.today ? 'today' : '',
             element?.future ? 'future' : '',
@@ -271,6 +291,10 @@ const emit = defineEmits([
 
 .month-mini-view .body .in-month {
   @apply bg-slate-300;
+}
+
+.month-mini-view .body .highlight {
+  @apply bg-blue-300;
 }
 
 .month-mini-view .body .sunday {
