@@ -185,6 +185,7 @@ calculateWeekViewInterval();
         <CalendarSideBar
           :datetime="currentDate"
           :navHints="showNavHints"
+          :start-day-of-week="weekStartWeekDay"
           @onDayClick="selectDay($event)"
           @disableCalendarNavHints="showNavHints = false"
           @enableCalendarNavHints="showNavHints = true"

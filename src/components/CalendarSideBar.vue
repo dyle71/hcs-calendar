@@ -7,9 +7,11 @@ import OptionsPanel from "@/components/OptionsPanel.vue";
 interface Props {
   datetime: Temporal.PlainDateTime;
   navHints?: boolean;
+  startDayOfWeek?: number;
 }
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
+  startDayOfWeek: 1,
 });
 
 const currenMonth = ref(Temporal.PlainDate.from(props.datetime));
@@ -68,6 +70,7 @@ const emit = defineEmits([
     <MonthMiniView
       :date="currenMonth"
       :nav-hints="props.navHints"
+      :start-day-of-week="props.startDayOfWeek"
       @onLeftClick="onPreviousMonthUpperClicked()"
       @onRightClick="onNextMonthUpperClicked()"
       @onDayClick="emit('onDayClick', $event)"
@@ -76,6 +79,7 @@ const emit = defineEmits([
     <MonthMiniView
       :date="nextMonth"
       :nav-hints="props.navHints"
+      :start-day-of-week="props.startDayOfWeek"
       @onLeftClick="onPreviousMonthLowerClicked()"
       @onRightClick="onNextMonthLowerClicked()"
       @onDayClick="emit('onDayClick', $event)"
