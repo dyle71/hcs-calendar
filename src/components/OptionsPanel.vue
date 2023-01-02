@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Temporal } from "@js-temporal/polyfill";
 import SwitchBox from "@/components/elements/SwitchBox.vue";
 
-const weekViewDays = ref(7);
+const weekViewDays = ref("7");
 const startOfWeekView = ref("firstDayOfWeek");
-const firstDayOfWeek = ref(1);
-const dayLightStart = ref(6);
-const dayLightEnd = ref(19);
+const firstDayOfWeek = ref("1");
+const dayLightStart = ref("6");
+const dayLightEnd = ref("19");
 
 function switchCalendarNavHints(enable: boolean) {
   if (enable) {
@@ -18,17 +17,22 @@ function switchCalendarNavHints(enable: boolean) {
 }
 
 function emitDayLightEndChange() {
-  emit(
-    "changeDayLightEnd",
-    Temporal.PlainTime.from({ hour: dayLightEnd.value - 1 })
-  );
+  let time = { hour: parseInt(dayLightEnd.value), minute: 0, second: 0 };
+  if (time.hour === 24) {
+    time = { hour: 23, minute: 59, second: 59 };
+  } else {
+    console.log("fuck");
+  }
+  console.log("time:", time);
+  emit("changeDayLightEnd", time);
 }
 
 function emitDayLightStartChange() {
-  emit(
-    "changeDayLightStart",
-    Temporal.PlainTime.from({ hour: dayLightStart.value })
-  );
+  let time = { hour: parseInt(dayLightStart.value), minute: 0, second: 0 };
+  if (time.hour === 24) {
+    time = { hour: 23, minute: 59, second: 59 };
+  }
+  emit("changeDayLightStart", time);
 }
 
 const emit = defineEmits([
@@ -66,7 +70,7 @@ const emit = defineEmits([
           v-model="weekViewDays"
           min="1"
           max="28"
-          @change="emit('changeWeekViewDays', weekViewDays)"
+          @change="emit('changeWeekViewDays', parseInt(weekViewDays))"
         />
         <span class="range-value">{{ weekViewDays }}</span>
       </label>
@@ -87,8 +91,8 @@ const emit = defineEmits([
         <select
           id="week-view-first-day-of-week"
           v-model="firstDayOfWeek"
-          @blur="emit('changeFirstDayOfWeek', firstDayOfWeek)"
-          @change="emit('changeFirstDayOfWeek', firstDayOfWeek)"
+          @blur="emit('changeFirstDayOfWeek', parseInt(firstDayOfWeek))"
+          @change="emit('changeFirstDayOfWeek', parseInt(firstDayOfWeek))"
         >
           <option value="1">Monday</option>
           <option value="2">Tuesday</option>
@@ -107,7 +111,7 @@ const emit = defineEmits([
           id="daylight-start"
           v-model="dayLightStart"
           min="0"
-          max="23"
+          max="24"
           @change="emitDayLightStartChange()"
         />
         <span class="range-value">{{ dayLightStart }}</span>
@@ -119,7 +123,7 @@ const emit = defineEmits([
           class="range-input"
           id="daylight-ends"
           v-model="dayLightEnd"
-          min="1"
+          min="0"
           max="24"
           @change="emitDayLightEndChange()"
         />

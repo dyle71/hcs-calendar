@@ -103,7 +103,7 @@ function isDayLight(time: Temporal.PlainTime) {
   }
   return (
     Temporal.PlainTime.compare(time, props.dayLightStart) >= 0 &&
-    Temporal.PlainTime.compare(time, props.dayLightEnd) <= 0
+    Temporal.PlainTime.compare(time, props.dayLightEnd) < 0
   );
 }
 
