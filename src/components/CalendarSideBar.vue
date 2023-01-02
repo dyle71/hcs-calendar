@@ -60,7 +60,9 @@ function onNextMonthLowerClicked() {
 const emit = defineEmits([
   "onDayClick",
   "enableCalendarNavHints",
+  "enableMonthViewHighlight",
   "disableCalendarNavHints",
+  "disableMonthViewHighlight",
   "changeWeekViewDays",
   "changeStartOfWeekView",
   "changeFirstDayOfWeek",
@@ -97,7 +99,9 @@ const emit = defineEmits([
     />
     <OptionsPanel
       @enableCalendarNavHints="emit('enableCalendarNavHints')"
+      @enableMonthViewHighlight="emit('enableMonthViewHighlight')"
       @disableCalendarNavHints="emit('disableCalendarNavHints')"
+      @disableMonthViewHighlight="emit('disableMonthViewHighlight')"
       @changeWeekViewDays="emit('changeWeekViewDays', $event)"
       @changeStartOfWeekView="emit('changeStartOfWeekView', $event)"
       @changeFirstDayOfWeek="emit('changeFirstDayOfWeek', $event)"

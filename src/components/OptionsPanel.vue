@@ -19,6 +19,14 @@ function switchCalendarNavHints(enable: boolean) {
   }
 }
 
+function switchMonthViewHighlight(enable: boolean) {
+  if (enable) {
+    emit("enableMonthViewHighlight");
+  } else {
+    emit("disableMonthViewHighlight");
+  }
+}
+
 function emitDayLightEndChange() {
   let time = { hour: parseInt(dayLightEnd.value), minute: 0, second: 0 };
   if (time.hour === 24) {
@@ -49,7 +57,9 @@ function toggleOptionVisibility() {
 
 const emit = defineEmits([
   "enableCalendarNavHints",
+  "enableMonthViewHighlight",
   "disableCalendarNavHints",
+  "disableMonthViewHighlight",
   "changeWeekViewDays",
   "changeStartOfWeekView",
   "changeFirstDayOfWeek",
@@ -73,8 +83,18 @@ const emit = defineEmits([
           class="option switch-box"
           id="calendar-nav-buttons-hint"
           :initial-state="false"
-          label="Hints"
+          label="Hints:"
           @onClick="switchCalendarNavHints"
+        />
+      </section>
+      <section>
+        <h2>Month View:</h2>
+        <SwitchBox
+          class="option switch-box"
+          id="highlight-days-in-month-view"
+          :initial-state="true"
+          label="Highlight days:"
+          @onClick="switchMonthViewHighlight"
         />
       </section>
       <section>

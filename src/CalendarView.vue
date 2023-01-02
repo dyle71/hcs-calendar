@@ -193,6 +193,8 @@ calculateWeekViewInterval();
           @onDayClick="selectDay($event)"
           @disableCalendarNavHints="showNavHints = false"
           @enableCalendarNavHints="showNavHints = true"
+          @disable-month-view-highlight="highlightDaysInMonthView = false"
+          @enable-month-view-highlight="highlightDaysInMonthView = true"
           @changeWeekViewDays="changeWeekViewDays($event)"
           @changeStartOfWeekView="changeStartOfWeekView($event)"
           @changeFirstDayOfWeek="changeFirstDayOfWeek($event)"
