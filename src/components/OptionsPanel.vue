@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import AngleUp from "@/components/icons/AngleUp.vue";
 import SwitchBox from "@/components/elements/SwitchBox.vue";
 
+const optionsVisible = ref(false);
+const optionsToogleButton = ref<HTMLElement | null>(null);
 const weekViewDays = ref("7");
 const startOfWeekView = ref("firstDayOfWeek");
 const firstDayOfWeek = ref("1");
@@ -20,10 +23,7 @@ function emitDayLightEndChange() {
   let time = { hour: parseInt(dayLightEnd.value), minute: 0, second: 0 };
   if (time.hour === 24) {
     time = { hour: 23, minute: 59, second: 59 };
-  } else {
-    console.log("fuck");
   }
-  console.log("time:", time);
   emit("changeDayLightEnd", time);
 }
 
@@ -33,6 +33,18 @@ function emitDayLightStartChange() {
     time = { hour: 23, minute: 59, second: 59 };
   }
   emit("changeDayLightStart", time);
+}
+
+function toggleOptionVisibility() {
+  optionsVisible.value = !optionsVisible.value;
+  const button = optionsToogleButton.value as HTMLButtonElement;
+  if (button) {
+    if (optionsVisible.value) {
+      button.classList.add("rotated");
+    } else {
+      button.classList.remove("rotated");
+    }
+  }
 }
 
 const emit = defineEmits([
@@ -48,98 +60,122 @@ const emit = defineEmits([
 
 <template>
   <div class="options-panel">
-    <h1>Options:</h1>
-    <section>
-      <h2>Calendar Navigation:</h2>
-      <SwitchBox
-        class="option switch-box"
-        id="calendar-nav-buttons-hint"
-        :initial-state="false"
-        label="Hints"
-        @onClick="switchCalendarNavHints"
-      />
-    </section>
-    <section>
-      <h2>Week View:</h2>
-      <label for="week-view-days-amount" class="option">
-        Amount of days:
-        <input
-          type="range"
-          class="range-input"
-          id="week-view-days-amount"
-          v-model="weekViewDays"
-          min="1"
-          max="28"
-          @change="emit('changeWeekViewDays', parseInt(weekViewDays))"
+    <div class="options-heading">
+      <h1>Options:</h1>
+      <button ref="optionsToogleButton" @click.prevent="toggleOptionVisibility">
+        <AngleUp />
+      </button>
+    </div>
+    <div v-if="optionsVisible">
+      <section>
+        <h2>Calendar Navigation:</h2>
+        <SwitchBox
+          class="option switch-box"
+          id="calendar-nav-buttons-hint"
+          :initial-state="false"
+          label="Hints"
+          @onClick="switchCalendarNavHints"
         />
-        <span class="range-value">{{ weekViewDays }}</span>
-      </label>
-      <label for="week-view-start-of-week" class="option">
-        Start of week view:
-        <select
-          id="week-view-start-of-week"
-          v-model="startOfWeekView"
-          @blur="emit('changeStartOfWeekView', startOfWeekView)"
-          @change="emit('changeStartOfWeekView', startOfWeekView)"
-        >
-          <option value="firstDayOfWeek">First day of week</option>
-          <option value="float">Floating</option>
-        </select>
-      </label>
-      <label for="week-view-first-day-of-week" class="option">
-        First day of week:
-        <select
-          id="week-view-first-day-of-week"
-          v-model="firstDayOfWeek"
-          @blur="emit('changeFirstDayOfWeek', parseInt(firstDayOfWeek))"
-          @change="emit('changeFirstDayOfWeek', parseInt(firstDayOfWeek))"
-        >
-          <option value="1">Monday</option>
-          <option value="2">Tuesday</option>
-          <option value="3">Wednesday</option>
-          <option value="4">Thursday</option>
-          <option value="5">Friday</option>
-          <option value="6">Saturday</option>
-          <option value="7">Sunday</option>
-        </select>
-      </label>
-      <label for="daylight-start" class="option">
-        Daylight starts at:
-        <input
-          type="range"
-          class="range-input"
-          id="daylight-start"
-          v-model="dayLightStart"
-          min="0"
-          max="24"
-          @change="emitDayLightStartChange()"
-        />
-        <span class="range-value">{{ dayLightStart }}</span>
-      </label>
-      <label for="daylight-ends" class="option">
-        Daylight ends at:
-        <input
-          type="range"
-          class="range-input"
-          id="daylight-ends"
-          v-model="dayLightEnd"
-          min="0"
-          max="24"
-          @change="emitDayLightEndChange()"
-        />
-        <span class="range-value">{{ dayLightEnd }}</span>
-      </label>
-    </section>
+      </section>
+      <section>
+        <h2>Week View:</h2>
+        <label for="week-view-days-amount" class="option three-cols">
+          Amount of days:
+          <input
+            type="range"
+            class="range-input"
+            id="week-view-days-amount"
+            v-model="weekViewDays"
+            min="1"
+            max="28"
+            @change="emit('changeWeekViewDays', parseInt(weekViewDays))"
+          />
+          <span class="range-value">{{ weekViewDays }}</span>
+        </label>
+        <label for="week-view-start-of-week" class="option two-cols">
+          Start of week view:
+          <select
+            id="week-view-start-of-week"
+            v-model="startOfWeekView"
+            @blur="emit('changeStartOfWeekView', startOfWeekView)"
+            @change="emit('changeStartOfWeekView', startOfWeekView)"
+          >
+            <option value="firstDayOfWeek">First day of week</option>
+            <option value="float">Floating</option>
+          </select>
+        </label>
+        <label for="week-view-first-day-of-week" class="option two-cols">
+          First day of week:
+          <select
+            id="week-view-first-day-of-week"
+            v-model="firstDayOfWeek"
+            @blur="emit('changeFirstDayOfWeek', parseInt(firstDayOfWeek))"
+            @change="emit('changeFirstDayOfWeek', parseInt(firstDayOfWeek))"
+          >
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+            <option value="7">Sunday</option>
+          </select>
+        </label>
+        <label for="daylight-start" class="option three-cols">
+          Daylight starts at:
+          <input
+            type="range"
+            class="range-input"
+            id="daylight-start"
+            v-model="dayLightStart"
+            min="0"
+            max="24"
+            @change="emitDayLightStartChange()"
+          />
+          <span class="range-value">{{ dayLightStart }}</span>
+        </label>
+        <label for="daylight-ends" class="option three-cols">
+          Daylight ends at:
+          <input
+            type="range"
+            class="range-input"
+            id="daylight-ends"
+            v-model="dayLightEnd"
+            min="0"
+            max="24"
+            @change="emitDayLightEndChange()"
+          />
+          <span class="range-value">{{ dayLightEnd }}</span>
+        </label>
+      </section>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .options-panel {
-  @apply flex-none flex flex-col gap-4 min-w-full max-w-full;
+  @apply flex-none flex flex-col gap-4;
+}
+
+.options-panel .options-heading {
+  @apply flex flex-row justify-between;
+}
+
+.options-panel .options-heading h1 {
+  @apply ml-0 my-auto;
+}
+
+.options-panel .options-heading button {
+  @apply w-6 h-6 fill-fuchsia-700;
+  @apply transition-all;
+}
+
+.options-panel .options-heading button.rotated {
+  @apply -rotate-180;
 }
 
 .options-panel section {
-  @apply border-t;
+  @apply flex flex-col gap-2 py-2 border-t w-full;
 }
 
 .options-panel h1 {
@@ -147,7 +183,7 @@ const emit = defineEmits([
 }
 
 .options-panel section h2 {
-  @apply text-lg my-2;
+  @apply text-lg;
 }
 
 .options-panel .option {
@@ -155,7 +191,17 @@ const emit = defineEmits([
 }
 
 .options-panel label {
-  @apply flex flex-row align-baseline gap-1 mb-2 min-w-full;
+  @apply min-w-full;
+}
+
+.options-panel label.two-cols {
+  @apply grid gap-2;
+  grid-template-columns: 1fr 62%;
+}
+
+.options-panel label.three-cols {
+  @apply grid gap-2;
+  grid-template-columns: 4fr 50% 1fr;
 }
 
 .options-panel label select {
@@ -163,10 +209,10 @@ const emit = defineEmits([
 }
 
 .options-panel label .range-input {
-  @apply flex-initial grow w-4;
+  @apply mt-1 mb-auto;
 }
 
 .options-panel label .range-value {
-  @apply inline-block w-4 text-right;
+  @apply inline-block text-right mt-0.5 mb-auto;
 }
 </style>

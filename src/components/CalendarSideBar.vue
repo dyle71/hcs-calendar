@@ -95,7 +95,7 @@ const emit = defineEmits([
 
 <style scoped>
 .calendar-sidebar {
-  @apply relative flex-none flex flex-col gap-4 p-2;
+  @apply relative flex-none flex flex-col gap-4 p-2 w-64;
   @apply overflow-y-scroll;
 }
 </style>

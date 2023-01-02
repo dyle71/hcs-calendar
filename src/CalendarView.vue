@@ -48,7 +48,6 @@ function calculateWeekViewInterval() {
 
 function changeDayLightEnd(time: Temporal.PlainTime) {
   dayLightEnd.value = time;
-  console.log(time);
   calculateWeekViewInterval();
 }
 
