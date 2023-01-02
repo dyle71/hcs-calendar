@@ -4,7 +4,7 @@ import AngleUp from "@/components/icons/AngleUp.vue";
 import SwitchBox from "@/components/elements/SwitchBox.vue";
 
 const optionsVisible = ref(false);
-const optionsToogleButton = ref<HTMLElement | null>(null);
+const optionsToggleButton = ref<HTMLElement | null>(null);
 const weekViewDays = ref("7");
 const startOfWeekView = ref("firstDayOfWeek");
 const firstDayOfWeek = ref("1");
@@ -37,7 +37,7 @@ function emitDayLightStartChange() {
 
 function toggleOptionVisibility() {
   optionsVisible.value = !optionsVisible.value;
-  const button = optionsToogleButton.value as HTMLButtonElement;
+  const button = optionsToggleButton.value as HTMLButtonElement;
   if (button) {
     if (optionsVisible.value) {
       button.classList.add("rotated");
@@ -62,7 +62,7 @@ const emit = defineEmits([
   <div class="options-panel">
     <div class="options-heading">
       <h1>Options:</h1>
-      <button ref="optionsToogleButton" @click.prevent="toggleOptionVisibility">
+      <button ref="optionsToggleButton" @click.prevent="toggleOptionVisibility">
         <AngleUp />
       </button>
     </div>
