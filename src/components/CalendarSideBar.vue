@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import MonthMiniView from "@/components/elements/MonthMiniView.vue";
+import EventForm from "@/components/elements/EventForm.vue";
 import OptionsPanel from "@/components/OptionsPanel.vue";
 
 interface Props {
@@ -97,6 +98,7 @@ const emit = defineEmits([
       @onDayClick="emit('onDayClick', $event)"
       @onTodayClick="onCurrentMonthLowerClicked()"
     />
+    <EventForm />
     <OptionsPanel
       @enableCalendarNavHints="emit('enableCalendarNavHints')"
       @enableMonthViewHighlight="emit('enableMonthViewHighlight')"
