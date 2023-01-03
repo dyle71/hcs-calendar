@@ -75,6 +75,7 @@ const emit = defineEmits([
 <template>
   <div class="calendar-sidebar">
     <MonthMiniView
+      class="month-view"
       :date="currenMonth"
       :nav-hints="props.navHints"
       :start-day-of-week="props.startDayOfWeek"
@@ -87,6 +88,7 @@ const emit = defineEmits([
       @onTodayClick="onCurrentMonthUpperClicked()"
     />
     <MonthMiniView
+      class="month-view"
       :date="nextMonth"
       :nav-hints="props.navHints"
       :start-day-of-week="props.startDayOfWeek"
@@ -115,7 +117,10 @@ const emit = defineEmits([
 
 <style scoped>
 .calendar-sidebar {
-  @apply relative flex-none flex flex-col gap-4 p-2 w-64;
-  @apply overflow-y-scroll;
+  @apply flex flex-col gap-2 p-2 w-64;
+}
+
+.calendar-sidebar .month-view {
+  @apply mb-1;
 }
 </style>
