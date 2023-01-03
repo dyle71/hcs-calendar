@@ -100,7 +100,7 @@ const emit = defineEmits([
       <section>
         <h2>Week View:</h2>
         <label for="week-view-days-amount" class="option three-cols">
-          Amount of days:
+          <span>Amount of days:</span>
           <input
             type="range"
             class="range-input"
@@ -113,7 +113,7 @@ const emit = defineEmits([
           <span class="range-value">{{ weekViewDays }}</span>
         </label>
         <label for="week-view-start-of-week" class="option two-cols">
-          Start of week view:
+          <span>tart of week view:</span>
           <select
             id="week-view-start-of-week"
             v-model="startOfWeekView"
@@ -125,7 +125,7 @@ const emit = defineEmits([
           </select>
         </label>
         <label for="week-view-first-day-of-week" class="option two-cols">
-          First day of week:
+          <span>First day of week:</span>
           <select
             id="week-view-first-day-of-week"
             v-model="firstDayOfWeek"
@@ -142,7 +142,7 @@ const emit = defineEmits([
           </select>
         </label>
         <label for="daylight-start" class="option three-cols">
-          Daylight starts at:
+          <span>Daylight starts at:</span>
           <input
             type="range"
             class="range-input"
@@ -155,7 +155,7 @@ const emit = defineEmits([
           <span class="range-value">{{ dayLightStart }}</span>
         </label>
         <label for="daylight-ends" class="option three-cols">
-          Daylight ends at:
+          <span>Daylight ends at:</span>
           <input
             type="range"
             class="range-input"
@@ -186,7 +186,8 @@ const emit = defineEmits([
 }
 
 .options-panel .options-heading button {
-  @apply w-6 h-6 fill-fuchsia-700;
+  @apply w-6 h-6 fill-fuchsia-700 rounded-full;
+  @apply hover:bg-gray-100 focus:outline-0;
   @apply transition-all;
 }
 
@@ -212,6 +213,10 @@ const emit = defineEmits([
 
 .options-panel label {
   @apply min-w-full;
+}
+
+.options-panel label span {
+  @apply my-auto;
 }
 
 .options-panel label.two-cols {

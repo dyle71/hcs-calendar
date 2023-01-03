@@ -118,7 +118,7 @@ const emit = defineEmits([
 
 .calendar-nav-button-row .button {
   @apply relative rounded-full fill-fuchsia-700 w-full h-full;
-  @apply hover:bg-gray-300;
+  @apply hover:bg-gray-100;
   @apply disabled:fill-gray-500;
 }
 

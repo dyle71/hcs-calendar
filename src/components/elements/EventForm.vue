@@ -39,22 +39,22 @@ const emit = defineEmits(["onNewEvent"]);
 
 <template>
   <div class="event-form">
-    <h1>New Event</h1>
+    <h1>New Event:</h1>
     <form @submit.prevent="createNewEvent">
       <label for="newEventStart" class="option two-cols">
-        Start:
+        <span>Start:</span>
         <input id="newEventStart" v-model="start" />
       </label>
       <label for="newEventEnd" class="option two-cols">
-        End:
+        <span>End:</span>
         <input id="newEventEnd" v-model="end" />
       </label>
       <label for="newEventTitle" class="option two-cols">
-        Title:
+        <span>Title:</span>
         <input id="newEventTitle" v-model="title" />
       </label>
       <label for="newEventLocation" class="option two-cols">
-        Location:
+        <span>Location:</span>
         <input id="newEventLocation" v-model="location" />
       </label>
       <button type="submit" @click.prevent="createNewEvent">Create</button>
@@ -76,8 +76,12 @@ const emit = defineEmits(["onNewEvent"]);
 }
 
 .event-form label input {
-  @apply rounded-lg bg-gray-300 border-2 border-fuchsia-500 p-1;
+  @apply rounded-lg bg-gray-200 border-2 border-fuchsia-500 p-1;
   @apply focus:bg-gray-100 focus:outline-0 focus:shadow-lg;
+}
+
+.event-form label span {
+  @apply my-auto;
 }
 
 .event-form label.two-cols {
