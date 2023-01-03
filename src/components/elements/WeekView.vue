@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import {
   getTenseByDate,
@@ -9,12 +9,6 @@ import {
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
 import WeekLabel from "@/components/elements/WeekLabel.vue";
-
-const weekView = ref<HTMLElement | null>(null);
-const weekLabel = ref<InstanceType<typeof WeekLabel> | null>(null);
-const content = ref<HTMLElement | null>(null);
-const header = ref<HTMLElement | null>(null);
-const matrix = ref<HTMLElement | null>(null);
 
 interface Props {
   datetime: Temporal.PlainDateTime;
@@ -113,33 +107,6 @@ function isDayLight(time: Temporal.PlainTime) {
   );
 }
 
-function fixMatrixHeight() {
-  // The CSS max-height: 100% does not work. This is sort of a hack
-  // to get around CSS limitations.
-  if (
-    weekView.value &&
-    weekLabel.value &&
-    content.value &&
-    header.value &&
-    matrix.value
-  ) {
-    console.log(weekView.value.offsetHeight);
-    content.value.style.height =
-      weekView.value.offsetHeight - weekLabel.value.$el.offsetHeight + "px";
-    matrix.value.style.height =
-      content.value.offsetHeight - header.value.offsetHeight + "px";
-  }
-}
-
-onMounted(() => {
-  window.addEventListener("resize", fixMatrixHeight);
-  fixMatrixHeight();
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", fixMatrixHeight);
-});
-
 const emit = defineEmits([
   "onWeekLabelDoubleLeft",
   "onWeekLabelDoubleRight",
@@ -152,10 +119,9 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <div class="week-view" ref="weekView">
+  <div class="week-view">
     <WeekLabel
       class="week-number"
-      ref="weekLabel"
       :datetime="props.datetime"
       :navHints="props.navHints"
       @onDoubleLeftClick="emit('onWeekLabelDoubleLeft')"
@@ -164,8 +130,8 @@ const emit = defineEmits([
       @onRightClick="emit('onWeekLabelRight')"
       @onTodayClick="emit('onWeekLabelTodayClick')"
     />
-    <div class="content" ref="content">
-      <div class="header" ref="header">
+    <div class="content">
+      <div class="header">
         <div class="side">
           <CalendarNavButtonRow
             class="nav"
@@ -213,9 +179,10 @@ const emit = defineEmits([
           the defined scrollbar at WebKit.
 
           This is a hack.
-        --></div>
+          -->
+        </div>
       </div>
-      <div class="matrix" ref="matrix">
+      <div class="matrix">
         <div class="side">
           <div v-for="(hour, index) in get24Hours()" :key="index" class="hour">
             {{ hour.toString({ smallestUnit: "minute" }) }}
@@ -250,7 +217,7 @@ const emit = defineEmits([
 }
 
 .week-view .content {
-  @apply min-w-fit;
+  @apply min-w-fit overflow-x-scroll;
 }
 
 .week-view .content .header {
@@ -282,7 +249,6 @@ const emit = defineEmits([
 
 .week-view .content .matrix {
   @apply flex-none flex flex-row w-full overflow-y-scroll;
-  height: 400px;
 }
 
 .week-view .content .matrix .side {

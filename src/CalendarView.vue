@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
 import CalendarHeader from "@/components/CalendarHeader.vue";
 import CalendarMain from "@/components/CalendarMain.vue";
@@ -13,11 +13,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   initialDate: () => Temporal.Now.plainDateTimeISO(),
 });
-
-const view = ref<HTMLElement | null>(null);
-const header = ref<InstanceType<typeof CalendarHeader> | null>(null);
-const body = ref<HTMLElement | null>(null);
-const footer = ref<InstanceType<typeof CalendarFooter> | null>(null);
 
 const currentDate = ref<Temporal.PlainDateTime>(
   Temporal.PlainDateTime.from(props.initialDate as Temporal.PlainDateTime)
@@ -172,33 +167,12 @@ function selectToday() {
 }
 
 calculateWeekViewInterval();
-
-function fixBodyHeight() {
-  // The CSS max-height: 100% does not work. This is sort of a hack
-  // to get around CSS limitations.
-  if (view.value && header.value && body.value && footer.value) {
-    body.value.style.height =
-      view.value.offsetHeight -
-      (header.value.$el.offsetHeight + footer.value.$el.offsetHeight) +
-      "px";
-  }
-}
-
-onMounted(() => {
-  window.addEventListener("resize", fixBodyHeight);
-  fixBodyHeight();
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", fixBodyHeight);
-});
 </script>
 
 <template>
-  <div class="calendar-app" ref="view">
+  <div class="calendar-app">
     <CalendarHeader
       class="header"
-      ref="header"
       :datetime="currentDate"
       :navHints="showNavHints"
       @onDoubleLeftClick="headerShiftDoubleLeft()"
@@ -207,7 +181,7 @@ onUnmounted(() => {
       @onRightClick="headerShiftRight()"
       @onTodayClick="selectToday()"
     />
-    <div class="body" ref="body">
+    <div class="body">
       <CalendarSideBar
         class="side"
         :datetime="currentDate"
@@ -244,33 +218,26 @@ onUnmounted(() => {
         @onWeekDayRightClick="weekDayRight()"
       />
     </div>
-    <CalendarFooter class="footer" ref="footer" :datetime="currentDate" />
+    <CalendarFooter class="footer" :datetime="currentDate" />
   </div>
 </template>
 
 <style scoped>
 .calendar-app {
-  @apply h-screen flex flex-col;
-}
-
-.calendar-app .header {
-  @apply flex-none;
-  @apply h-10;
+  @apply h-screen grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 .calendar-app .body {
-  @apply flex flex-row gap-2;
+  @apply grid max-h-full min-h-0 gap-2;
+  grid-template-columns: 16rem 1fr;
 }
 
 .calendar-app .body .side {
-  @apply flex-none overflow-y-scroll;
+  @apply block overflow-y-scroll;
 }
 
 .calendar-app .body .main {
-  @apply grow;
-}
-
-.calendar-app .footer {
-  @apply flex-none;
+  @apply block overflow-y-scroll;
 }
 </style>

@@ -117,7 +117,7 @@ const emit = defineEmits([
 
 <style scoped>
 .calendar-sidebar {
-  @apply flex flex-col gap-2 p-2 w-64;
+  @apply grid gap-4 p-2 max-w-full min-w-0;
 }
 
 .calendar-sidebar .month-view {
