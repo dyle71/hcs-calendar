@@ -141,11 +141,7 @@ function applyHeaderSize() {
       for (let i = 0; i < headerDays.value.children.length; i++) {
         const child = headerDays.value.children.item(i) as HTMLElement | null;
         if (child) {
-          // TypeScript claims that style is a read-only property.
-          // However, this is actually only partly true.
-          // See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
-          // How else to change the width of an element programmatically?
-          child.style = `width: ${cellWidth}px;`;
+          child.setAttribute("style", `width: ${cellWidth}px;`);
         }
       }
     }
