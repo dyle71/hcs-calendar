@@ -234,7 +234,7 @@ calculateWeekViewInterval();
 }
 
 .calendar-app .body .side {
-  @apply block overflow-y-scroll;
+  @apply overflow-y-scroll;
 }
 
 .calendar-app .body .main {

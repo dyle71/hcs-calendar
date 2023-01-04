@@ -64,7 +64,7 @@ const emit = defineEmits(["onNewEvent"]);
 
 <style scoped>
 .event-form {
-  @apply flex flex-col gap-2;
+  @apply flex flex-col gap-2 max-w-full min-w-0;
 }
 
 .event-form h1 {
@@ -77,7 +77,7 @@ const emit = defineEmits(["onNewEvent"]);
 
 .event-form label input {
   @apply rounded-lg bg-gray-200 border-2 border-fuchsia-500 p-1;
-  @apply focus:bg-gray-100 focus:outline-0 focus:shadow-lg;
+  @apply focus:bg-gray-100 focus:outline-0 focus:shadow-lg hover:bg-gray-100;
 }
 
 .event-form label span {
@@ -92,6 +92,6 @@ const emit = defineEmits(["onNewEvent"]);
 .event-form form button {
   @apply rounded-lg bg-gray-300 p-2 shadow shadow-gray-500;
   @apply bg-fuchsia-400;
-  @apply focus:outline-0 focus:font-bold;
+  @apply focus:outline-0 focus:bg-fuchsia-500 hover:bg-fuchsia-500;
 }
 </style>

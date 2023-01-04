@@ -100,8 +100,9 @@ const emit = defineEmits([
       @onDayClick="emit('onDayClick', $event)"
       @onTodayClick="onCurrentMonthLowerClicked()"
     />
-    <EventForm />
+    <EventForm class="event-form" />
     <OptionsPanel
+      class="options-panel"
       @enableCalendarNavHints="emit('enableCalendarNavHints')"
       @enableMonthViewHighlight="emit('enableMonthViewHighlight')"
       @disableCalendarNavHints="emit('disableCalendarNavHints')"
@@ -117,10 +118,18 @@ const emit = defineEmits([
 
 <style scoped>
 .calendar-sidebar {
-  @apply grid gap-4 p-2 max-w-full min-w-0;
+  @apply block p-2 max-w-full min-w-0;
 }
 
 .calendar-sidebar .month-view {
-  @apply mb-1;
+  @apply mb-2;
+}
+
+.calendar-sidebar .event-form {
+  @apply mb-2;
+}
+
+.calendar-sidebar .options-panel {
+  @apply mb-2;
 }
 </style>

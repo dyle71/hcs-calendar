@@ -174,7 +174,7 @@ const emit = defineEmits([
 
 <style scoped>
 .options-panel {
-  @apply flex-none flex flex-col gap-4;
+  @apply flex-none flex flex-col gap-4 max-w-full min-w-0;
 }
 
 .options-panel .options-heading {
