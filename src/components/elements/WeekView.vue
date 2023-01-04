@@ -130,6 +130,13 @@ function onScroll() {
 function applyHeaderSize() {
   if (matrix.value && header.value) {
     const dayCell = matrix.value.children.item(0) as HTMLElement | null;
+    const cellWidth = dayCell?.getBoundingClientRect().width;
+    if (!cellWidth) {
+      console.warn(
+        "Unable to get the exact width of a day cell in the matrix."
+      );
+      return;
+    }
     if (dayCell && headerDays.value) {
       for (let i = 0; i < headerDays.value.children.length; i++) {
         const child = headerDays.value.children.item(i) as HTMLElement | null;
@@ -138,7 +145,7 @@ function applyHeaderSize() {
           // However, this is actually only partly true.
           // See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
           // How else to change the width of an element programmatically?
-          child.style = `width: ${dayCell.offsetWidth}px;`;
+          child.style = `width: ${cellWidth}px;`;
         }
       }
     }
@@ -153,6 +160,7 @@ onMounted(() => {
   if (content.value) {
     content.value.onscroll = onScroll;
   }
+  window.addEventListener("resize", applyHeaderSize);
   applyHeaderSize();
 });
 
@@ -160,6 +168,7 @@ onUnmounted(() => {
   if (content.value) {
     content.value.onscroll = null;
   }
+  window.removeEventListener("resize", applyHeaderSize);
 });
 
 const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
