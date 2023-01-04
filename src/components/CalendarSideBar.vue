@@ -118,7 +118,7 @@ const emit = defineEmits([
 
 <style scoped>
 .calendar-sidebar {
-  @apply block p-2 max-w-full min-w-0;
+  @apply block p-2 max-w-full min-w-0 overflow-y-scroll;
 }
 
 .calendar-sidebar .month-view {

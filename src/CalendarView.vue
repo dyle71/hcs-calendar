@@ -172,7 +172,6 @@ calculateWeekViewInterval();
 <template>
   <div class="calendar-app">
     <CalendarHeader
-      class="header"
       :datetime="currentDate"
       :navHints="showNavHints"
       @onDoubleLeftClick="headerShiftDoubleLeft()"
@@ -183,7 +182,6 @@ calculateWeekViewInterval();
     />
     <div class="body">
       <CalendarSideBar
-        class="side"
         :datetime="currentDate"
         :navHints="showNavHints"
         :start-day-of-week="weekStartWeekDay"
@@ -202,7 +200,6 @@ calculateWeekViewInterval();
         @changeDayLightStart="changeDayLightStart($event)"
       />
       <CalendarMain
-        class="main"
         :datetime="currentDate"
         :firstDate="firstDayInWeekView"
         :lastDate="lastDayInWeekView"
@@ -231,13 +228,5 @@ calculateWeekViewInterval();
 .calendar-app .body {
   @apply grid max-h-full min-h-0 gap-2;
   grid-template-columns: 16rem 1fr;
-}
-
-.calendar-app .body .side {
-  @apply overflow-y-scroll;
-}
-
-.calendar-app .body .main {
-  @apply block overflow-y-scroll;
 }
 </style>
