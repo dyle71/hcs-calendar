@@ -253,7 +253,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 }
 
 .week-view .days-header-row-side {
-  @apply flex p-1;
+  @apply flex p-1 border-r;
 }
 
 .week-view .days-header-row-side .day-nav-buttons {
@@ -286,7 +286,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 }
 
 .week-view .content .side {
-  @apply absolute overflow-hidden;
+  @apply absolute overflow-hidden border-r;
   left: 0;
   top: 4.5rem;
   width: 4rem;

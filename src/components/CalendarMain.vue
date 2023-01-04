@@ -64,7 +64,7 @@ const emit = defineEmits([
 
 <style scoped>
 .main {
-  @apply grid min-w-0 max-w-full min-h-0 max-h-full;
+  @apply grid min-w-0 max-w-full min-h-0 max-h-full gap-2;
   grid-template-rows: auto 1fr;
 }
 </style>
