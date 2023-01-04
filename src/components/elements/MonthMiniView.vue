@@ -278,7 +278,7 @@ const emit = defineEmits([
 .month-mini-view .body .day .inner {
   font-size: 85%;
   @apply rounded-full m-1 p-0.5 h-5 w-5;
-  @apply hover:bg-gray-200 hover:cursor-pointer;
+  @apply hover:bg-gray-200 hover:cursor-pointer focus:outline-0;
 }
 
 .month-mini-view .body .in-month {
@@ -286,7 +286,7 @@ const emit = defineEmits([
 }
 
 .month-mini-view .body .today .inner {
-  @apply bg-fuchsia-400 hover:bg-fuchsia-500;
+  @apply bg-amber-300;
 }
 
 .month-mini-view .body .in-month {
