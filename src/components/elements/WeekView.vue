@@ -243,9 +243,19 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 
 <style scoped>
 .week-view {
+  /* Variables which define the dimensions of some elements of the week view. */
+  --left-side-bar-width: 4rem;
+  --header-row-height: 4rem;
+  --all-day-row-height: 1rem;
+  --hour-cell-height: 3rem;
+  --hour-cell-min-width: 8rem;
+
   @apply relative grid overflow-clip min-h-0 max-h-full;
-  grid-template-columns: 4rem auto;
-  grid-template-rows: 4rem 0.5rem minmax(auto, 1fr);
+  grid-template-columns: var(--left-side-bar-width, 4rem) auto;
+  grid-template-rows:
+    var(--header-row-height)
+    var(--all-day-row-height)
+    minmax(auto, 1fr);
 }
 
 .week-view .days-header-row-side {
@@ -257,11 +267,13 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 }
 
 .week-view .all-day-row-side {
-  @apply border-t;
+  @apply border-t border-b border-r;
 }
 
-.week-view .content-side {
+.week-view .all-day-row {
+  @apply border-t border-b;
 }
+
 .week-view .content {
   @apply overflow-scroll;
 }
@@ -269,8 +281,8 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 .week-view .content .top {
   @apply absolute overflow-hidden;
   top: 0;
-  left: 4rem;
-  height: 8rem;
+  left: var(--left-side-bar-width);
+  height: var(--header-row-height);
 }
 
 .week-view .content .top .header {
@@ -284,8 +296,8 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 .week-view .content .side {
   @apply absolute overflow-hidden border-r;
   left: 0;
-  top: 4.5rem;
-  width: 4rem;
+  top: calc(var(--header-row-height) + var(--all-day-row-height));
+  width: var(--left-side-bar-width);
 }
 
 .week-view .content .side .timeline {
@@ -294,19 +306,23 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 
 .week-view .content .side .timeline .hour {
   @apply text-xs text-right text-gray-400 border-t;
-  height: 3rem;
+  height: var(--hour-cell-height);
+}
+
+.week-view .content .side .timeline .hour:first-child {
+  @apply border-t-0;
 }
 
 .week-view .content .matrix {
 }
 
 .week-view .content .matrix .days {
-  @apply relative grow grid grid-flow-col grid-rows-[repeat(24,_3rem)];
+  @apply relative grow grid grid-flow-col grid-rows-[repeat(24,_var(--hour-cell-height))];
 }
 
 .week-view .content .matrix .days .day.cell {
   @apply border-l border-t;
-  min-width: 8rem;
+  min-width: var(--hour-cell-min-width);
 }
 
 .week-view .content .matrix .days .day.cell.night {
