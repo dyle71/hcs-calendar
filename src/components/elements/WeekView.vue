@@ -12,6 +12,7 @@ import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
 const content = ref<HTMLElement | null>(null);
 const top = ref<HTMLElement | null>(null);
 const header = ref<HTMLElement | null>(null);
+const headerAllDays = ref<HTMLElement | null>(null);
 const headerDays = ref<HTMLElement | null>(null);
 const side = ref<HTMLElement | null>(null);
 const timeline = ref<HTMLElement | null>(null);
@@ -114,7 +115,7 @@ function isDayLight(time: Temporal.PlainTime) {
   );
 }
 
-function onScroll() {
+function onScroll(): void {
   if (
     content.value &&
     side.value &&
@@ -127,7 +128,7 @@ function onScroll() {
   }
 }
 
-function applyHeaderSize() {
+function applyHeaderSize(): void {
   if (matrix.value && header.value) {
     const dayCell = matrix.value.children.item(0) as HTMLElement | null;
     const cellWidth = dayCell?.getBoundingClientRect().width;
@@ -137,13 +138,22 @@ function applyHeaderSize() {
       );
       return;
     }
-    if (dayCell && headerDays.value) {
-      for (let i = 0; i < headerDays.value.children.length; i++) {
-        const child = headerDays.value.children.item(i) as HTMLElement | null;
-        if (child) {
-          child.setAttribute("style", `width: ${cellWidth}px;`);
-        }
+    if (cellWidth) {
+      if (headerAllDays.value) {
+        applyWidthToChildren(headerAllDays.value.children, cellWidth);
       }
+      if (headerDays.value) {
+        applyWidthToChildren(headerDays.value.children, cellWidth);
+      }
+    }
+  }
+}
+
+function applyWidthToChildren(collection: HTMLCollection, width: number): void {
+  for (let i = 0; i < collection.length; i++) {
+    const child = collection.item(i) as HTMLElement | null;
+    if (child) {
+      child.setAttribute("style", `width: ${width}px;`);
     }
   }
 }
@@ -192,7 +202,9 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
       </div>
     </div>
     <div class="days-header-row"></div>
-    <div class="all-day-row-side"></div>
+    <div class="all-day-row-side">
+      {{ $t("weekView.allDay") }}
+    </div>
     <div class="all-day-row"></div>
     <div class="content-side"></div>
     <div class="content" ref="content">
@@ -213,6 +225,15 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
               class="day row cell"
               :class="[getTenseByDate(day)]"
             />
+          </div>
+          <div class="all-days" ref="headerAllDays">
+            <div
+              v-for="(day, index) in days"
+              :key="index"
+              class="all-day row cell"
+            >
+              {{ day.toString() }}
+            </div>
           </div>
         </div>
       </div>
@@ -246,7 +267,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
   /* Variables which define the dimensions of some elements of the week view. */
   --left-side-bar-width: 4rem;
   --header-row-height: 4rem;
-  --all-day-row-height: 1rem;
+  --all-day-row-height: 4rem;
   --hour-cell-height: 3rem;
   --hour-cell-min-width: 8rem;
 
@@ -268,6 +289,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 
 .week-view .all-day-row-side {
   @apply border-t border-b border-r;
+  @apply text-xs text-gray-400 text-right pr-0.5;
 }
 
 .week-view .all-day-row {
@@ -287,6 +309,10 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 
 .week-view .content .top .header {
   @apply relative;
+}
+
+.week-view .content .top .header .all-days {
+  @apply relative grid grid-flow-col border-b;
 }
 
 .week-view .content .top .header .days {

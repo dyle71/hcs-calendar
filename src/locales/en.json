@@ -75,5 +75,8 @@
       "6": "Sat",
       "7": "Sun"
     }
+  },
+  "weekView": {
+    "allDay": "All day"
   }
 }
