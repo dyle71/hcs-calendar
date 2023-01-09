@@ -17,6 +17,7 @@ const headerDays = ref<HTMLElement | null>(null);
 const side = ref<HTMLElement | null>(null);
 const timeline = ref<HTMLElement | null>(null);
 const matrix = ref<HTMLElement | null>(null);
+const today: Temporal.PlainDate = Temporal.Now.plainDateISO();
 
 interface Props {
   datetime: Temporal.PlainDateTime;
@@ -231,9 +232,13 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
               v-for="(day, index) in days"
               :key="index"
               class="all-day row cell"
-            >
-              {{ day.toString() }}
-            </div>
+              :class="[
+                day.toString(),
+                getTenseByDate(day),
+                Temporal.PlainDate.compare(day, today) === 0 ? 'today' : '',
+                getWeekDayString(day),
+              ]"
+            ></div>
           </div>
         </div>
       </div>
@@ -304,7 +309,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
   @apply absolute overflow-hidden;
   top: 0;
   left: var(--left-side-bar-width);
-  height: var(--header-row-height);
+  height: calc(var(--header-row-height) + var(--all-day-row-height));
 }
 
 .week-view .content .top .header {
@@ -313,6 +318,11 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 
 .week-view .content .top .header .all-days {
   @apply relative grid grid-flow-col border-b;
+}
+
+.all-day.row.cell {
+  @apply relative border-l border-t;
+  height: var(--all-day-row-height);
 }
 
 .week-view .content .top .header .days {
