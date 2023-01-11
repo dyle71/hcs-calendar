@@ -8,18 +8,20 @@ import {
 } from "@/calendar";
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
+import NowMark from "@/components/icons/NowMark.vue";
 
 interface Props {
   datetime: Temporal.PlainDateTime;
   firstDate: Temporal.PlainDate;
   lastDate: Temporal.PlainDate;
   navHints?: boolean;
+  showNow?: boolean;
   dayLightStart?: Temporal.PlainTime;
   dayLightEnd?: Temporal.PlainTime;
 }
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
-  weekStart: 1,
+  showNow: true,
   dayLightStart: () => Temporal.PlainTime.from({ hour: 6 }),
   dayLightEnd: () => Temporal.PlainTime.from({ hour: 19 }),
 });
@@ -42,9 +44,11 @@ const refs = {
   side: ref<HTMLElement | null>(null),
   timeline: ref<HTMLElement | null>(null),
   matrix: ref<HTMLElement | null>(null),
+  nowMark: ref<InstanceType<typeof NowMark> | null>(null),
 };
 
 const today: Temporal.PlainDate = Temporal.Now.plainDateISO();
+let tickTimer: ReturnType<typeof setInterval> | null = null;
 
 const days = computed(() => {
   const duration = props.firstDate.until(props.lastDate);
@@ -100,6 +104,39 @@ const hours = computed(() => {
   return hours;
 });
 
+function applyHeaderSize(): void {
+  if (refs.matrix.value && refs.header.value) {
+    const dayCell = refs.matrix.value.children.item(0) as HTMLElement | null;
+    const cellWidth = dayCell?.getBoundingClientRect().width;
+    if (!cellWidth) {
+      console.warn(
+        "Unable to get the exact width of a day cell in the matrix."
+      );
+      return;
+    }
+    if (cellWidth) {
+      if (refs.headerAllDays.value) {
+        applyWidthToChildren(refs.headerAllDays.value.children, cellWidth);
+      }
+      if (refs.headerDays.value) {
+        applyWidthToChildren(refs.headerDays.value.children, cellWidth);
+      }
+      if (refs.nowMark.value) {
+        refs.nowMark.value.$el.setAttribute("width", `${cellWidth}px`);
+      }
+    }
+  }
+}
+
+function applyWidthToChildren(collection: HTMLCollection, width: number): void {
+  for (let i = 0; i < collection.length; i++) {
+    const child = collection.item(i) as HTMLElement | null;
+    if (child) {
+      child.setAttribute("style", `width: ${width}px;`);
+    }
+  }
+}
+
 function get24Hours(): Array<Temporal.PlainTime> {
   const hours = Array<Temporal.PlainTime>(24);
   for (let i = 0; i < 24; i++) {
@@ -131,35 +168,7 @@ function onScroll(): void {
   }
 }
 
-function applyHeaderSize(): void {
-  if (refs.matrix.value && refs.header.value) {
-    const dayCell = refs.matrix.value.children.item(0) as HTMLElement | null;
-    const cellWidth = dayCell?.getBoundingClientRect().width;
-    if (!cellWidth) {
-      console.warn(
-        "Unable to get the exact width of a day cell in the matrix."
-      );
-      return;
-    }
-    if (cellWidth) {
-      if (refs.headerAllDays.value) {
-        applyWidthToChildren(refs.headerAllDays.value.children, cellWidth);
-      }
-      if (refs.headerDays.value) {
-        applyWidthToChildren(refs.headerDays.value.children, cellWidth);
-      }
-    }
-  }
-}
-
-function applyWidthToChildren(collection: HTMLCollection, width: number): void {
-  for (let i = 0; i < collection.length; i++) {
-    const child = collection.item(i) as HTMLElement | null;
-    if (child) {
-      child.setAttribute("style", `width: ${width}px;`);
-    }
-  }
-}
+function tick() {}
 
 onUpdated(() => {
   applyHeaderSize();
@@ -171,11 +180,26 @@ onMounted(() => {
   }
   window.addEventListener("resize", applyHeaderSize);
   applyHeaderSize();
+  if (props.showNow) {
+    if (refs.nowMark.value) {
+      refs.nowMark.value.$el.style.display = "block";
+    }
+    tickTimer = setInterval(tick, 1000);
+    tick();
+  } else {
+    if (refs.nowMark.value) {
+      refs.nowMark.value.$el.style.display = "none";
+    }
+    tickTimer = null;
+  }
 });
 
 onUnmounted(() => {
   if (refs.content.value) {
     refs.content.value.onscroll = null;
+  }
+  if (tickTimer) {
+    clearInterval(tickTimer);
   }
   window.removeEventListener("resize", applyHeaderSize);
 });
@@ -264,6 +288,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
             ]"
           ></div>
         </div>
+        <NowMark class="now" :ref="refs.nowMark" />
       </div>
     </div>
   </div>
@@ -351,9 +376,6 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
   @apply border-t-0;
 }
 
-.week-view .content .matrix {
-}
-
 .week-view .content .matrix .days {
   @apply relative grow grid grid-flow-col grid-rows-[repeat(24,_var(--hour-cell-height))];
 }
@@ -365,5 +387,12 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 
 .week-view .content .matrix .days .day.cell.night {
   @apply bg-gray-100;
+}
+
+.week-view .content .matrix .now {
+  @apply absolute;
+  fill: red;
+  left: 200px;
+  top: 200px;
 }
 </style>
