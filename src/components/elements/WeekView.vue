@@ -9,16 +9,6 @@ import {
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
 
-const content = ref<HTMLElement | null>(null);
-const top = ref<HTMLElement | null>(null);
-const header = ref<HTMLElement | null>(null);
-const headerAllDays = ref<HTMLElement | null>(null);
-const headerDays = ref<HTMLElement | null>(null);
-const side = ref<HTMLElement | null>(null);
-const timeline = ref<HTMLElement | null>(null);
-const matrix = ref<HTMLElement | null>(null);
-const today: Temporal.PlainDate = Temporal.Now.plainDateISO();
-
 interface Props {
   datetime: Temporal.PlainDateTime;
   firstDate: Temporal.PlainDate;
@@ -42,6 +32,19 @@ interface HourInformation {
   hourClass: string;
   rowNumber: number;
 }
+
+const refs = {
+  content: ref<HTMLElement | null>(null),
+  top: ref<HTMLElement | null>(null),
+  header: ref<HTMLElement | null>(null),
+  headerAllDays: ref<HTMLElement | null>(null),
+  headerDays: ref<HTMLElement | null>(null),
+  side: ref<HTMLElement | null>(null),
+  timeline: ref<HTMLElement | null>(null),
+  matrix: ref<HTMLElement | null>(null),
+};
+
+const today: Temporal.PlainDate = Temporal.Now.plainDateISO();
 
 const days = computed(() => {
   const duration = props.firstDate.until(props.lastDate);
@@ -105,7 +108,7 @@ function get24Hours(): Array<Temporal.PlainTime> {
   return hours;
 }
 
-function isDayLight(time: Temporal.PlainTime) {
+function isDayLight(time: Temporal.PlainTime): boolean {
   if (!props.dayLightStart || !props.dayLightEnd) {
     throw new Error("Property 'dayLightStart' and/or 'dayLightEnd' invalid.");
   }
@@ -117,20 +120,20 @@ function isDayLight(time: Temporal.PlainTime) {
 
 function onScroll(): void {
   if (
-    content.value &&
-    side.value &&
-    timeline.value &&
-    top.value &&
-    header.value
+    refs.content.value &&
+    refs.side.value &&
+    refs.timeline.value &&
+    refs.top.value &&
+    refs.header.value
   ) {
-    timeline.value.style.top = -content.value.scrollTop + "px";
-    header.value.style.left = -content.value.scrollLeft + "px";
+    refs.timeline.value.style.top = -refs.content.value.scrollTop + "px";
+    refs.header.value.style.left = -refs.content.value.scrollLeft + "px";
   }
 }
 
 function applyHeaderSize(): void {
-  if (matrix.value && header.value) {
-    const dayCell = matrix.value.children.item(0) as HTMLElement | null;
+  if (refs.matrix.value && refs.header.value) {
+    const dayCell = refs.matrix.value.children.item(0) as HTMLElement | null;
     const cellWidth = dayCell?.getBoundingClientRect().width;
     if (!cellWidth) {
       console.warn(
@@ -139,11 +142,11 @@ function applyHeaderSize(): void {
       return;
     }
     if (cellWidth) {
-      if (headerAllDays.value) {
-        applyWidthToChildren(headerAllDays.value.children, cellWidth);
+      if (refs.headerAllDays.value) {
+        applyWidthToChildren(refs.headerAllDays.value.children, cellWidth);
       }
-      if (headerDays.value) {
-        applyWidthToChildren(headerDays.value.children, cellWidth);
+      if (refs.headerDays.value) {
+        applyWidthToChildren(refs.headerDays.value.children, cellWidth);
       }
     }
   }
@@ -163,16 +166,16 @@ onUpdated(() => {
 });
 
 onMounted(() => {
-  if (content.value) {
-    content.value.onscroll = onScroll;
+  if (refs.content.value) {
+    refs.content.value.onscroll = onScroll;
   }
   window.addEventListener("resize", applyHeaderSize);
   applyHeaderSize();
 });
 
 onUnmounted(() => {
-  if (content.value) {
-    content.value.onscroll = null;
+  if (refs.content.value) {
+    refs.content.value.onscroll = null;
   }
   window.removeEventListener("resize", applyHeaderSize);
 });
@@ -207,17 +210,17 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
     </div>
     <div class="all-day-row"></div>
     <div class="content-side"></div>
-    <div class="content" ref="content">
-      <div class="side" ref="side">
-        <div class="timeline" ref="timeline">
+    <div class="content" :ref="refs.content">
+      <div class="side" :ref="refs.side">
+        <div class="timeline" :ref="refs.timeline">
           <div v-for="(hour, index) in get24Hours()" :key="index" class="hour">
             {{ hour.toString({ smallestUnit: "minute" }) }}
           </div>
         </div>
       </div>
-      <div class="top" ref="top">
-        <div class="header" ref="header">
-          <div class="days" ref="headerDays">
+      <div class="top" :ref="refs.top">
+        <div class="header" :ref="refs.header">
+          <div class="days" :ref="refs.headerDays">
             <DayColumnHeader
               v-for="(day, index) in days"
               :key="index"
@@ -226,7 +229,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
               :class="[getTenseByDate(day)]"
             />
           </div>
-          <div class="all-days" ref="headerAllDays">
+          <div class="all-days" :ref="refs.headerAllDays">
             <div
               v-for="(day, index) in days"
               :key="index"
@@ -245,7 +248,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
         <div
           class="days"
           :style="`grid-template-columns: repeat(${days.length},_1fr));`"
-          ref="matrix"
+          :ref="refs.matrix"
         >
           <div
             v-for="(hourInformation, index) in hours"
