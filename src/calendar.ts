@@ -31,7 +31,7 @@ export function getWeekDayString(date: Temporal.PlainDate): string {
   return WeekDay[date.dayOfWeek];
 }
 
-export function isDateBetweenInclusive(
+export function isDateBetween(
   date: Temporal.PlainDate,
   left: Temporal.PlainDate,
   right: Temporal.PlainDate

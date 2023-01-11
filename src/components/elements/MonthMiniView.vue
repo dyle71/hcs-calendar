@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Temporal } from "@js-temporal/polyfill";
-import { isDateBetweenInclusive } from "@/calendar";
+import { isDateBetween } from "@/calendar";
 import MonthLabel from "@/components/elements/MonthLabel.vue";
 import ToolTip from "@/components/elements/ToolTip.vue";
 
@@ -85,7 +85,7 @@ function getDayInformation(
     props.highlightDays &&
     props.firstHighlightedDate != null &&
     props.lastHighlightedDate != null
-      ? isDateBetweenInclusive(
+      ? isDateBetween(
           date,
           props.firstHighlightedDate,
           props.lastHighlightedDate
