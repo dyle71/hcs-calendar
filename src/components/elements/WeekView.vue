@@ -5,6 +5,7 @@ import {
   getTenseByDate,
   getTenseByDateTime,
   getWeekDayString,
+  isDateTimeBetween,
 } from "@/calendar";
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
@@ -121,9 +122,6 @@ function applyHeaderSize(): void {
       if (refs.headerDays.value) {
         applyWidthToChildren(refs.headerDays.value.children, cellWidth);
       }
-      if (refs.nowMark.value) {
-        refs.nowMark.value.$el.setAttribute("width", `${cellWidth}px`);
-      }
     }
   }
 }
@@ -168,10 +166,49 @@ function onScroll(): void {
   }
 }
 
-function tick() {}
+function setNowMark() {
+  if (
+    props.showNow &&
+    refs.nowMark.value &&
+    refs.matrix.value &&
+    refs.header.value
+  ) {
+    const now = Temporal.Now.plainDateTimeISO();
+    if (
+      !isDateTimeBetween(
+        now,
+        Temporal.PlainDateTime.from(props.firstDate),
+        Temporal.PlainDateTime.from(props.lastDate)
+      )
+    ) {
+      refs.nowMark.value.$el.style.display = "none";
+      return;
+    }
+    refs.nowMark.value.$el.style.display = "block";
+
+    const dayClass = `${Temporal.PlainDate.from(now).toString()}`;
+    const hourClass = now.hour.toString().padStart(2, "0") + "00";
+
+    const dayCells = refs.matrix.value.getElementsByClassName(
+      `${dayClass} ${hourClass}`
+    );
+    if (dayCells.length === 1) {
+      const dayCell = dayCells.item(0) as HTMLElement;
+      const cellRect = dayCell.getBoundingClientRect();
+      refs.nowMark.value.$el.style.width = `${cellRect.width}px`;
+      refs.nowMark.value.$el.style.top = `${dayCell.offsetTop}px`;
+      refs.nowMark.value.$el.style.left = `${dayCell.offsetLeft}px`;
+    }
+  }
+}
+
+function tick() {
+  setNowMark();
+}
 
 onUpdated(() => {
   applyHeaderSize();
+  setNowMark();
 });
 
 onMounted(() => {
@@ -181,15 +218,8 @@ onMounted(() => {
   window.addEventListener("resize", applyHeaderSize);
   applyHeaderSize();
   if (props.showNow) {
-    if (refs.nowMark.value) {
-      refs.nowMark.value.$el.style.display = "block";
-    }
     tickTimer = setInterval(tick, 1000);
-    tick();
   } else {
-    if (refs.nowMark.value) {
-      refs.nowMark.value.$el.style.display = "none";
-    }
     tickTimer = null;
   }
 });
@@ -203,6 +233,9 @@ onUnmounted(() => {
   }
   window.removeEventListener("resize", applyHeaderSize);
 });
+
+applyHeaderSize();
+setNowMark();
 
 const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 </script>
@@ -283,7 +316,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
               hourInformation.hourClass,
               hourInformation.weekdayClass,
               hourInformation.daylight ? 'daylight' : 'night',
-              hourInformation.rowNumber === props.days - 1 ? 'lastRow' : '',
+              hourInformation.rowNumber === days.length - 1 ? 'lastRow' : '',
               getTenseByDateTime(hourInformation.datetime),
             ]"
           ></div>
@@ -377,7 +410,7 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 }
 
 .week-view .content .matrix .days {
-  @apply relative grow grid grid-flow-col grid-rows-[repeat(24,_var(--hour-cell-height))];
+  @apply grow grid grid-flow-col grid-rows-[repeat(24,_var(--hour-cell-height))];
 }
 
 .week-view .content .matrix .days .day.cell {
@@ -387,12 +420,5 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 
 .week-view .content .matrix .days .day.cell.night {
   @apply bg-gray-100;
-}
-
-.week-view .content .matrix .now {
-  @apply absolute;
-  fill: red;
-  left: 200px;
-  top: 200px;
 }
 </style>

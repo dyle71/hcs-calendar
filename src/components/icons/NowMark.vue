@@ -1,9 +1,48 @@
 <template>
-  <svg viewBox="0 0 57.15 4.233">
-    <g transform="translate(2.117 -6.35)">
-      <path d="M0 7.938h52.917v1.323H0z" />
-      <circle cy="8.467" r="2.117" />
-      <circle cx="52.917" cy="8.467" r="2.117" />
-    </g>
-  </svg>
+  <div class="now-mark">
+    <svg class="left-circle">
+      <circle cx="50%" cy="50%" r="50%" />
+    </svg>
+    <svg class="line">
+      <rect x="0" y="0" width="100%" height="100%" />
+    </svg>
+    <svg class="right-circle">
+      <circle cx="50%" cy="50%" r="50%" />
+    </svg>
+  </div>
 </template>
+
+<style scoped>
+.now-mark {
+  display: block;
+  position: absolute;
+  background-color: black;
+}
+
+.now-mark svg {
+  display: block;
+  position: absolute;
+  fill: #cc1818;
+  stroke: #cc1818;
+}
+
+.now-mark svg.left-circle {
+  width: 12px;
+  height: 12px;
+  top: calc((100% - 10px) / 2);
+  left: -5px;
+}
+
+.now-mark svg.line {
+  width: 100%;
+  height: 3px;
+  top: 50%;
+}
+
+.now-mark svg.right-circle {
+  width: 12px;
+  height: 12px;
+  top: calc((100% - 10px) / 2);
+  right: -5px;
+}
+</style>

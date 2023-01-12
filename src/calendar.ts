@@ -40,3 +40,13 @@ export function isDateBetween(
   const lessThanRight = Temporal.PlainDate.compare(date, right) < 0;
   return biggerThanLeft && lessThanRight;
 }
+
+export function isDateTimeBetween(
+  datetime: Temporal.PlainDateTime,
+  left: Temporal.PlainDateTime,
+  right: Temporal.PlainDateTime
+) {
+  const biggerThanLeft = Temporal.PlainDate.compare(left, datetime) <= 0;
+  const lessThanRight = Temporal.PlainDate.compare(datetime, right) < 0;
+  return biggerThanLeft && lessThanRight;
+}
