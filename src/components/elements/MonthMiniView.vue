@@ -269,7 +269,7 @@ const emit = defineEmits([
 }
 
 .month-mini-view .body .weeknumber {
-  @apply h-full bg-gray-200 pt-1.5;
+  @apply h-full bg-gray-100 pt-1.5;
 }
 
 .month-mini-view .body .day {
@@ -278,7 +278,7 @@ const emit = defineEmits([
 .month-mini-view .body .day .inner {
   font-size: 85%;
   @apply rounded-full m-1 p-0.5 h-5 w-5;
-  @apply hover:bg-gray-200 hover:cursor-pointer focus:outline-0;
+  @apply hover:bg-gray-300 hover:cursor-pointer focus:outline-0;
 }
 
 .month-mini-view .body .in-month {
@@ -290,7 +290,7 @@ const emit = defineEmits([
 }
 
 .month-mini-view .body .in-month {
-  @apply bg-slate-300;
+  @apply bg-fuchsia-100;
 }
 
 .month-mini-view .body .highlight {

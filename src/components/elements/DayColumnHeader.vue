@@ -33,12 +33,12 @@ const today: Temporal.PlainDate = Temporal.Now.plainDateISO();
 
 <style scoped>
 .day-column-header {
-  @apply flex flex-row border-l p-2 gap-2;
+  @apply flex flex-row p-2 gap-2;
 }
 
 .day-column-header .dayofmonth-header {
   @apply text-xl p-2 text-center align-middle rounded-full w-12 h-12 select-none;
-  @apply hover:bg-gray-200;
+  @apply hover:bg-gray-100;
 }
 
 .day-column-header .dayofmonth-header.sunday {
@@ -46,7 +46,7 @@ const today: Temporal.PlainDate = Temporal.Now.plainDateISO();
 }
 
 .day-column-header .dayofmonth-header.today {
-  @apply bg-amber-300 hover:bg-gray-200;
+  @apply bg-amber-300 hover:bg-gray-100;
 }
 
 .day-column-header .date {

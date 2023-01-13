@@ -27,6 +27,14 @@ function switchMonthViewHighlight(enable: boolean) {
   }
 }
 
+function switchNowMarker(enable: boolean) {
+  if (enable) {
+    emit("enableWeekViewNowMarker");
+  } else {
+    emit("disableWeekViewNowMarker");
+  }
+}
+
 function emitDayLightEndChange() {
   let time = { hour: parseInt(dayLightEnd.value), minute: 0, second: 0 };
   if (time.hour === 24) {
@@ -58,8 +66,10 @@ function toggleOptionVisibility() {
 const emit = defineEmits([
   "enableCalendarNavHints",
   "enableMonthViewHighlight",
+  "enableWeekViewNowMarker",
   "disableCalendarNavHints",
   "disableMonthViewHighlight",
+  "disableWeekViewNowMarker",
   "changeWeekViewDays",
   "changeStartOfWeekView",
   "changeFirstDayOfWeek",
@@ -99,6 +109,13 @@ const emit = defineEmits([
       </section>
       <section>
         <h2>Week View:</h2>
+        <SwitchBox
+          class="option switch-box"
+          id="show-now-marker"
+          :initial-state="true"
+          label="Show now marker:"
+          @onClick="switchNowMarker"
+        />
         <label for="week-view-days-amount" class="option three-cols">
           <span>Amount of days:</span>
           <input

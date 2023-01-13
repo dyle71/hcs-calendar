@@ -30,6 +30,7 @@ const dayLightEnd = ref<Temporal.PlainTime>(
   Temporal.PlainTime.from({ hour: 19 })
 );
 const highlightDaysInMonthView = ref(true);
+const showNowMarker = ref(true);
 
 function calculateWeekViewInterval() {
   let firstDay = currentDate.value;
@@ -191,8 +192,10 @@ calculateWeekViewInterval();
         @onDayClick="selectDay($event)"
         @disableCalendarNavHints="showNavHints = false"
         @enableCalendarNavHints="showNavHints = true"
-        @disable-month-view-highlight="highlightDaysInMonthView = false"
         @enable-month-view-highlight="highlightDaysInMonthView = true"
+        @enable-week-view-now-marker="showNowMarker = true"
+        @disable-month-view-highlight="highlightDaysInMonthView = false"
+        @disable-week-view-now-marker="showNowMarker = false"
         @changeWeekViewDays="changeWeekViewDays($event)"
         @changeStartOfWeekView="changeStartOfWeekView($event)"
         @changeFirstDayOfWeek="changeFirstDayOfWeek($event)"
@@ -206,6 +209,7 @@ calculateWeekViewInterval();
         :navHints="showNavHints"
         :day-light-start="dayLightStart"
         :day-light-end="dayLightEnd"
+        :show-now="showNowMarker"
         @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
         @onWeekLabelDoubleRight="weekShiftDoubleRight()"
         @onWeekLabelLeft="weekShiftLeft()"

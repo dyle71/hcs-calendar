@@ -11,12 +11,14 @@ interface Props {
   startOfDayOfWeekView?: "float" | "firstDayOfWeek";
   dayLightStart?: Temporal.PlainTime;
   dayLightEnd?: Temporal.PlainTime;
+  showNow?: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   startOfDayOfWeekView: "firstDayOfWeek",
   dayLightStart: () => Temporal.PlainTime.from({ hour: 6 }),
   dayLightEnd: () => Temporal.PlainTime.from({ hour: 19 }),
+  showNow: true,
 });
 
 const emit = defineEmits([
@@ -51,6 +53,7 @@ const emit = defineEmits([
       :first-day="props.startOfDayOfWeekView"
       :day-light-end="props.dayLightEnd"
       :day-light-start="props.dayLightStart"
+      :show-now="props.showNow"
       @onWeekLabelDoubleLeft="emit('onWeekLabelDoubleLeft')"
       @onWeekLabelDoubleRight="emit('onWeekLabelDoubleRight')"
       @onWeekLabelLeft="emit('onWeekLabelLeft')"

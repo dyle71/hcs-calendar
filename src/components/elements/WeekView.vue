@@ -116,11 +116,11 @@ function applyHeaderSize(): void {
       return;
     }
     if (cellWidth) {
+      if (refs.header.value) {
+        applyWidthToChildren(refs.header.value.children, cellWidth);
+      }
       if (refs.headerAllDays.value) {
         applyWidthToChildren(refs.headerAllDays.value.children, cellWidth);
-      }
-      if (refs.headerDays.value) {
-        applyWidthToChildren(refs.headerDays.value.children, cellWidth);
       }
     }
   }
@@ -154,25 +154,22 @@ function isDayLight(time: Temporal.PlainTime): boolean {
 }
 
 function onScroll(): void {
-  if (
-    refs.content.value &&
-    refs.side.value &&
-    refs.timeline.value &&
-    refs.top.value &&
-    refs.header.value
-  ) {
-    refs.timeline.value.style.top = -refs.content.value.scrollTop + "px";
-    refs.header.value.style.left = -refs.content.value.scrollLeft + "px";
+  if (refs.matrix.value) {
+    if (refs.timeline.value) {
+      refs.timeline.value.style.top = -refs.matrix.value.scrollTop + "px";
+    }
+    if (refs.header.value) {
+      refs.header.value.style.left = -refs.matrix.value.scrollLeft + "px";
+    }
+    if (refs.headerAllDays.value) {
+      refs.headerAllDays.value.style.left =
+        -refs.matrix.value.scrollLeft + "px";
+    }
   }
 }
 
 function setNowMark() {
-  if (
-    props.showNow &&
-    refs.nowMark.value &&
-    refs.matrix.value &&
-    refs.header.value
-  ) {
+  if (props.showNow && refs.nowMark.value && refs.matrix.value) {
     const now = Temporal.Now.plainDateTimeISO();
     if (
       !isDateTimeBetween(
@@ -195,8 +192,10 @@ function setNowMark() {
     if (dayCells.length === 1) {
       const dayCell = dayCells.item(0) as HTMLElement;
       const cellRect = dayCell.getBoundingClientRect();
+      const minutePercentage = now.minute / 60;
+      const nowTop = dayCell.offsetTop + cellRect.height * minutePercentage;
       refs.nowMark.value.$el.style.width = `${cellRect.width}px`;
-      refs.nowMark.value.$el.style.top = `${dayCell.offsetTop}px`;
+      refs.nowMark.value.$el.style.top = `${nowTop}px`;
       refs.nowMark.value.$el.style.left = `${dayCell.offsetLeft}px`;
     }
   }
@@ -212,8 +211,8 @@ onUpdated(() => {
 });
 
 onMounted(() => {
-  if (refs.content.value) {
-    refs.content.value.onscroll = onScroll;
+  if (refs.matrix.value) {
+    refs.matrix.value.onscroll = onScroll;
   }
   window.addEventListener("resize", applyHeaderSize);
   applyHeaderSize();
@@ -222,6 +221,8 @@ onMounted(() => {
   } else {
     tickTimer = null;
   }
+  applyHeaderSize();
+  setNowMark();
 });
 
 onUnmounted(() => {
@@ -234,15 +235,12 @@ onUnmounted(() => {
   window.removeEventListener("resize", applyHeaderSize);
 });
 
-applyHeaderSize();
-setNowMark();
-
 const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
 </script>
 
 <template>
   <div class="week-view">
-    <div class="days-header-row-side">
+    <div class="day-nav-cell">
       <div class="day-nav-buttons">
         <CalendarNavButtonRow
           :today="false"
@@ -261,68 +259,63 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
         />
       </div>
     </div>
-    <div class="days-header-row"></div>
-    <div class="all-day-row-side">
-      {{ $t("weekView.allDay") }}
+
+    <div class="header-blend">
+      <div class="header" :ref="refs.header">
+        <DayColumnHeader
+          v-for="(day, index) in days"
+          :key="index"
+          :day="day"
+          class="day row cell"
+          :class="[getTenseByDate(day)]"
+        />
+      </div>
     </div>
-    <div class="all-day-row"></div>
-    <div class="content-side"></div>
-    <div class="content" :ref="refs.content">
-      <div class="side" :ref="refs.side">
-        <div class="timeline" :ref="refs.timeline">
-          <div v-for="(hour, index) in get24Hours()" :key="index" class="hour">
-            {{ hour.toString({ smallestUnit: "minute" }) }}
-          </div>
-        </div>
-      </div>
-      <div class="top" :ref="refs.top">
-        <div class="header" :ref="refs.header">
-          <div class="days" :ref="refs.headerDays">
-            <DayColumnHeader
-              v-for="(day, index) in days"
-              :key="index"
-              :day="day"
-              class="day row cell"
-              :class="[getTenseByDate(day)]"
-            />
-          </div>
-          <div class="all-days" :ref="refs.headerAllDays">
-            <div
-              v-for="(day, index) in days"
-              :key="index"
-              class="all-day row cell"
-              :class="[
-                day.toString(),
-                getTenseByDate(day),
-                Temporal.PlainDate.compare(day, today) === 0 ? 'today' : '',
-                getWeekDayString(day),
-              ]"
-            ></div>
-          </div>
-        </div>
-      </div>
-      <div class="matrix">
+
+    <div class="all-days-side"></div>
+    <div class="all-days-blend">
+      <div class="all-days" :ref="refs.headerAllDays">
         <div
-          class="days"
-          :style="`grid-template-columns: repeat(${days.length},_1fr));`"
-          :ref="refs.matrix"
-        >
-          <div
-            v-for="(hourInformation, index) in hours"
-            :key="index"
-            class="day cell"
-            :class="[
-              hourInformation.dayClass,
-              hourInformation.hourClass,
-              hourInformation.weekdayClass,
-              hourInformation.daylight ? 'daylight' : 'night',
-              hourInformation.rowNumber === days.length - 1 ? 'lastRow' : '',
-              getTenseByDateTime(hourInformation.datetime),
-            ]"
-          ></div>
-        </div>
-        <NowMark class="now" :ref="refs.nowMark" />
+          v-for="(day, index) in days"
+          :key="index"
+          class="all-day row cell"
+          :class="[
+            day.toString(),
+            getTenseByDate(day),
+            Temporal.PlainDate.compare(day, today) === 0 ? 'today' : '',
+            getWeekDayString(day),
+          ]"
+        ></div>
       </div>
+    </div>
+
+    <div class="timeline-blend">
+      <div class="timeline" :ref="refs.timeline">
+        <div v-for="(hour, index) in get24Hours()" :key="index" class="hour">
+          {{ hour.toString({ smallestUnit: "minute" }) }}
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="matrix"
+      :style="`grid-template-columns: repeat(${days.length},_1fr));`"
+      :ref="refs.matrix"
+    >
+      <div
+        v-for="(hourInformation, index) in hours"
+        :key="index"
+        class="day cell"
+        :class="[
+          hourInformation.dayClass,
+          hourInformation.hourClass,
+          hourInformation.weekdayClass,
+          hourInformation.daylight ? 'daylight' : 'night',
+          hourInformation.rowNumber === days.length - 1 ? 'lastRow' : '',
+          getTenseByDateTime(hourInformation.datetime),
+        ]"
+      ></div>
+      <NowMark v-if="showNow" class="now" :ref="refs.nowMark" />
     </div>
   </div>
 </template>
@@ -344,81 +337,72 @@ const emit = defineEmits(["onDayLeftClick", "onDayRightClick"]);
     minmax(auto, 1fr);
 }
 
-.week-view .days-header-row-side {
-  @apply flex p-1 border-r;
+.week-view .day-nav-cell {
+  @apply flex border-b border-r;
 }
 
-.week-view .days-header-row-side .day-nav-buttons {
+.week-view .day-nav-cell .day-nav-buttons {
   @apply my-auto;
 }
 
-.week-view .all-day-row-side {
-  @apply border-t border-b border-r;
-  @apply text-xs text-gray-400 text-right pr-0.5;
+.week-view .header-blend {
+  @apply border-b overflow-hidden;
 }
 
-.week-view .all-day-row {
-  @apply border-t border-b;
+.week-view .header {
+  @apply relative flex flex-row;
 }
 
-.week-view .content {
-  @apply overflow-scroll;
-}
-
-.week-view .content .top {
-  @apply absolute overflow-hidden;
-  top: 0;
-  left: var(--left-side-bar-width);
-  height: calc(var(--header-row-height) + var(--all-day-row-height));
-}
-
-.week-view .content .top .header {
-  @apply relative;
-}
-
-.week-view .content .top .header .all-days {
-  @apply relative grid grid-flow-col border-b;
-}
-
-.all-day.row.cell {
-  @apply relative border-l border-t;
-  height: var(--all-day-row-height);
-}
-
-.week-view .content .top .header .days {
-  @apply relative grid grid-flow-col border-b;
-}
-
-.week-view .content .side {
-  @apply absolute overflow-hidden border-r;
-  left: 0;
-  top: calc(var(--header-row-height) + var(--all-day-row-height));
-  width: var(--left-side-bar-width);
-}
-
-.week-view .content .side .timeline {
-  @apply relative;
-}
-
-.week-view .content .side .timeline .hour {
-  @apply text-xs text-right text-gray-400 border-t;
-  height: var(--hour-cell-height);
-}
-
-.week-view .content .side .timeline .hour:first-child {
-  @apply border-t-0;
-}
-
-.week-view .content .matrix .days {
-  @apply grow grid grid-flow-col grid-rows-[repeat(24,_var(--hour-cell-height))];
-}
-
-.week-view .content .matrix .days .day.cell {
-  @apply border-l border-t;
+.week-view .header .cell {
+  @apply border-r;
   min-width: var(--hour-cell-min-width);
 }
 
-.week-view .content .matrix .days .day.cell.night {
+.week-view .all-days-side {
+  @apply border-b border-r;
+}
+
+.week-view .all-days-blend {
+  @apply border-b overflow-hidden;
+}
+
+.week-view .all-days {
+  @apply relative flex flex-row;
+}
+
+.week-view .all-days .cell {
+  @apply border-r;
+  min-width: var(--hour-cell-min-width);
+  min-height: var(--all-day-row-height);
+}
+
+.week-view .timeline-blend {
+  @apply overflow-hidden;
+}
+
+.week-view .timeline {
+  @apply relative flex flex-col overflow-hidden;
+}
+
+.week-view .timeline .hour {
+  @apply flex-none text-xs text-right text-gray-400 border-b border-r;
+  height: var(--hour-cell-height);
+}
+
+.week-view .matrix {
+  @apply relative grow grid grid-flow-col grid-rows-[repeat(24,_var(--hour-cell-height))] overflow-scroll;
+}
+
+.week-view .matrix .cell {
+  @apply border-b border-r;
+  min-width: var(--hour-cell-min-width);
+}
+
+.week-view .matrix .cell.night {
   @apply bg-gray-100;
+}
+
+.week-view .matrix .now {
+  @apply absolute;
 }
 </style>

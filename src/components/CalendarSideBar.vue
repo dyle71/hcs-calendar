@@ -62,8 +62,10 @@ const emit = defineEmits([
   "onDayClick",
   "enableCalendarNavHints",
   "enableMonthViewHighlight",
+  "enableWeekViewNowMarker",
   "disableCalendarNavHints",
   "disableMonthViewHighlight",
+  "disableWeekViewNowMarker",
   "changeWeekViewDays",
   "changeStartOfWeekView",
   "changeFirstDayOfWeek",
@@ -105,8 +107,10 @@ const emit = defineEmits([
       class="options-panel"
       @enableCalendarNavHints="emit('enableCalendarNavHints')"
       @enableMonthViewHighlight="emit('enableMonthViewHighlight')"
+      @enable-week-view-now-marker="emit('enableWeekViewNowMarker')"
       @disableCalendarNavHints="emit('disableCalendarNavHints')"
       @disableMonthViewHighlight="emit('disableMonthViewHighlight')"
+      @disable-week-view-now-marker="emit('disableWeekViewNowMarker')"
       @changeWeekViewDays="emit('changeWeekViewDays', $event)"
       @changeStartOfWeekView="emit('changeStartOfWeekView', $event)"
       @changeFirstDayOfWeek="emit('changeFirstDayOfWeek', $event)"
