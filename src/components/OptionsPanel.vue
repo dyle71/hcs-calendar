@@ -130,7 +130,7 @@ const emit = defineEmits([
           <span class="range-value">{{ weekViewDays }}</span>
         </label>
         <label for="week-view-start-of-week" class="option two-cols">
-          <span>tart of week view:</span>
+          <span>Start of week view:</span>
           <select
             id="week-view-start-of-week"
             v-model="startOfWeekView"
