@@ -4,9 +4,10 @@ import MonthLabel from "@/components/elements/MonthLabel.vue";
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 
 interface Props {
-  datetime: Temporal.PlainDateTime;
-  navHints?: boolean;
+  readonly datetime: Temporal.PlainDateTime;
+  readonly navHints?: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
 });

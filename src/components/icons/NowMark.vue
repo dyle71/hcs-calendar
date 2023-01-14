@@ -16,6 +16,8 @@
 .now-mark {
   display: block;
   background-color: black;
+  width: inherit;
+  height: inherit;
 }
 
 .now-mark svg {

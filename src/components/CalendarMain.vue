@@ -4,15 +4,16 @@ import WeekLabel from "@/components/elements/WeekLabel.vue";
 import WeekView from "@/components/elements/WeekView.vue";
 
 interface Props {
-  datetime: Temporal.PlainDateTime;
-  firstDate: Temporal.PlainDate;
-  lastDate: Temporal.PlainDate;
-  navHints?: boolean;
-  startOfDayOfWeekView?: "float" | "firstDayOfWeek";
-  dayLightStart?: Temporal.PlainTime;
-  dayLightEnd?: Temporal.PlainTime;
-  showNow?: boolean;
+  readonly datetime: Temporal.PlainDateTime;
+  readonly firstDate: Temporal.PlainDate;
+  readonly lastDate: Temporal.PlainDate;
+  readonly navHints?: boolean;
+  readonly startOfDayOfWeekView?: "float" | "firstDayOfWeek";
+  readonly dayLightStart?: Temporal.PlainTime;
+  readonly dayLightEnd?: Temporal.PlainTime;
+  readonly showNow?: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   startOfDayOfWeekView: "firstDayOfWeek",

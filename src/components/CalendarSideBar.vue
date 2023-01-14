@@ -6,13 +6,14 @@ import EventForm from "@/components/elements/EventForm.vue";
 import OptionsPanel from "@/components/OptionsPanel.vue";
 
 interface Props {
-  datetime: Temporal.PlainDateTime;
-  navHints?: boolean;
-  startDayOfWeek?: number;
-  highlightDays?: boolean;
-  firstHighlightedDate?: Temporal.PlainDate | null;
-  lastHighlightedDate?: Temporal.PlainDate | null;
+  readonly datetime: Temporal.PlainDateTime;
+  readonly navHints?: boolean;
+  readonly startDayOfWeek?: number;
+  readonly highlightDays?: boolean;
+  readonly firstHighlightedDate?: Temporal.PlainDate | null;
+  readonly lastHighlightedDate?: Temporal.PlainDate | null;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   startDayOfWeek: 1,
@@ -22,40 +23,24 @@ const props = withDefaults(defineProps<Props>(), {
 const currenMonth = ref(Temporal.PlainDate.from(props.datetime));
 const nextMonth = ref(currenMonth.value.add({ months: 1 }));
 
-function switchToPreviousMonth() {
+function switchToPreviousMonth(): void {
   currenMonth.value = currenMonth.value.subtract({ months: 1 });
   nextMonth.value = currenMonth.value.add({ months: 1 });
 }
 
-function switchToNextMonth() {
+function switchToNextMonth(): void {
   currenMonth.value = currenMonth.value.add({ months: 1 });
   nextMonth.value = currenMonth.value.add({ months: 1 });
 }
 
-function onCurrentMonthUpperClicked() {
+function onCurrentMonthUpperClicked(): void {
   currenMonth.value = Temporal.Now.plainDateISO();
   nextMonth.value = currenMonth.value.add({ months: 1 });
 }
 
-function onCurrentMonthLowerClicked() {
+function onCurrentMonthLowerClicked(): void {
   nextMonth.value = Temporal.Now.plainDateISO();
   currenMonth.value = nextMonth.value.subtract({ months: 1 });
-}
-
-function onPreviousMonthUpperClicked() {
-  switchToPreviousMonth();
-}
-
-function onPreviousMonthLowerClicked() {
-  switchToPreviousMonth();
-}
-
-function onNextMonthUpperClicked() {
-  switchToNextMonth();
-}
-
-function onNextMonthLowerClicked() {
-  switchToNextMonth();
 }
 
 const emit = defineEmits([
@@ -84,8 +69,8 @@ const emit = defineEmits([
       :highlight-days="props.highlightDays"
       :first-highlighted-date="props.firstHighlightedDate"
       :last-highlighted-date="props.lastHighlightedDate"
-      @onLeftClick="onPreviousMonthUpperClicked()"
-      @onRightClick="onNextMonthUpperClicked()"
+      @onLeftClick="switchToPreviousMonth()"
+      @onRightClick="switchToNextMonth()"
       @onDayClick="emit('onDayClick', $event)"
       @onTodayClick="onCurrentMonthUpperClicked()"
     />
@@ -97,8 +82,8 @@ const emit = defineEmits([
       :highlight-days="props.highlightDays"
       :first-highlighted-date="props.firstHighlightedDate"
       :last-highlighted-date="props.lastHighlightedDate"
-      @onLeftClick="onPreviousMonthLowerClicked()"
-      @onRightClick="onNextMonthLowerClicked()"
+      @onLeftClick="switchToPreviousMonth()"
+      @onRightClick="switchToNextMonth()"
       @onDayClick="emit('onDayClick', $event)"
       @onTodayClick="onCurrentMonthLowerClicked()"
     />

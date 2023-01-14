@@ -11,7 +11,7 @@ const firstDayOfWeek = ref("1");
 const dayLightStart = ref("6");
 const dayLightEnd = ref("19");
 
-function switchCalendarNavHints(enable: boolean) {
+function switchCalendarNavHints(enable: boolean): void {
   if (enable) {
     emit("enableCalendarNavHints");
   } else {
@@ -19,7 +19,7 @@ function switchCalendarNavHints(enable: boolean) {
   }
 }
 
-function switchMonthViewHighlight(enable: boolean) {
+function switchMonthViewHighlight(enable: boolean): void {
   if (enable) {
     emit("enableMonthViewHighlight");
   } else {
@@ -27,7 +27,7 @@ function switchMonthViewHighlight(enable: boolean) {
   }
 }
 
-function switchNowMarker(enable: boolean) {
+function switchNowMarker(enable: boolean): void {
   if (enable) {
     emit("enableWeekViewNowMarker");
   } else {
@@ -35,7 +35,7 @@ function switchNowMarker(enable: boolean) {
   }
 }
 
-function emitDayLightEndChange() {
+function emitDayLightEndChange(): void {
   let time = { hour: parseInt(dayLightEnd.value), minute: 0, second: 0 };
   if (time.hour === 24) {
     time = { hour: 23, minute: 59, second: 59 };
@@ -43,7 +43,7 @@ function emitDayLightEndChange() {
   emit("changeDayLightEnd", time);
 }
 
-function emitDayLightStartChange() {
+function emitDayLightStartChange(): void {
   let time = { hour: parseInt(dayLightStart.value), minute: 0, second: 0 };
   if (time.hour === 24) {
     time = { hour: 23, minute: 59, second: 59 };
@@ -51,7 +51,7 @@ function emitDayLightStartChange() {
   emit("changeDayLightStart", time);
 }
 
-function toggleOptionVisibility() {
+function toggleOptionVisibility(): void {
   optionsVisible.value = !optionsVisible.value;
   const button = optionsToggleButton.value as HTMLButtonElement;
   if (button) {

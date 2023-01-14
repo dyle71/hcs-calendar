@@ -7,7 +7,7 @@ import CalendarFooter from "@/components/CalendarFooter.vue";
 import CalendarSideBar from "@/components/CalendarSideBar.vue";
 
 interface Props {
-  initialDate?: Temporal.PlainDateTime;
+  readonly initialDate?: Temporal.PlainDateTime;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,22 +17,26 @@ const props = withDefaults(defineProps<Props>(), {
 const currentDate = ref<Temporal.PlainDateTime>(
   Temporal.PlainDateTime.from(props.initialDate as Temporal.PlainDateTime)
 );
+
 const showNavHints = ref(false);
 const weekViewDays = ref(7);
 const weekStartWeekDay = ref(1);
 const startOfWeekView = ref("firstDayOfWeek");
 const firstDayInWeekView = ref<Temporal.PlainDate | null>(null);
 const lastDayInWeekView = ref<Temporal.PlainDate | null>(null);
+
 const dayLightStart = ref<Temporal.PlainTime>(
   Temporal.PlainTime.from({ hour: 6 })
 );
+
 const dayLightEnd = ref<Temporal.PlainTime>(
   Temporal.PlainTime.from({ hour: 19 })
 );
+
 const highlightDaysInMonthView = ref(true);
 const showNowMarker = ref(true);
 
-function calculateWeekViewInterval() {
+function calculateWeekViewInterval(): void {
   let firstDay = currentDate.value;
   if (startOfWeekView.value === "firstDayOfWeek") {
     while (firstDay.dayOfWeek !== weekStartWeekDay.value) {
@@ -48,17 +52,17 @@ function calculateWeekViewInterval() {
   });
 }
 
-function changeDayLightEnd(time: Temporal.PlainTime) {
+function changeDayLightEnd(time: Temporal.PlainTime): void {
   dayLightEnd.value = time;
   calculateWeekViewInterval();
 }
 
-function changeDayLightStart(time: Temporal.PlainTime) {
+function changeDayLightStart(time: Temporal.PlainTime): void {
   dayLightStart.value = time;
   calculateWeekViewInterval();
 }
 
-function changeFirstDayOfWeek(start: any) {
+function changeFirstDayOfWeek(start: any): void {
   let value = 0;
   if (typeof start === "string") {
     value = parseInt(start);
@@ -73,7 +77,7 @@ function changeFirstDayOfWeek(start: any) {
   calculateWeekViewInterval();
 }
 
-function changeStartOfWeekView(start: any) {
+function changeStartOfWeekView(start: any): void {
   if ("" + start === "firstDayOfWeek") {
     startOfWeekView.value = "firstDayOfWeek";
   } else if ("" + start === "float") {
@@ -86,32 +90,32 @@ function changeStartOfWeekView(start: any) {
   calculateWeekViewInterval();
 }
 
-function changeWeekViewDays(days: any) {
+function changeWeekViewDays(days: any): void {
   weekViewDays.value = typeof days === "number" ? days : parseFloat("" + days);
   calculateWeekViewInterval();
 }
 
-function headerShiftDoubleLeft() {
+function headerShiftDoubleLeft(): void {
   currentDate.value = currentDate.value.subtract({ months: 3 });
   calculateWeekViewInterval();
 }
 
-function headerShiftDoubleRight() {
+function headerShiftDoubleRight(): void {
   currentDate.value = currentDate.value.add({ months: 3 });
   calculateWeekViewInterval();
 }
 
-function headerShiftLeft() {
+function headerShiftLeft(): void {
   currentDate.value = currentDate.value.subtract({ months: 1 });
   calculateWeekViewInterval();
 }
 
-function headerShiftRight() {
+function headerShiftRight(): void {
   currentDate.value = currentDate.value.add({ months: 1 });
   calculateWeekViewInterval();
 }
 
-function weekDayLeft() {
+function weekDayLeft(): void {
   if (startOfWeekView.value === "firstDayOfWeek") {
     currentDate.value = currentDate.value.subtract({ weeks: 1 });
   } else if (startOfWeekView.value === "float") {
@@ -122,7 +126,7 @@ function weekDayLeft() {
   calculateWeekViewInterval();
 }
 
-function weekDayRight() {
+function weekDayRight(): void {
   if (startOfWeekView.value === "firstDayOfWeek") {
     currentDate.value = currentDate.value.add({ weeks: 1 });
   } else if (startOfWeekView.value === "float") {
@@ -133,27 +137,27 @@ function weekDayRight() {
   calculateWeekViewInterval();
 }
 
-function weekShiftDoubleLeft() {
+function weekShiftDoubleLeft(): void {
   currentDate.value = currentDate.value.subtract({ weeks: 4 });
   calculateWeekViewInterval();
 }
 
-function weekShiftDoubleRight() {
+function weekShiftDoubleRight(): void {
   currentDate.value = currentDate.value.add({ weeks: 4 });
   calculateWeekViewInterval();
 }
 
-function weekShiftLeft() {
+function weekShiftLeft(): void {
   currentDate.value = currentDate.value.subtract({ weeks: 1 });
   calculateWeekViewInterval();
 }
 
-function weekShiftRight() {
+function weekShiftRight(): void {
   currentDate.value = currentDate.value.add({ weeks: 1 });
   calculateWeekViewInterval();
 }
 
-function selectDay(day: Temporal.PlainDate) {
+function selectDay(day: Temporal.PlainDate): void {
   currentDate.value = Temporal.PlainDateTime.from({
     day: day.day,
     month: day.month,
@@ -162,7 +166,7 @@ function selectDay(day: Temporal.PlainDate) {
   calculateWeekViewInterval();
 }
 
-function selectToday() {
+function selectToday(): void {
   currentDate.value = Temporal.Now.plainDateTimeISO();
   calculateWeekViewInterval();
 }

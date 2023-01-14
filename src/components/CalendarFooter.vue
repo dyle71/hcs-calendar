@@ -2,8 +2,9 @@
 import { Temporal } from "@js-temporal/polyfill";
 
 interface Props {
-  datetime: Temporal.PlainDateTime;
+  readonly datetime: Temporal.PlainDateTime;
 }
+
 const props = withDefaults(defineProps<Props>(), {});
 
 console.log("CalendarFooter: ", props.datetime);
