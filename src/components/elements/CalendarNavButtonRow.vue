@@ -23,11 +23,11 @@ interface ToolTipDefinition {
 }
 
 interface Props {
-  today?: boolean;
-  double?: boolean;
-  hint?: boolean;
-  hints?: HintDefinition;
-  tooltips?: ToolTipDefinition;
+  readonly today?: boolean;
+  readonly double?: boolean;
+  readonly hint?: boolean;
+  readonly hints?: HintDefinition;
+  readonly tooltips?: ToolTipDefinition;
 }
 
 const props = withDefaults(defineProps<Props>(), {

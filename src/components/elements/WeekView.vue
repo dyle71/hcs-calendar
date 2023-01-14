@@ -12,14 +12,15 @@ import DayColumnHeader from "@/components/elements/DayColumnHeader.vue";
 import NowMark from "@/components/icons/NowMark.vue";
 
 interface Props {
-  datetime: Temporal.PlainDateTime;
-  firstDate: Temporal.PlainDate;
-  lastDate: Temporal.PlainDate;
-  navHints?: boolean;
-  showNow?: boolean;
-  dayLightStart?: Temporal.PlainTime;
-  dayLightEnd?: Temporal.PlainTime;
+  readonly datetime: Temporal.PlainDateTime;
+  readonly firstDate: Temporal.PlainDate;
+  readonly lastDate: Temporal.PlainDate;
+  readonly navHints?: boolean;
+  readonly showNow?: boolean;
+  readonly dayLightStart?: Temporal.PlainTime;
+  readonly dayLightEnd?: Temporal.PlainTime;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
   showNow: true,

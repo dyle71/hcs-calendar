@@ -2,10 +2,11 @@
 import { ref } from "vue";
 
 interface Props {
-  label: string;
-  id: string;
-  initialState: boolean;
+  readonly label: string;
+  readonly id: string;
+  readonly initialState: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {});
 const checked = ref(props.initialState);
 const emit = defineEmits(["onClick"]);

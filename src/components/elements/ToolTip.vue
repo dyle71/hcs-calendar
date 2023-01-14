@@ -3,8 +3,9 @@ import { ref, onMounted } from "vue";
 import { createPopper, Instance } from "@popperjs/core";
 
 interface Props {
-  for?: string;
+  readonly for?: string;
 }
+
 const props = withDefaults(defineProps<Props>(), {});
 
 const tooltipElement = ref<HTMLElement | null>(null);
@@ -12,7 +13,7 @@ const tooltipElement = ref<HTMLElement | null>(null);
 let popperInstance: Instance | null = null;
 let popperTarget: HTMLElement | null = null;
 
-function hideToolTip() {
+function hideToolTip(): void {
   if (tooltipElement.value) {
     tooltipElement.value.removeAttribute("tooltip-active");
 
@@ -28,7 +29,7 @@ function hideToolTip() {
   }
 }
 
-function showToolTip() {
+function showToolTip(): void {
   if (popperInstance && tooltipElement.value) {
     tooltipElement.value.setAttribute("tooltip-active", "");
 

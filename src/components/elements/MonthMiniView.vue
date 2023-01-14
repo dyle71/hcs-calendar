@@ -8,13 +8,14 @@ import ToolTip from "@/components/elements/ToolTip.vue";
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 
 interface Props {
-  date: Temporal.PlainDate;
-  navHints?: boolean;
-  startDayOfWeek?: number;
-  highlightDays?: boolean;
-  firstHighlightedDate?: Temporal.PlainDate | null;
-  lastHighlightedDate?: Temporal.PlainDate | null;
+  readonly date: Temporal.PlainDate;
+  readonly navHints?: boolean;
+  readonly startDayOfWeek?: number;
+  readonly highlightDays?: boolean;
+  readonly firstHighlightedDate?: Temporal.PlainDate | null;
+  readonly lastHighlightedDate?: Temporal.PlainDate | null;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   startDayOfWeek: 1,
   navHints: false,
@@ -67,6 +68,42 @@ const lastDayOfMonth = computed<Temporal.PlainDate>(() => {
   }).subtract({ days: 1 });
 });
 
+const monthMatrix = computed<Array<DayInformation | null>>(() => {
+  const matrix = Array<DayInformation | null>(8 * 7);
+  matrix[0] = null;
+  for (let i = 0; i < 7; i++) {
+    matrix[1 + i] = {
+      header: true,
+      text: `weekday.one.${((props.startDayOfWeek - 1 + i) % 7) + 1}`,
+      weekDayClass: getWeekDayClass(props.startDayOfWeek + i),
+    };
+  }
+
+  let i = 8;
+  let matrixDate = monthSpecs.value.firstDayOfGrid;
+  for (let row = 0; row < (matrix.length - 8) / 8; row++) {
+    const element = getDayInformation(matrixDate, monthSpecs.value);
+    element.header = false;
+    element.weekNumber = true;
+    element.text = matrixDate.weekOfYear.toString();
+    matrix[i] = element;
+    i++;
+
+    for (let col = 0; col < 7; col++) {
+      const element = getDayInformation(matrixDate, monthSpecs.value);
+      element.header = false;
+      element.weekNumber = false;
+      element.weekDayClass = getWeekDayClass(matrixDate.dayOfWeek);
+      element.text = matrixDate.day.toString();
+      matrix[i] = element;
+      i++;
+      matrixDate = matrixDate.add({ days: 1 });
+    }
+  }
+
+  return matrix;
+});
+
 const monthSpecs = computed<MonthSpecification>(() => {
   return {
     firstDayOfGrid: firstDayOfGrid.value,
@@ -116,42 +153,6 @@ function getWeekDayClass(weekDay: number): string {
     "sunday",
   ][((weekDay - 1) % 7) + 1];
 }
-
-const monthMatrix = computed<Array<DayInformation | null>>(() => {
-  const matrix = Array<DayInformation | null>(8 * 7);
-  matrix[0] = null;
-  for (let i = 0; i < 7; i++) {
-    matrix[1 + i] = {
-      header: true,
-      text: `weekday.one.${((props.startDayOfWeek - 1 + i) % 7) + 1}`,
-      weekDayClass: getWeekDayClass(props.startDayOfWeek + i),
-    };
-  }
-
-  let i = 8;
-  let matrixDate = monthSpecs.value.firstDayOfGrid;
-  for (let row = 0; row < (matrix.length - 8) / 8; row++) {
-    const element = getDayInformation(matrixDate, monthSpecs.value);
-    element.header = false;
-    element.weekNumber = true;
-    element.text = matrixDate.weekOfYear.toString();
-    matrix[i] = element;
-    i++;
-
-    for (let col = 0; col < 7; col++) {
-      const element = getDayInformation(matrixDate, monthSpecs.value);
-      element.header = false;
-      element.weekNumber = false;
-      element.weekDayClass = getWeekDayClass(matrixDate.dayOfWeek);
-      element.text = matrixDate.day.toString();
-      matrix[i] = element;
-      i++;
-      matrixDate = matrixDate.add({ days: 1 });
-    }
-  }
-
-  return matrix;
-});
 
 function isInMonth(
   date: Temporal.PlainDate,

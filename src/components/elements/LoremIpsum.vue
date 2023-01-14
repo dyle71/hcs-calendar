@@ -1,7 +1,8 @@
 <script setup lang="ts">
 interface Props {
-  amount?: number;
+  readonly amount?: number;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   amount: 1,
 });

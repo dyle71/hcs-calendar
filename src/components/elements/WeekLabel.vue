@@ -3,9 +3,10 @@ import { Temporal } from "@js-temporal/polyfill";
 import CalendarNavButtonRow from "@/components/elements/CalendarNavButtonRow.vue";
 
 interface Props {
-  datetime: Temporal.PlainDateTime;
-  navHints?: boolean;
+  readonly datetime: Temporal.PlainDateTime;
+  readonly navHints?: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   navHints: false,
 });

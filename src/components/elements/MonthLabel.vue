@@ -2,8 +2,9 @@
 import { Temporal } from "@js-temporal/polyfill";
 
 interface Props {
-  date: Temporal.PlainDate;
+  readonly date: Temporal.PlainDate;
 }
+
 const props = withDefaults(defineProps<Props>(), {});
 </script>
 
