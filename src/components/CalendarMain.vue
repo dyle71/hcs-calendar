@@ -12,6 +12,7 @@ interface Props {
   readonly dayLightStart?: Temporal.PlainTime;
   readonly dayLightEnd?: Temporal.PlainTime;
   readonly showNow?: boolean;
+  readonly focusWeekView?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   dayLightStart: () => Temporal.PlainTime.from({ hour: 6 }),
   dayLightEnd: () => Temporal.PlainTime.from({ hour: 19 }),
   showNow: true,
+  focusWeekView: false,
 });
 
 const emit = defineEmits([
@@ -55,6 +57,7 @@ const emit = defineEmits([
       :day-light-end="props.dayLightEnd"
       :day-light-start="props.dayLightStart"
       :show-now="props.showNow"
+      :focus-on-date-time="props.focusWeekView"
       @onWeekLabelDoubleLeft="emit('onWeekLabelDoubleLeft')"
       @onWeekLabelDoubleRight="emit('onWeekLabelDoubleRight')"
       @onWeekLabelLeft="emit('onWeekLabelLeft')"

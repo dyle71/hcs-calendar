@@ -35,6 +35,7 @@ const dayLightEnd = ref<Temporal.PlainTime>(
 
 const highlightDaysInMonthView = ref(true);
 const showNowMarker = ref(true);
+const focusWeekView = ref<boolean>(true);
 
 function calculateWeekViewInterval(): void {
   let firstDay = currentDate.value;
@@ -54,11 +55,13 @@ function calculateWeekViewInterval(): void {
 
 function changeDayLightEnd(time: Temporal.PlainTime): void {
   dayLightEnd.value = time;
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function changeDayLightStart(time: Temporal.PlainTime): void {
   dayLightStart.value = time;
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
@@ -74,6 +77,7 @@ function changeFirstDayOfWeek(start: any): void {
     return;
   }
   weekStartWeekDay.value = ((value - 1) % 7) + 1;
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
@@ -86,32 +90,37 @@ function changeStartOfWeekView(start: any): void {
     console.warn(`Unknown value for startOfWeekView: ${start}`);
     return;
   }
-
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function changeWeekViewDays(days: any): void {
   weekViewDays.value = typeof days === "number" ? days : parseFloat("" + days);
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function headerShiftDoubleLeft(): void {
   currentDate.value = currentDate.value.subtract({ months: 3 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function headerShiftDoubleRight(): void {
   currentDate.value = currentDate.value.add({ months: 3 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function headerShiftLeft(): void {
   currentDate.value = currentDate.value.subtract({ months: 1 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function headerShiftRight(): void {
   currentDate.value = currentDate.value.add({ months: 1 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
@@ -123,6 +132,7 @@ function weekDayLeft(): void {
   } else {
     console.warn(`Unknown startOfWeekView.value: ${startOfWeekView.value}`);
   }
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
@@ -134,26 +144,31 @@ function weekDayRight(): void {
   } else {
     console.warn(`Unknown startOfWeekView.value: ${startOfWeekView.value}`);
   }
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function weekShiftDoubleLeft(): void {
   currentDate.value = currentDate.value.subtract({ weeks: 4 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function weekShiftDoubleRight(): void {
   currentDate.value = currentDate.value.add({ weeks: 4 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function weekShiftLeft(): void {
   currentDate.value = currentDate.value.subtract({ weeks: 1 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
 function weekShiftRight(): void {
   currentDate.value = currentDate.value.add({ weeks: 1 });
+  focusWeekView.value = false;
   calculateWeekViewInterval();
 }
 
@@ -163,11 +178,14 @@ function selectDay(day: Temporal.PlainDate): void {
     month: day.month,
     year: day.year,
   });
+  console.log("selectDay");
+  focusWeekView.value = true;
   calculateWeekViewInterval();
 }
 
 function selectToday(): void {
   currentDate.value = Temporal.Now.plainDateTimeISO();
+  focusWeekView.value = true;
   calculateWeekViewInterval();
 }
 
@@ -214,6 +232,7 @@ calculateWeekViewInterval();
         :day-light-start="dayLightStart"
         :day-light-end="dayLightEnd"
         :show-now="showNowMarker"
+        :focus-week-view="focusWeekView"
         @onWeekLabelDoubleLeft="weekShiftDoubleLeft()"
         @onWeekLabelDoubleRight="weekShiftDoubleRight()"
         @onWeekLabelLeft="weekShiftLeft()"

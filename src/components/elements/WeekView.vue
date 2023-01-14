@@ -19,6 +19,7 @@ interface Props {
   readonly showNow?: boolean;
   readonly dayLightStart?: Temporal.PlainTime;
   readonly dayLightEnd?: Temporal.PlainTime;
+  readonly focusOnDateTime?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   showNow: true,
   dayLightStart: () => Temporal.PlainTime.from({ hour: 6 }),
   dayLightEnd: () => Temporal.PlainTime.from({ hour: 19 }),
+  focusOnDateTime: false,
 });
 
 interface HourInformation {
@@ -35,6 +37,13 @@ interface HourInformation {
   weekdayClass: string;
   hourClass: string;
   rowNumber: number;
+}
+
+interface CellRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
 }
 
 const refs = {
@@ -144,6 +153,59 @@ function get24Hours(): Array<Temporal.PlainTime> {
   return hours;
 }
 
+function getCellPosition(datetime: Temporal.PlainDateTime): CellRect | null {
+  if (refs.matrix.value === null) {
+    return null;
+  }
+
+  const dayClass = `${Temporal.PlainDate.from(datetime).toString()}`;
+  const hourClass = datetime.hour.toString().padStart(2, "0") + "00";
+  const dayCells = refs.matrix.value.getElementsByClassName(
+    `${dayClass} ${hourClass}`
+  );
+  if (dayCells.length === 0) {
+    return null;
+  }
+
+  const dayCell = dayCells.item(0) as HTMLElement;
+  const dayOffset = Temporal.PlainDate.from(datetime).since(
+    props.firstDate
+  ).days;
+  const dayCellRect = dayCell.getBoundingClientRect();
+  return {
+    left: dayOffset * dayCellRect.width,
+    top: datetime.hour * dayCellRect.height,
+    width: dayCellRect.width,
+    height: dayCellRect.height,
+  } satisfies CellRect;
+}
+
+function focusDateTime(datetime: Temporal.PlainDateTime): void {
+  if (refs.matrix.value === null) {
+    return;
+  }
+
+  // We assume, that if the time is "00:00:00" than the user just had
+  // the date clicked but not the time, so we adjust to the current time.
+  if (datetime.hour === 0 && datetime.minute === 0 && datetime.second === 0) {
+    const now = Temporal.Now.plainTimeISO();
+    datetime = datetime.add({
+      hours: now.hour,
+      minutes: now.minute,
+      seconds: now.second,
+    });
+  }
+
+  const cellRect = getCellPosition(datetime);
+  if (cellRect === null) {
+    return;
+  }
+
+  // Show the previous day and hour too.
+  refs.matrix.value.scrollTop = cellRect.top - cellRect.height;
+  refs.matrix.value.scrollLeft = cellRect.left - cellRect.width;
+}
+
 function isDayLight(time: Temporal.PlainTime): boolean {
   if (!props.dayLightStart || !props.dayLightEnd) {
     throw new Error("Property 'dayLightStart' and/or 'dayLightEnd' invalid.");
@@ -209,6 +271,9 @@ function tick() {
 onUpdated(() => {
   applyHeaderSize();
   setNowMark();
+  if (props.focusOnDateTime) {
+    focusDateTime(props.datetime);
+  }
 });
 
 onMounted(() => {
@@ -224,6 +289,9 @@ onMounted(() => {
   }
   applyHeaderSize();
   setNowMark();
+  if (props.focusOnDateTime) {
+    focusDateTime(props.datetime);
+  }
 });
 
 onUnmounted(() => {
